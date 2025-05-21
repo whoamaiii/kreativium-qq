@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:specific": "vitest src/components/layout/Header.test.tsx --run"
+    "test:specific": "vitest src/components/layout/Header.test.tsx --run",
+    "prisma:seed": "prisma db seed"
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",
@@ -33,7 +34,11 @@
     "jsdom": "^26.1.0",
     "prisma": "^6.8.2",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^5",
     "vitest": "^3.1.4"
+  },
+  "prisma": {
+    "seed": "node -r ts-node/register --no-warnings prisma/seed.ts"
   }
 }
