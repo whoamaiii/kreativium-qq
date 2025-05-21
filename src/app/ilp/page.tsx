@@ -1,6 +1,9 @@
-import React from 'react';
+"use client"; // Required for useRef and client-side event handling
+import React, { useRef } from 'react';
 // import { PrismaClient } from '@/generated/prisma'; // We'll use this later
 // const prisma = new PrismaClient();
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 // Placeholder data - replace with actual data fetching later
 const placeholderGoals = [
@@ -41,19 +44,47 @@ const statusColors: { [key: string]: string } = {
 
 
 export default function ILPPage() {
+  const ilpContentRef = useRef<HTMLDivElement>(null);
+
   // const goals = await prisma.goal.findMany({ include: { activities: true } }); // Example data fetching
   // const activities = await prisma.activity.findMany();
   const goals = placeholderGoals;
   const activities = placeholderActivities;
 
+  const handleExportPDF = () => {
+    if (ilpContentRef.current) {
+      html2canvas(ilpContentRef.current, { scale: 2, backgroundColor: '#161325' }) // Added backgroundColor
+        .then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF('p', 'mm', 'a4'); // A4 portrait
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = pdf.internal.pageSize.getHeight();
+          const canvasWidth = canvas.width;
+          const canvasHeight = canvas.height;
+          const ratio = canvasWidth / canvasHeight;
+          let newWidth = pdfWidth;
+          let newHeight = newWidth / ratio;
+
+          // If height is still too large, scale by height
+          if (newHeight > pdfHeight) {
+            newHeight = pdfHeight;
+            newWidth = newHeight * ratio;
+          }
+          
+          pdf.addImage(imgData, 'PNG', 0, 0, newWidth, newHeight);
+          pdf.save('ilp-export.pdf');
+        });
+    }
+  };
+
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-8 text-white">
+    <div ref={ilpContentRef} className="container mx-auto p-4 sm:p-6 lg:p-8 text-white bg-[#161325]"> {/* Added bg for PDF capture */}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold">Individualized Learning Plan</h1>
           <p className="text-slate-300">Track progress and activities for personalized learning.</p>
         </div>
-        <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors">
+        <button onClick={handleExportPDF} className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors">
           Export PDF
         </button>
       </div>
