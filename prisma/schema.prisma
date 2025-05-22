@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -11,39 +10,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum ActivityStatus {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
+model Kid {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  goals Goal[]
 }
 
 model Goal {
-  id              String     @id @default(cuid())
-  title           String
-  description     String?
-  targetProgress  Int        @default(100)
-  currentProgress Int        @default(0)
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
-  activities      Activity[]
+  id        Int      @id @default(autoincrement())
+  title     String
+  desc      String?
+  targetXp  Int
+  pct       Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  entries   Entry[]
 
-  // Optional: If goals belong to a user
-  // userId String
-  // user   User   @relation(fields: [userId], references: [id])
+  kidId     Int
+  kid       Kid      @relation(fields: [kidId], references: [id], onDelete: Cascade)
 }
 
-model Activity {
-  id          String         @id @default(cuid())
-  title       String
-  subject     String?
-  status      ActivityStatus @default(PENDING)
-  dueDate     DateTime?
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  goalId      String?        // An activity can optionally belong to a goal
-  goal        Goal?          @relation(fields: [goalId], references: [id])
+model Entry {
+  id        Int      @id @default(autoincrement())
+  activity  String
+  subject   String?
+  status    String
+  due       DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  // Optional: If activities belong to a user
-  // userId String
-  // user   User   @relation(fields: [userId], references: [id])
+  goalId    Int
+  goal      Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
 }

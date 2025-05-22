@@ -1,6 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import Header from './Header';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+
+// Mock usePathname from next/navigation
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/',
+}));
 
 describe('Header Component', () => {
   it('renders the brand name "Kreativium"', () => {
@@ -13,6 +18,11 @@ describe('Header Component', () => {
     render(<Header />);
     const linkElement = screen.getByRole('link', { name: /Kreativium/i });
     expect(linkElement).toHaveAttribute('href', '/');
+  });
+
+  it('renders AAC navigation link', () => {
+    render(<Header />);
+    expect(screen.getByRole('link', { name: /AAC/i })).toBeInTheDocument();
   });
 
   it('renders a placeholder for user avatar', () => {
