@@ -1,12 +1,10 @@
-import Image from 'next/image'; // Keep for potential image placeholders
 import Link from 'next/link';   // For navigation links
 
 // Placeholder data for cards - can be expanded later
 const activityCards = [
-  { title: 'Play a Game', href: '/games', imgSrc: '/placeholder-game.png' },
-  { title: 'Track Feelings', href: '/feelings', imgSrc: '/placeholder-feelings.png' },
-  { title: 'Talk with Symbols', href: '/aac', imgSrc: '/placeholder-symbols.png' },
-  { title: 'Explore Moods', href: '/moods', imgSrc: '/placeholder-moods.png' },
+  { title: 'Play a Game', href: '/games', imgSrc: '/images/placeholder-game.png' },
+  { title: 'Track Feelings', href: '/feelings', imgSrc: '/images/placeholder-feelings.png' },
+  { title: 'Talk with Symbols', href: '/aac', imgSrc: '/images/placeholder-symbols.png' },
 ];
 
 const quickActionCards = [
@@ -26,9 +24,9 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {activityCards.map((card) => (
             <Link key={card.title} href={card.href} className="block bg-slate-700/50 hover:bg-slate-600/50 p-6 rounded-lg shadow-lg transition-colors">
-              <div className="w-full h-32 bg-slate-600 rounded mb-4 flex items-center justify-center">
+              <div className="relative w-full h-32 rounded mb-4 overflow-hidden flex items-center justify-center bg-gray-800 text-gray-400">
                 {/* Placeholder for image */}
-                <span className="text-slate-400 text-sm">(Image for {card.title})</span>
+                <span className="text-sm">Image Placeholder</span>
               </div>
               <h2 className="text-xl font-semibold">{card.title}</h2>
             </Link>
@@ -45,7 +43,7 @@ export default function DashboardPage() {
           <span className="ml-auto text-yellow-400 text-2xl">🔥</span> {/* Streak icon */}
         </div>
         <div className="w-full bg-slate-600 rounded-full h-2.5 mb-2">
-          <div className="bg-purple-500 h-2.5 rounded-full" style={{ width: '75%' }}></div>
+          <div className="bg-purple-500 h-2.5 rounded-full" style={{ width: '45%' }}></div>
         </div>
         <p className="text-sm text-slate-300">Keep it up! You're doing great.</p>
       </section>
