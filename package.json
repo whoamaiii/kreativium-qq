@@ -10,7 +10,9 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:specific": "vitest src/components/layout/Header.test.tsx --run",
-    "prisma:seed": "prisma db seed"
+    "e2e": "playwright test --config=playwright.config.ts",
+    "prisma:seed": "prisma db seed",
+    "db:reset": "pnpm exec prisma migrate reset --force && node prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.52.0",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.16",
@@ -35,6 +38,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
     "jsdom": "^26.1.0",
+    "playwright": "^1.52.0",
     "prisma": "^6.8.2",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",

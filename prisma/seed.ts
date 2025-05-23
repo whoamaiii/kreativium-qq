@@ -6,6 +6,13 @@ const prisma = new PrismaClient();
 async function main() {
   console.log(`Start seeding ...`);
 
+  // Delete existing data to ensure idempotent seeding
+  await prisma.entry.deleteMany({});
+  await prisma.goal.deleteMany({});
+  await prisma.kid.deleteMany({});
+  
+  console.log('Deleted existing data');
+
   // Seed Kid(s)
   const kid1 = await prisma.kid.create({
     data: { name: 'Alex' },
