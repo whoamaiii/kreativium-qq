@@ -25,7 +25,7 @@ export default function DashboardPage() {
           {activityCards.map((card) => (
             <Link key={card.title} href={card.href} className="block bg-slate-700/50 hover:bg-slate-600/50 p-6 rounded-lg shadow-lg transition-colors">
               <img src={card.imgSrc} alt={card.title}
-                   className="h-32 w-full object-cover rounded" />
+                   className="h-32 w-full object-cover rounded mb-4" />
               <h2 className="text-xl font-semibold">{card.title}</h2>
             </Link>
           ))}
