@@ -8,6 +8,7 @@ const navLinks = [
   { href: "/", label: "Dashboard" },
   { href: "/ilp", label: "ILP" },
   { href: "/aac", label: "AAC" },
+  { href: "/chat", label: "Chat" },
 ];
 
 const Header: React.FC = () => {
