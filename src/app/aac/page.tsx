@@ -40,12 +40,12 @@ export default function AACPage() {
     [symbols, search]
   );
 
-  const toggleWordAndSpeak = (word: string) => {
+  const toggle = (word: string) => {
     setSentence((prev) => [...prev, word]);
-    if (typeof window !== "undefined" && window.speechSynthesis) {
+    if (typeof window !== "undefined") {
       const synth = window.speechSynthesis;
-      synth.cancel(); // Cancel any ongoing speech
-      synth.speak(new SpeechSynthesisUtterance(word)); // Speak the new word
+      synth.cancel();
+      synth.speak(new SpeechSynthesisUtterance(word));
     }
   };
 
@@ -78,9 +78,9 @@ export default function AACPage() {
             {filteredSymbols.map((symbol) => (
               <button
                 key={symbol.id}
-                onClick={() => toggleWordAndSpeak(symbol.label)}
+                onClick={() => toggle(symbol.label)}
                 className="aspect-square bg-slate-600/50 hover:bg-slate-500/50 p-2 rounded-lg shadow flex flex-col items-center justify-center transition-colors"
-                aria-label={symbol.label}
+                aria-label={`word ${symbol.label}`}
               >
                 <div className="w-16 h-16 bg-slate-500 rounded mb-1 flex items-center justify-center text-xs text-slate-300">
                   (Img)
@@ -148,12 +148,6 @@ export default function AACPage() {
           {sentence.length > 0 && (
             <div className="flex gap-2 ml-auto">
               <button
-                onClick={() => setSentence([])}
-                className="bg-transparent hover:bg-slate-500/30 text-slate-300 hover:text-white px-3 py-1.5 rounded text-sm border border-slate-500 hover:border-slate-400"
-              >
-                Clear Sentence
-              </button>
-              <button
                 onClick={handleSpeak}
                 className="bg-green-500 hover:bg-green-600 px-3 py-1.5 rounded text-sm"
               >
@@ -186,6 +180,16 @@ export default function AACPage() {
           </button>
         </div>
       </footer>
+
+      {/* Clear Sentence Button - bottom right */}
+      {sentence.length > 0 && (
+        <button
+          onClick={() => setSentence([])}
+          className="fixed bottom-6 right-6 bg-transparent hover:bg-slate-500/30 text-slate-300 hover:text-white px-4 py-2 rounded-lg text-sm border border-slate-500 hover:border-slate-400 shadow-lg backdrop-blur-sm"
+        >
+          Clear Sentence
+        </button>
+      )}
     </div>
   );
 }
