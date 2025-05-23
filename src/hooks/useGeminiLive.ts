@@ -54,6 +54,22 @@ export function useGeminiLive(options: UseGeminiLiveOptions = {}) {
     }
   }, [onError]);
 
+  // Test API access before connecting
+  const testApiAccess = useCallback(async (key: string) => {
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${key}`);
+      if (!response.ok) {
+        throw new Error(`API test failed: ${response.status} ${response.statusText}`);
+      }
+      const data = await response.json();
+      console.log('Available models:', data.models?.slice(0, 3).map((m: any) => m.name));
+      return true;
+    } catch (error) {
+      console.error('API access test failed:', error);
+      return false;
+    }
+  }, []);
+
   // Update connection state
   const updateState = useCallback((newState: ConnectionState) => {
     setConnectionState(newState);
@@ -74,13 +90,37 @@ export function useGeminiLive(options: UseGeminiLiveOptions = {}) {
         key = await fetchApiKey();
       }
 
+      // Test API access first
+      const hasAccess = await testApiAccess(key!);
+      if (!hasAccess) {
+        updateState('error');
+        const err = new Error('API key does not have access to Generative AI services');
+        onError?.(err);
+        return;
+      }
+
       const modelToUse = modelOverride || model;
+      console.log('Connecting with model:', modelToUse);
+      console.log('API key length:', key?.length || 0);
+      
       const wsUrl = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${key}`;
+      console.log('WebSocket URL:', key ? wsUrl.replace(key, '[API_KEY]') : wsUrl); // Log URL without exposing key
 
       const ws = new WebSocket(wsUrl);
       wsRef.current = ws;
 
+      // Add connection timeout
+      const connectionTimeout = setTimeout(() => {
+        if (ws.readyState === WebSocket.CONNECTING) {
+          ws.close();
+          updateState('error');
+          const err = new Error('WebSocket connection timeout');
+          onError?.(err);
+        }
+      }, 10000); // 10 second timeout
+
       ws.onopen = () => {
+        clearTimeout(connectionTimeout);
         updateState('connected');
         
         // Send initial setup message
@@ -107,6 +147,7 @@ export function useGeminiLive(options: UseGeminiLiveOptions = {}) {
           },
         };
         
+        console.log('Sending setup message:', JSON.stringify(setupMessage, null, 2));
         ws.send(JSON.stringify(setupMessage));
       };
 
@@ -143,13 +184,18 @@ export function useGeminiLive(options: UseGeminiLiveOptions = {}) {
       };
 
       ws.onerror = (error) => {
+        clearTimeout(connectionTimeout);
         console.error('WebSocket error:', error);
+        console.error('WebSocket URL was:', wsUrl.replace(key || '', '[API_KEY]'));
+        console.error('WebSocket readyState:', ws.readyState);
         updateState('error');
         const err = new Error('WebSocket connection error');
         onError?.(err);
       };
 
-      ws.onclose = () => {
+      ws.onclose = (event) => {
+        clearTimeout(connectionTimeout);
+        console.log('WebSocket closed:', event.code, event.reason);
         updateState('disconnected');
         wsRef.current = null;
       };
@@ -159,7 +205,7 @@ export function useGeminiLive(options: UseGeminiLiveOptions = {}) {
       const err = error instanceof Error ? error : new Error('Connection failed');
       onError?.(err);
     }
-  }, [connectionState, apiKey, model, fetchApiKey, updateState, onMessage, onError]);
+  }, [connectionState, apiKey, model, fetchApiKey, testApiAccess, updateState, onMessage, onError]);
 
   // Disconnect from WebSocket
   const disconnect = useCallback(() => {
