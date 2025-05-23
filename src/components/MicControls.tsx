@@ -4,21 +4,47 @@ import { useState } from 'react';
 
 type RecordingState = 'idle' | 'recording' | 'stopped';
 
-const MicControls: React.FC = () => {
-  const [state, setState] = useState<RecordingState>('idle');
+interface MicControlsProps {
+  onReset?: () => void;
+  onRecord?: () => void;
+  onStop?: () => void;
+  isRecording?: boolean;
+  isConnected?: boolean;
+}
+
+const MicControls: React.FC<MicControlsProps> = ({ 
+  onReset,
+  onRecord,
+  onStop,
+  isRecording = false,
+  isConnected = false,
+}) => {
+  const [internalState, setInternalState] = useState<RecordingState>('idle');
+
+  // Use external state if provided, otherwise fall back to internal state
+  const currentState = isRecording ? 'recording' : 
+                      (internalState === 'recording' ? 'stopped' : internalState);
 
   const handleReset = () => {
-    setState('idle');
+    setInternalState('idle');
+    onReset?.();
     console.log('Reset triggered');
   };
 
   const handleRecord = () => {
-    setState('recording');
+    if (!isConnected) {
+      console.log('Cannot record: not connected');
+      return;
+    }
+    
+    setInternalState('recording');
+    onRecord?.();
     console.log('Recording started');
   };
 
   const handleStop = () => {
-    setState('stopped');
+    setInternalState('stopped');
+    onStop?.();
     console.log('Recording stopped');
   };
 
@@ -28,11 +54,11 @@ const MicControls: React.FC = () => {
         {/* Reset Button */}
         <button
           onClick={handleReset}
-          disabled={state === 'idle'}
+          disabled={currentState === 'idle' && !isRecording}
           className={`
             w-16 h-16 rounded-xl border-2 flex items-center justify-center text-2xl font-bold
             transition-all duration-200 transform hover:scale-105
-            ${state === 'idle' 
+            ${(currentState === 'idle' && !isRecording)
               ? 'bg-gray-700 border-gray-600 text-gray-500 cursor-not-allowed' 
               : 'bg-gray-600 border-gray-400 text-white hover:bg-gray-500 active:scale-95'
             }
@@ -45,16 +71,18 @@ const MicControls: React.FC = () => {
         {/* Record Button */}
         <button
           onClick={handleRecord}
-          disabled={state === 'recording'}
+          disabled={isRecording || !isConnected}
           className={`
             w-20 h-20 rounded-full border-2 flex items-center justify-center text-3xl
             transition-all duration-200 transform hover:scale-105
-            ${state === 'recording'
+            ${isRecording
               ? 'bg-red-600 border-red-400 text-white animate-pulse cursor-not-allowed'
-              : 'bg-red-500 border-red-400 text-white hover:bg-red-400 active:scale-95'
+              : isConnected
+                ? 'bg-red-500 border-red-400 text-white hover:bg-red-400 active:scale-95'
+                : 'bg-gray-700 border-gray-600 text-gray-500 cursor-not-allowed'
             }
           `}
-          title="Record"
+          title={isConnected ? "Record" : "Connect first"}
         >
           ⭘
         </button>
@@ -62,11 +90,11 @@ const MicControls: React.FC = () => {
         {/* Stop Button */}
         <button
           onClick={handleStop}
-          disabled={state !== 'recording'}
+          disabled={!isRecording}
           className={`
             w-16 h-16 rounded-lg border-2 flex items-center justify-center text-2xl
             transition-all duration-200 transform hover:scale-105
-            ${state !== 'recording'
+            ${!isRecording
               ? 'bg-gray-700 border-gray-600 text-gray-500 cursor-not-allowed'
               : 'bg-gray-600 border-gray-400 text-white hover:bg-gray-500 active:scale-95'
             }
@@ -82,13 +110,15 @@ const MicControls: React.FC = () => {
         <div className="text-sm text-gray-400 mb-1">Status</div>
         <div className={`
           text-lg font-medium px-3 py-1 rounded-full
-          ${state === 'idle' && 'text-gray-300'}
-          ${state === 'recording' && 'text-red-400'}
-          ${state === 'stopped' && 'text-green-400'}
+          ${!isConnected && 'text-gray-500'}
+          ${currentState === 'idle' && isConnected && 'text-gray-300'}
+          ${isRecording && 'text-red-400'}
+          ${currentState === 'stopped' && 'text-green-400'}
         `}>
-          {state === 'idle' && 'Ready to record'}
-          {state === 'recording' && 'Recording...'}
-          {state === 'stopped' && 'Recording stopped'}
+          {!isConnected && 'Not connected'}
+          {isConnected && !isRecording && currentState === 'idle' && 'Ready to record'}
+          {isRecording && 'Recording...'}
+          {isConnected && !isRecording && currentState === 'stopped' && 'Recording stopped'}
         </div>
       </div>
     </div>

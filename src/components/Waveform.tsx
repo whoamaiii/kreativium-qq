@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
-const Waveform: React.FC = () => {
+interface WaveformProps {
+  isActive?: boolean;
+}
+
+const Waveform: React.FC<WaveformProps> = ({ isActive = false }) => {
   const [bars, setBars] = useState<number[]>([]);
 
   useEffect(() => {
@@ -10,18 +14,24 @@ const Waveform: React.FC = () => {
     const generateBars = () => {
       const barCount = 40;
       const newBars = Array.from({ length: barCount }, () => 
-        Math.random() * 80 + 10 // Random height between 10-90
+        isActive 
+          ? Math.random() * 80 + 10 // Active: Random height between 10-90
+          : Math.random() * 20 + 5  // Inactive: Smaller height between 5-25
       );
       setBars(newBars);
     };
 
     generateBars();
     
-    // Animate the waveform
-    const interval = setInterval(generateBars, 200);
-    
-    return () => clearInterval(interval);
-  }, []);
+    // Animate the waveform only when active
+    if (isActive) {
+      const interval = setInterval(generateBars, 100); // Faster when active
+      return () => clearInterval(interval);
+    } else {
+      const interval = setInterval(generateBars, 500); // Slower when inactive
+      return () => clearInterval(interval);
+    }
+  }, [isActive]);
 
   return (
     <div className="flex flex-col items-center space-y-4 w-full max-w-2xl">
@@ -41,8 +51,13 @@ const Waveform: React.FC = () => {
               y={50 - height / 2}
               width={16}
               height={height}
-              fill={`hsl(${240 + index * 2}, 70%, ${60 + height / 3}%)`}
-              className="transition-all duration-200 ease-in-out"
+              fill={isActive 
+                ? `hsl(${240 + index * 2}, 70%, ${60 + height / 3}%)` 
+                : `hsl(${240 + index * 2}, 40%, ${40 + height / 4}%)`
+              }
+              className={`transition-all duration-200 ease-in-out ${
+                isActive ? 'opacity-100' : 'opacity-60'
+              }`}
               rx={2}
             />
           ))}
@@ -50,7 +65,7 @@ const Waveform: React.FC = () => {
       </div>
       
       <div className="text-sm text-gray-400">
-        Listening for audio input...
+        {isActive ? 'Recording audio...' : 'Listening for audio input...'}
       </div>
     </div>
   );
