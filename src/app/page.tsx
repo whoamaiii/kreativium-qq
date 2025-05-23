@@ -2,9 +2,9 @@ import Link from 'next/link';   // For navigation links
 
 // Placeholder data for cards - can be expanded later
 const activityCards = [
-  { title: 'Play a Game', href: '/games', imgSrc: '/images/placeholder-game.png' },
-  { title: 'Track Feelings', href: '/feelings', imgSrc: '/images/placeholder-feelings.png' },
-  { title: 'Talk with Symbols', href: '/aac', imgSrc: '/images/placeholder-symbols.png' },
+  { title: 'Play a Game', href: '/games', imgSrc: '/hero-game.png' },
+  { title: 'Track Feelings', href: '/feelings', imgSrc: '/hero-feelings.png' },
+  { title: 'Talk with Symbols', href: '/aac', imgSrc: '/hero-aac.png' },
 ];
 
 const quickActionCards = [
@@ -24,10 +24,8 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {activityCards.map((card) => (
             <Link key={card.title} href={card.href} className="block bg-slate-700/50 hover:bg-slate-600/50 p-6 rounded-lg shadow-lg transition-colors">
-              <div className="relative w-full h-32 rounded mb-4 overflow-hidden flex items-center justify-center bg-gray-800 text-gray-400">
-                {/* Placeholder for image */}
-                <span className="text-sm">Image Placeholder</span>
-              </div>
+              <img src={card.imgSrc} alt={card.title}
+                   className="h-32 w-full object-cover rounded" />
               <h2 className="text-xl font-semibold">{card.title}</h2>
             </Link>
           ))}
