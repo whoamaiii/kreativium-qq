@@ -70,8 +70,8 @@ export default function StarsIntegrationDemo() {
               This demo shows the star awarding system in action. Try completing goals to see stars being awarded with confetti!
             </p>
             <div className="mt-4 space-y-2 text-sm text-purple-300">
-              <p>• Click "+10%" to increment progress</p>
-              <p>• Click "Complete" to finish a goal and earn a star</p>
+              <p>• Click &quot;+10%&quot; to increment progress</p>
+              <p>• Click &quot;Complete&quot; to finish a goal and earn a star</p>
               <p>• Watch for confetti when stars are awarded!</p>
               <p>• The star badge updates in real-time</p>
             </div>

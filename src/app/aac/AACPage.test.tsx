@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest'; // Import vi
+import { describe, it, expect } from 'vitest';
 import AACPage from './page'; // Assuming the component is exported as default from page.tsx
 
 describe('AACPage Component', () => {

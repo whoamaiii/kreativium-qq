@@ -36,7 +36,7 @@ describe('Goal Actions', () => {
         pct: 75
       }
 
-      vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal as any)
+      vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal)
 
       const result = await updateGoalProgress(1, 75)
 
@@ -57,7 +57,7 @@ describe('Goal Actions', () => {
         pct: 100
       }
 
-      vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal as any)
+      vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal)
       vi.mocked(awardStar).mockResolvedValue({
         success: true,
         starsAwarded: 1,
@@ -81,7 +81,7 @@ describe('Goal Actions', () => {
         pct: 95
       }
 
-      vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal as any)
+      vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal)
 
       const result = await updateGoalProgress(1, 95)
 
@@ -109,7 +109,7 @@ describe('Goal Actions', () => {
         pct: 76
       }
 
-      vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal as any)
+      vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal)
 
       await updateGoalProgress(1, 75.6)
 
@@ -130,7 +130,7 @@ describe('Goal Actions', () => {
         pct: 0
       }
 
-      vi.mocked(prisma.goal.create).mockResolvedValue(mockGoal as any)
+      vi.mocked(prisma.goal.create).mockResolvedValue(mockGoal)
 
       const result = await createGoal(1, 'New Goal', 'Goal Description')
 

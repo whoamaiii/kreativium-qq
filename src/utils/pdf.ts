@@ -1,6 +1,7 @@
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import type { Goal, Entry } from "@prisma/client";
 
-export async function makeIlpPdf(goals: any[], entries: any[]) {
+export async function makeIlpPdf(goals: Goal[], entries: Entry[]) {
   // Create a new PDF document
   const pdf = await PDFDocument.create();
   let currentPage = pdf.addPage([595, 842]); // A4 size

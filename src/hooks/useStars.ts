@@ -38,7 +38,6 @@ export function useStars(kidId: number, initialStars?: number): UseStarsResult {
       setError(null)
       
       // Optimistically update the UI
-      const previousStars = stars
       setStars(prev => prev + 1)
       
       // Note: The actual star awarding happens through the goal update API
@@ -57,7 +56,7 @@ export function useStars(kidId: number, initialStars?: number): UseStarsResult {
       // Revert on error
       await fetchStars()
     }
-  }, [stars, fetchStars])
+  }, [fetchStars])
 
   useEffect(() => {
     if (!initialStars) {

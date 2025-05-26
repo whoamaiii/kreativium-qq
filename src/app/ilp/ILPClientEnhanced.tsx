@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import type { Goal, Entry } from "@prisma/client";
 import StarsBadge from "@/components/StarsBadge";
 import { useStars } from "@/hooks/useStars";
-import { launchConfetti } from "@/utils/confetti";
 
 // Define types for fetched data, matching the new schema
 type EntryData = Entry;

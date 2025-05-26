@@ -51,7 +51,7 @@ describe('Star Awarding System', () => {
       })
 
       vi.mocked(prisma.$transaction).mockImplementation(mockTransaction)
-      vi.mocked(prisma.goal.findUnique).mockResolvedValue(mockGoal as any)
+      vi.mocked(prisma.goal.findUnique).mockResolvedValue(mockGoal)
 
       const result = await awardStar(1)
 
@@ -68,7 +68,7 @@ describe('Star Awarding System', () => {
         kid: { id: 1, name: 'Test Kid', stars: 0 }
       }
 
-      vi.mocked(prisma.goal.findUnique).mockResolvedValue(mockGoal as any)
+      vi.mocked(prisma.goal.findUnique).mockResolvedValue(mockGoal)
 
       const result = await awardStar(1)
 
@@ -99,7 +99,7 @@ describe('Star Awarding System', () => {
       })
 
       vi.mocked(prisma.$transaction).mockImplementation(mockTransaction)
-      vi.mocked(prisma.goal.findUnique).mockResolvedValue(mockGoal as any)
+      vi.mocked(prisma.goal.findUnique).mockResolvedValue(mockGoal)
 
       const result = await awardStar(1)
 
@@ -143,7 +143,7 @@ describe('Star Awarding System', () => {
       })
 
       vi.mocked(prisma.$transaction).mockImplementation(mockTransaction)
-      vi.mocked(prisma.goal.findUnique).mockResolvedValue(mockGoal as any)
+      vi.mocked(prisma.goal.findUnique).mockResolvedValue(mockGoal)
 
       const result = await awardStar(3)
 
@@ -157,7 +157,7 @@ describe('Star Awarding System', () => {
     it('should return the star count for a kid', async () => {
       vi.mocked(prisma.kid.findUnique).mockResolvedValue({
         stars: 5
-      } as any)
+      })
 
       const stars = await getKidStars(1)
       expect(stars).toBe(5)
@@ -178,7 +178,7 @@ describe('Star Awarding System', () => {
         id: 1,
         name: 'Test Kid',
         stars: 4
-      } as any)
+      })
 
       const stars = await recalculateStars(1)
       

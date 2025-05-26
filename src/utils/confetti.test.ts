@@ -118,16 +118,20 @@ describe('launchConfetti', () => {
   });
 
   it('uses default duration of 3000ms when not specified', async () => {
+    // Mock Date.now to control elapsed time
+    let currentTime = 0;
+    vi.spyOn(Date, 'now').mockImplementation(() => currentTime);
+    
     launchConfetti(mockElement);
 
-    // Fast-forward to just before 3000ms
-    vi.advanceTimersByTime(2999);
-    await vi.runAllTimersAsync();
+    // Simulate animation frames before 3000ms
+    currentTime = 2999;
+    vi.advanceTimersByTime(16); // Trigger the RAF callback
     expect(document.body.removeChild).not.toHaveBeenCalled();
 
-    // Fast-forward past 3000ms
-    vi.advanceTimersByTime(100);
-    await vi.runAllTimersAsync();
+    // Simulate animation frame after 3000ms
+    currentTime = 3001;
+    vi.advanceTimersByTime(16); // Trigger the RAF callback
     expect(document.body.removeChild).toHaveBeenCalled();
   });
 

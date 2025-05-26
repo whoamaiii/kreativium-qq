@@ -19,6 +19,25 @@ export interface UseGeminiLiveOptions {
   onAudioLevel?: (level: number) => void;
 }
 
+interface LiveSessionMessage {
+  setupComplete?: boolean;
+  serverContent?: {
+    modelTurn?: {
+      parts?: Array<{
+        inlineData?: {
+          data: string;
+          mimeType: string;
+        };
+      }>;
+    };
+    interrupted?: boolean;
+  };
+}
+
+interface WebkitWindow extends Window {
+  webkitAudioContext: typeof AudioContext;
+}
+
 // Helper functions from Google's implementation
 function encodeAudioData(float32Array: Float32Array): Uint8Array {
   const int16Array = new Int16Array(float32Array.length);
@@ -77,7 +96,7 @@ export function useGeminiLive({
   const [connectionState, setConnectionState] = useState<ConnectionState>('disconnected');
   const [isRecording, setIsRecording] = useState(false);
   
-  const sessionRef = useRef<any>(null);
+  const sessionRef = useRef<{ close: () => void; send: (data: unknown) => void } | null>(null);
   const clientRef = useRef<GoogleGenAI | null>(null);
   
   // Audio contexts matching Google's implementation
@@ -103,10 +122,10 @@ export function useGeminiLive({
 
   const initAudio = useCallback(() => {
     console.log('[useGeminiLive] Initializing audio contexts...');
-    const inputContext = new (window.AudioContext || (window as any).webkitAudioContext)({
+    const inputContext = new (window.AudioContext || (window as WebkitWindow).webkitAudioContext)({
       sampleRate: 16000
     });
-    const outputContext = new (window.AudioContext || (window as any).webkitAudioContext)({
+    const outputContext = new (window.AudioContext || (window as WebkitWindow).webkitAudioContext)({
       sampleRate: 24000
     });
     
@@ -162,7 +181,7 @@ export function useGeminiLive({
             console.log('[useGeminiLive] Live session opened successfully.');
             updateConnectionState('connected');
           },
-          onmessage: async (message: any) => {
+          onmessage: async (message: LiveSessionMessage) => {
             console.log('[useGeminiLive] Received message:', JSON.stringify(message, null, 2));
             
             // Check for setup complete
@@ -237,13 +256,13 @@ export function useGeminiLive({
               nextStartTimeRef.current = 0;
             }
           },
-          onerror: (error: any) => {
+          onerror: (error: Error | { message?: string } | string) => {
             console.error('[useGeminiLive] Live session onerror callback:', error);
-            const errorMessage = error?.message || (typeof error === 'string' ? error : 'Unknown live session error');
+            const errorMessage = (error as Error)?.message || (typeof error === 'string' ? error : 'Unknown live session error');
             updateConnectionState('error');
             onError?.(error instanceof Error ? error : new Error(errorMessage));
           },
-          onclose: (event: any) => { // event can be CloseEvent
+          onclose: (event: CloseEvent | { code?: number; reason?: string; wasClean?: boolean }) => {
             console.log('[useGeminiLive] Live session onclose callback. Event:', event);
             console.log(`[useGeminiLive] Session closed. Code: ${event?.code}, Reason: ${event?.reason}, WasClean: ${event?.wasClean}`);
             updateConnectionState('disconnected');
@@ -260,6 +279,7 @@ export function useGeminiLive({
       updateConnectionState('error');
       onError?.(error as Error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [model, onMessage, onError, updateConnectionState, initAudio]);
 
   const cleanup = useCallback(() => {
@@ -545,7 +565,7 @@ export function useGeminiLive({
         scriptProcessorNode.connect(inputAudioContextRef.current.destination);
         
         // Store the fallback node in the same ref (we'll handle cleanup properly)
-        audioWorkletNodeRef.current = scriptProcessorNode as any;
+        audioWorkletNodeRef.current = scriptProcessorNode as unknown as AudioWorkletNode;
         
         setIsRecording(true);
         console.log('[useGeminiLive] Recording started successfully with fallback ScriptProcessorNode.');
@@ -555,16 +575,16 @@ export function useGeminiLive({
       
       // Safely log error details
       if (error && typeof error === 'object') {
-        console.warn('[useGeminiLive] Error name:', (error as any).name || 'Unknown');
-        console.warn('[useGeminiLive] Error message:', (error as any).message || 'No message');
-        console.warn('[useGeminiLive] Error stack:', (error as any).stack || 'No stack');
+        console.warn('[useGeminiLive] Error name:', (error as Error).name || 'Unknown');
+        console.warn('[useGeminiLive] Error message:', (error as Error).message || 'No message');
+        console.warn('[useGeminiLive] Error stack:', (error as Error).stack || 'No stack');
       } else {
         console.warn('[useGeminiLive] Error (not an object):', error);
       }
       
       // Handle specific getUserMedia errors
       if (error && typeof error === 'object' && 'name' in error) {
-        const errorName = (error as any).name;
+        const errorName = (error as Error).name;
         if (errorName === 'NotAllowedError') {
           console.warn('[useGeminiLive] Microphone permission denied by user');
         onError?.(new Error('Microphone permission denied. Please allow microphone access and try again.'));

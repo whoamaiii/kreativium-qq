@@ -2,8 +2,6 @@
 
 // import { useState } from 'react'; // No longer needed
 
-type RecordingState = 'idle' | 'recording' | 'stopped'; // Kept for clarity, but not directly used for internal state
-
 interface MicControlsProps {
   onReset?: () => void;
   onStartLiveChat?: () => void;
@@ -23,14 +21,6 @@ const MicControls: React.FC<MicControlsProps> = ({
 }) => {
   // const [internalState, setInternalState] = useState<RecordingState>('idle'); // Removed internal state
 
-  // Rely solely on props for state determination
-  const determineDisplayState = (): RecordingState => {
-    if (isRecording) return 'recording';
-    if (isConnected) return 'idle'; // Or 'stopped' if you had a way to show that post-recording
-    return 'idle'; // Default if not connected
-  };
-
-  const displayState = determineDisplayState();
 
   const handleReset = () => {
     // setInternalState('idle'); // Removed

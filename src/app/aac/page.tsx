@@ -30,7 +30,10 @@ export default function AACPage() {
   const [sentence, setSentence] = useState<string[]>([]);
   const [teachMode, setTeachMode] = useState(false);
 
-  const symbols = symbolCategories[currentCategory] || [];
+  const symbols = useMemo(
+    () => symbolCategories[currentCategory] || [],
+    [currentCategory]
+  );
 
   const filteredSymbols = useMemo(
     () =>

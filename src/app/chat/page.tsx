@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import PigletAvatar from '@/components/PigletAvatar';
-import Waveform from '@/components/Waveform';
 import MicControls from '@/components/MicControls';
 import { useGeminiLive } from '@/hooks/useGeminiLive';
 
@@ -135,7 +134,7 @@ export default function ChatPage() {
     console.log('[ChatPage] Testing audio output...');
     try {
       // Create a simple test tone
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
       

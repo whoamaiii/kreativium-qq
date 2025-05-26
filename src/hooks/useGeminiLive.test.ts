@@ -93,11 +93,11 @@ class MockAudioWorkletNode {
   disconnect = vi.fn();
 }
 
-// @ts-ignore
+// @ts-expect-error - Mock AudioContext for testing
 global.AudioContext = MockAudioContext;
-// @ts-ignore
+// @ts-expect-error - Mock webkitAudioContext for testing
 global.webkitAudioContext = MockAudioContext;
-// @ts-ignore
+// @ts-expect-error - Mock AudioWorkletNode for testing
 global.AudioWorkletNode = MockAudioWorkletNode;
 
 // Mock getUserMedia
@@ -113,8 +113,8 @@ Object.defineProperty(navigator, 'mediaDevices', {
 global.File = vi.fn().mockImplementation((chunks, filename, options) => ({
   name: filename,
   type: options?.type || '',
-  size: chunks.reduce((sum: number, chunk: any) => sum + (chunk.size || chunk.length || 0), 0),
-})) as any;
+  size: chunks.reduce((sum: number, chunk: Blob | ArrayBuffer) => sum + ((chunk as Blob).size || (chunk as ArrayBuffer).byteLength || 0), 0),
+})) as Blob;
 
 describe('useGeminiLive', () => {
   beforeEach(() => {
@@ -127,7 +127,7 @@ describe('useGeminiLive', () => {
     mockLiveConnect.mockResolvedValue(mockSession);
     
     // Mock successful fetch response
-    (global.fetch as any).mockResolvedValue({
+    vi.mocked(global.fetch).mockResolvedValue({
       ok: true,
       json: async () => ({ apiKey: 'test-api-key' }),
       text: async () => 'test-api-key',
@@ -177,7 +177,7 @@ describe('useGeminiLive', () => {
     const { result } = renderHook(() => useGeminiLive());
     
     // Mock fetch to fail
-    (global.fetch as any).mockRejectedValueOnce(new Error('API key fetch failed'));
+    vi.mocked(global.fetch).mockRejectedValueOnce(new Error('API key fetch failed'));
 
     await act(async () => {
       await result.current.connect();
