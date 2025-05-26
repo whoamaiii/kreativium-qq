@@ -15,6 +15,7 @@
     "db:reset": "pnpm exec prisma migrate reset --force && node prisma/seed.ts"
   },
   "dependencies": {
+    "@google/genai": "^1.0.1",
     "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.8.2",
     "next": "15.3.2",

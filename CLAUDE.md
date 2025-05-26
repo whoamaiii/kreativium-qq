@@ -81,6 +81,12 @@ pnpm db:reset          # Reset database and re-seed
 - **Testing**: Vitest with React Testing Library and jsdom
 - **Type Safety**: TypeScript throughout
 
+### Rewards System
+- **Schema**: `Kid.stars` field tracks total earned stars (Int, default 0)
+- **Trigger**: Stars awarded when Goal.pct reaches 100
+- **Seed**: Idempotent with `SEED_DEMO_DATA=true` for demo content
+- **Backfill**: Automatically calculates stars from completed goals
+
 ## Development Workflow
 
 ### Database Changes

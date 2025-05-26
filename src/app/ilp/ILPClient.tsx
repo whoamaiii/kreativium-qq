@@ -2,6 +2,7 @@
 
 import React from "react";
 import type { Goal, Entry } from "@prisma/client";
+import StarsBadge from "@/components/StarsBadge";
 
 // Define types for fetched data, matching the new schema
 type EntryData = Entry;
@@ -15,14 +16,15 @@ const statusColors: Record<string, string> = {
 
 interface ILPClientProps {
   kidName: string;
+  stars: number;
   goals: GoalData[];
   activities: EntryData[];
 }
 
-export default function ILPClient({ kidName, goals, activities }: ILPClientProps) {
+export default function ILPClient({ kidName, stars, goals, activities }: ILPClientProps) {
   const handleExportPDF = () => {
     // Link to the export API endpoint with the kid's ID
-    const kidId = goals[0]?.studentId; // Get the student ID from any goal
+    const kidId = goals[0]?.kidId; // Get the kid ID from any goal
     if (!kidId) return;
     
     // Trigger download by creating a link and clicking it
@@ -38,7 +40,10 @@ export default function ILPClient({ kidName, goals, activities }: ILPClientProps
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 text-white bg-[#161325]">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Individualized Learning Plan: {kidName}</h1>
+          <div className="flex items-center gap-4 mb-2">
+            <h1 className="text-3xl font-bold">Individualized Learning Plan: {kidName}</h1>
+            <StarsBadge stars={stars} variant="detailed" />
+          </div>
           <p className="text-slate-300">
             Track progress and activities for personalized learning.
           </p>

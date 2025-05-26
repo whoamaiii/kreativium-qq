@@ -17,6 +17,10 @@ export async function GET(request: NextRequest) {
     const origin = request.headers.get('origin');
     const allowedOrigins = [
       'http://localhost:3000',
+      'http://localhost:3001', // Added for dev server on port 3001
+      'http://localhost:3002', // Added for dev server on port 3002
+      'http://localhost:3003', // Added for additional dev server ports
+      'http://localhost:3004', // Added for current dev server port
       'https://your-production-domain.com', // Update with your actual domain
     ];
 

@@ -2,8 +2,14 @@
 
 import { useEffect, useRef } from 'react';
 
-const PigletAvatar: React.FC = () => {
+interface PigletAvatarProps {
+  isConnected?: boolean;
+  isRecording?: boolean;
+}
+
+const PigletAvatar: React.FC<PigletAvatarProps> = ({ isConnected = false, isRecording = false }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number>();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -12,64 +18,129 @@ const PigletAvatar: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Simple 3D-ish placeholder cube
-    const drawCube = () => {
+    canvas.width = 400;
+    canvas.height = 400;
+
+    let time = 0;
+
+    const drawSphere = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Set up gradient for 3D effect
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, '#8B5CF6');
-      gradient.addColorStop(1, '#6366F1');
-      
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = 120;
+
+      // Create radial gradient for 3D sphere effect
+      const gradient = ctx.createRadialGradient(
+        centerX - 30, centerY - 30, 0,
+        centerX, centerY, radius
+      );
+
+      if (isRecording) {
+        // Red glow when recording
+        gradient.addColorStop(0, '#FF6B6B');
+        gradient.addColorStop(0.3, '#FF5252');
+        gradient.addColorStop(0.7, '#D32F2F');
+        gradient.addColorStop(1, '#1A1A2E');
+      } else if (isConnected) {
+        // Blue glow when connected
+        gradient.addColorStop(0, '#64B5F6');
+        gradient.addColorStop(0.3, '#42A5F5');
+        gradient.addColorStop(0.7, '#1E88E5');
+        gradient.addColorStop(1, '#0D1B2A');
+      } else {
+        // Gray when disconnected
+        gradient.addColorStop(0, '#90A4AE');
+        gradient.addColorStop(0.3, '#78909C');
+        gradient.addColorStop(0.7, '#546E7A');
+        gradient.addColorStop(1, '#263238');
+      }
+
+      // Main sphere
       ctx.fillStyle = gradient;
-      ctx.strokeStyle = '#A78BFA';
-      ctx.lineWidth = 2;
-
-      // Draw main face
-      ctx.fillRect(80, 60, 120, 120);
-      ctx.strokeRect(80, 60, 120, 120);
-
-      // Draw "3D" edges
-      ctx.fillStyle = '#6366F1';
       ctx.beginPath();
-      ctx.moveTo(200, 60);
-      ctx.lineTo(220, 40);
-      ctx.lineTo(220, 160);
-      ctx.lineTo(200, 180);
-      ctx.closePath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
       ctx.fill();
-      ctx.stroke();
 
-      // Top face
-      ctx.fillStyle = '#8B5CF6';
+      // Outer glow effect
+      if (isConnected) {
+        const glowGradient = ctx.createRadialGradient(
+          centerX, centerY, radius,
+          centerX, centerY, radius + 30
+        );
+        
+        if (isRecording) {
+          glowGradient.addColorStop(0, 'rgba(255, 107, 107, 0.3)');
+          glowGradient.addColorStop(1, 'rgba(255, 107, 107, 0)');
+        } else {
+          glowGradient.addColorStop(0, 'rgba(100, 181, 246, 0.3)');
+          glowGradient.addColorStop(1, 'rgba(100, 181, 246, 0)');
+        }
+        
+        ctx.fillStyle = glowGradient;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius + 30, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Highlight/reflection
+      const highlightGradient = ctx.createRadialGradient(
+        centerX - 40, centerY - 40, 0,
+        centerX - 40, centerY - 40, 60
+      );
+      highlightGradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+      highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      
+      ctx.fillStyle = highlightGradient;
       ctx.beginPath();
-      ctx.moveTo(80, 60);
-      ctx.lineTo(100, 40);
-      ctx.lineTo(220, 40);
-      ctx.lineTo(200, 60);
-      ctx.closePath();
+      ctx.arc(centerX - 40, centerY - 40, 60, 0, Math.PI * 2);
       ctx.fill();
-      ctx.stroke();
 
-      // Add "Piglet" text placeholder
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = '16px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText('🐷', 140, 130);
+      // Subtle animation
+      if (isConnected) {
+        const pulseIntensity = Math.sin(time * 0.05) * 0.1 + 0.1;
+        const pulseGradient = ctx.createRadialGradient(
+          centerX, centerY, 0,
+          centerX, centerY, radius
+        );
+        
+        if (isRecording) {
+          pulseGradient.addColorStop(0, `rgba(255, 255, 255, ${pulseIntensity})`);
+        } else {
+          pulseGradient.addColorStop(0, `rgba(100, 181, 246, ${pulseIntensity})`);
+        }
+        pulseGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        
+        ctx.fillStyle = pulseGradient;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      time++;
     };
 
-    drawCube();
-  }, []);
+    const animate = () => {
+      drawSphere();
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isConnected, isRecording]);
 
   return (
-    <div className="flex flex-col items-center space-y-4">
+    <div className="flex flex-col items-center justify-center">
       <canvas
         ref={canvasRef}
-        width={300}
-        height={200}
-        className="border border-gray-600 rounded-lg bg-gray-800"
+        className="drop-shadow-2xl"
+        style={{ background: 'transparent' }}
       />
-      <h2 className="text-xl font-semibold text-gray-300">PigletChat AI</h2>
     </div>
   );
 };

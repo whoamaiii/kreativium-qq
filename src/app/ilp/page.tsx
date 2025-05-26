@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import ILPClient from "./ILPClient";
 import { notFound } from "next/navigation";
 
-export default async function ILPPage({ searchParams }: { searchParams?: { kidId?: string } }) {
+export default async function ILPPage({ searchParams }: { searchParams?: Promise<{ kidId?: string }> }) {
   // Await searchParams to avoid Next.js warning
   const params = await searchParams;
   const kidIdParam = params?.kidId;
@@ -33,5 +33,5 @@ export default async function ILPPage({ searchParams }: { searchParams?: { kidId
   // Flatten all entries from all goals for the main activity log table
   const allKidEntries = kidData.goals.flatMap((goal: { entries: any; }) => goal.entries);
 
-  return <ILPClient kidName={kidData.name} goals={kidData.goals} activities={allKidEntries} />;
+  return <ILPClient kidName={kidData.name} stars={kidData.stars} goals={kidData.goals} activities={allKidEntries} />;
 }

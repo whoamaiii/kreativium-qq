@@ -1,39 +1,46 @@
-# Gemini Live Setup Guide
+# Gemini Live API Setup
 
-## Environment Setup
+## Environment Configuration
 
-To use the Gemini Live chat functionality, you need to set up your API key:
-
-### 1. Get Gemini API Key
-- Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
-- Create a new API key
-- Copy the key
-
-### 2. Set Environment Variable
-Create a `.env.local` file in the project root:
+Create a `.env.local` file in the project root with your Gemini API key:
 
 ```bash
+# Add your Gemini API key here
 GEMINI_API_KEY=your_api_key_here
 ```
 
-### 3. Update Production Domain
-In `src/app/api/live-token/route.ts`, update the allowed origins:
+**Get your API key from:** https://aistudio.google.com/app/apikey
 
-```typescript
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://your-production-domain.com', // Replace with your actual domain
-];
+## Installation
+
+Make sure you have the required dependencies:
+
+```bash
+pnpm add @google/genai
 ```
 
 ## Usage
 
-1. Navigate to `/chat`
-2. Click "Connect" to establish WebSocket connection
-3. Click the red record button to start recording
-4. Speak into your microphone
-5. Click stop to send audio to Gemini
-6. Audio responses will play automatically
+The updated `useGeminiLive` hook now uses the proper `@google/genai` SDK instead of raw WebSocket connections, which should resolve the WebSocket connection issues.
+
+Key improvements:
+- Uses official Google Generative AI SDK
+- Proper audio context management
+- Real-time PCM audio streaming
+- Better error handling
+- Session management with reset functionality
+
+## Testing
+
+1. Set your `GEMINI_API_KEY` in `.env.local`
+2. Restart your development server
+3. Try connecting to Gemini Live - the WebSocket errors should be resolved
+
+## Notes
+
+- The hook now includes a `reset()` function for clearing sessions
+- Audio is processed in real-time using Web Audio API
+- The implementation follows the official Google AI example patterns
 
 ## Architecture
 
