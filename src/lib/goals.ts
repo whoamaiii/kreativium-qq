@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import prisma from '@/lib/prisma'
 
 // Constants
 const GOAL_COMPLETE = 100
@@ -75,57 +75,65 @@ export async function updateGoal(id: number, data: {
 }
 
 export async function logEntry(goalId: number, data: {
-  kidId: number
-  activity: string
-  subject?: string
-  status: string
-  due?: Date
-  notes?: string
   delta: number
+  notes?: string
 }) {
   return await prisma.$transaction(async (tx) => {
-    const entry = await tx.entry.create({
-      data: {
-        goalId,
-        kidId: data.kidId,
-        activity: data.activity,
-        subject: data.subject,
-        status: data.status,
-        due: data.due,
-        notes: data.notes,
-        delta: data.delta
-      }
-    })
-
-    // Update goal pctComplete based on delta
+    // Get goal info to get kidId and current progress
     const goal = await tx.goal.findUnique({
       where: { id: goalId },
       select: { pctComplete: true, isCompleted: true, kidId: true }
     })
 
-    if (goal) {
-      const newPct = clamp(goal.pctComplete + data.delta, 0, GOAL_COMPLETE)
-      const shouldComplete = !goal.isCompleted && newPct === GOAL_COMPLETE
-      
-      await tx.goal.update({
-        where: { id: goalId },
-        data: { 
-          pctComplete: newPct,
-          ...(shouldComplete && { isCompleted: true })
+    if (!goal) {
+      throw new Error('Goal not found')
+    }
+
+    // Check if the delta would exceed 100%
+    const newPct = clamp(goal.pctComplete + data.delta, 0, GOAL_COMPLETE)
+    const maxAllowedDelta = GOAL_COMPLETE - goal.pctComplete
+    
+    if (data.delta > maxAllowedDelta) {
+      throw new Error(`Cannot exceed 100%. Maximum allowed: ${maxAllowedDelta}%`)
+    }
+
+    // Check if goal is already completed
+    if (goal.isCompleted) {
+      throw new Error('Cannot add activity to completed goal')
+    }
+
+    const entry = await tx.entry.create({
+      data: {
+        goalId,
+        kidId: goal.kidId,
+        activity: 'Progress Update',
+        subject: 'General',
+        status: 'COMPLETED',
+        notes: data.notes,
+        delta: data.delta
+      }
+    })
+
+    const shouldComplete = !goal.isCompleted && newPct === GOAL_COMPLETE
+    
+    await tx.goal.update({
+      where: { id: goalId },
+      data: { 
+        pctComplete: newPct,
+        ...(shouldComplete && { isCompleted: true })
+      }
+    })
+
+    // Award stars if crossing to completion
+    if (shouldComplete) {
+      await tx.kid.update({
+        where: { id: goal.kidId },
+        data: {
+          stars: {
+            increment: DEFAULT_STAR_REWARD
+          }
         }
       })
-
-      // Award stars if crossing to completion
-      if (shouldComplete) {
-        await tx.kid.update({
-          where: { id: goal.kidId },
-          data: {
-            stars: {
-              increment: DEFAULT_STAR_REWARD
-            }
-          }
-        })
-      }
     }
 
     return entry

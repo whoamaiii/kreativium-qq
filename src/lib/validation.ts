@@ -15,13 +15,8 @@ export const zGoalUpdate = z.object({
 
 // Entry validation schemas
 export const zEntryCreate = z.object({
-  kidId: z.number().int().positive(),
-  activity: z.string().min(1).max(255),
-  subject: z.string().optional(),
-  status: z.string().min(1).max(100),
-  due: z.string().datetime().optional().or(z.date().optional()),
-  notes: z.string().optional(),
-  delta: z.number().int()
+  delta: z.number().int(),
+  notes: z.string().optional()
 })
 
 export type GoalCreateData = z.infer<typeof zGoalCreate>

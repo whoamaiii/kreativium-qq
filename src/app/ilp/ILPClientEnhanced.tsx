@@ -2,8 +2,15 @@
 
 import React, { useState } from "react";
 import type { Goal, Entry } from "@prisma/client";
+import { z } from "zod";
+import { zGoalUpdate } from "@/lib/validation";
 import StarsBadge from "@/components/StarsBadge";
 import { useStars } from "@/hooks/useStars";
+import { launchConfetti } from "@/utils/confetti";
+import AddGoalModal from "@/components/goals/AddGoalModal";
+import ActivityDrawer from "@/components/goals/ActivityDrawer";
+
+type GoalUpdateData = z.infer<typeof zGoalUpdate>;
 
 // Define types for fetched data, matching the new schema
 type EntryData = Entry;
@@ -32,43 +39,34 @@ export default function ILPClientEnhanced({
 }: ILPClientEnhancedProps) {
   const [goals, setGoals] = useState(initialGoals);
   const { stars, awardStar } = useStars(kidId, initialStars);
-  const [updating, setUpdating] = useState<number | null>(null);
+  const [showAddGoalModal, setShowAddGoalModal] = useState(false);
+  const [showActivityDrawer, setShowActivityDrawer] = useState(false);
+  const [selectedGoalId, setSelectedGoalId] = useState<number | null>(null);
 
-  const handleUpdateGoalProgress = async (goalId: number, newProgress: number) => {
-    try {
-      setUpdating(goalId);
-      
-      const response = await fetch(`/api/goals/${goalId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ pct: newProgress }),
-      });
+  const handleGoalAdded = (newGoal: GoalData) => {
+    setGoals(prev => [...prev, newGoal]);
+  };
 
-      if (!response.ok) {
-        throw new Error('Failed to update goal');
+  const handleActivityAdded = (goalId: string | number, updatedGoal: { pctComplete: number; isCompleted: boolean }) => {
+    setGoals(prev => prev.map(goal => 
+      goal.id === Number(goalId) 
+        ? { ...goal, pct: updatedGoal.pctComplete, pctComplete: updatedGoal.pctComplete, isCompleted: updatedGoal.isCompleted } 
+        : goal
+    ));
+
+    // If goal was completed, trigger confetti and award star
+    if (updatedGoal.isCompleted) {
+      const starsBadge = document.querySelector('[data-stars-badge]');
+      if (starsBadge) {
+        launchConfetti(starsBadge as HTMLElement);
       }
-
-      const result = await response.json();
-      
-      // Update local state
-      setGoals(prev => prev.map(goal => 
-        goal.id === goalId 
-          ? { ...goal, pct: result.goal.pct } 
-          : goal
-      ));
-
-      // If a star was awarded, trigger confetti
-      if (result.starAwarded) {
-        await awardStar();
-      }
-    } catch (error) {
-      console.error('Error updating goal:', error);
-      // In a real app, show error toast
-    } finally {
-      setUpdating(null);
+      awardStar();
     }
+  };
+
+  const handleOpenActivityDrawer = (goalId: number) => {
+    setSelectedGoalId(goalId);
+    setShowActivityDrawer(true);
   };
 
   const handleExportPDF = () => {
@@ -86,7 +84,7 @@ export default function ILPClientEnhanced({
         <div>
           <div className="flex items-center gap-4 mb-2">
             <h1 className="text-3xl font-bold">Individualized Learning Plan: {kidName}</h1>
-            <StarsBadge stars={stars} variant="detailed" />
+            <StarsBadge stars={stars} variant="detailed" data-stars-badge />
           </div>
           <p className="text-slate-300">
             Track progress and activities for personalized learning.
@@ -101,7 +99,15 @@ export default function ILPClientEnhanced({
       </div>
 
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-6">Goal Progress</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-semibold">Goal Progress</h2>
+          <button
+            onClick={() => setShowAddGoalModal(true)}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors"
+          >
+            Add Goal
+          </button>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {goals.map((goal) => (
             <div
@@ -127,24 +133,17 @@ export default function ILPClientEnhanced({
                 </div>
               </div>
 
-              {/* Demo controls for updating progress */}
+              {/* Add Activity button */}
               <div className="flex gap-2 mt-4">
                 <button
-                  onClick={() => handleUpdateGoalProgress(goal.id, Math.min(100, goal.pct + 10))}
-                  disabled={goal.pct >= 100 || updating === goal.id}
-                  className="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => handleOpenActivityDrawer(goal.id)}
+                  disabled={goal.pct >= 100}
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  +10%
+                  Add Activity
                 </button>
-                <button
-                  onClick={() => handleUpdateGoalProgress(goal.id, 100)}
-                  disabled={goal.pct >= 100 || updating === goal.id}
-                  className="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Complete
-                </button>
-                {updating === goal.id && (
-                  <span className="text-sm text-slate-400 self-center">Updating...</span>
+                {goal.pct >= 100 && (
+                  <span className="text-sm text-green-400 self-center font-medium">✅ Completed</span>
                 )}
               </div>
             </div>
@@ -199,6 +198,26 @@ export default function ILPClientEnhanced({
           </table>
         </div>
       </section>
+
+      {/* Modals */}
+      {showAddGoalModal && (
+        <AddGoalModal
+          kidId={kidId}
+          onClose={() => setShowAddGoalModal(false)}
+          onGoalAdded={handleGoalAdded}
+        />
+      )}
+
+      {showActivityDrawer && selectedGoalId && (
+        <ActivityDrawer
+          goalId={selectedGoalId}
+          onClose={() => {
+            setShowActivityDrawer(false);
+            setSelectedGoalId(null);
+          }}
+          onActivityAdded={handleActivityAdded}
+        />
+      )}
     </div>
   );
 }

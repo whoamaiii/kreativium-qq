@@ -28,15 +28,10 @@ export async function POST(
       )
     }
 
-    const { kidId, activity, subject, status, due, notes, delta } = validation.data
+    const { delta, notes } = validation.data
     const entry = await logEntry(goalId, {
-      kidId,
-      activity,
-      subject,
-      status,
-      due: due ? new Date(due) : undefined,
-      notes,
-      delta
+      delta,
+      notes
     })
 
     return NextResponse.json(entry, { status: 201 })
