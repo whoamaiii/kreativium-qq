@@ -73,11 +73,14 @@ const StarsBadge: React.FC<StarsBadgeProps> = ({
   // Render different variants
   if (variant === 'compact') {
     return (
-      <span className={`
-        inline-flex items-center gap-1 rounded-full border
-        ${styling.bg} ${styling.border} ${styling.text}
-        ${config.container} ${className}
-      `}>
+      <span 
+        data-stars-badge
+        className={`
+          inline-flex items-center gap-1 rounded-full border
+          ${styling.bg} ${styling.border} ${styling.text}
+          ${config.container} ${className}
+        `}
+      >
         <span className={config.star}>{styling.star}</span>
         <span className={config.number}>{stars}</span>
       </span>
@@ -86,11 +89,14 @@ const StarsBadge: React.FC<StarsBadgeProps> = ({
 
   if (variant === 'detailed') {
     return (
-      <div className={`
-        inline-flex items-center gap-2 rounded-lg border
-        ${styling.bg} ${styling.border} ${styling.text}
-        ${config.container} ${className}
-      `}>
+      <div 
+        data-stars-badge
+        className={`
+          inline-flex items-center gap-2 rounded-lg border
+          ${styling.bg} ${styling.border} ${styling.text}
+          ${config.container} ${className}
+        `}
+      >
         <span className={config.star}>{styling.star}</span>
         <div className="flex flex-col">
           <span className={config.number}>{stars}</span>
@@ -104,11 +110,14 @@ const StarsBadge: React.FC<StarsBadgeProps> = ({
 
   // Default variant
   return (
-    <div className={`
-      inline-flex items-center gap-2 rounded-lg border
-      ${styling.bg} ${styling.border} ${styling.text}
-      ${config.container} ${className}
-    `}>
+    <div 
+      data-stars-badge
+      className={`
+        inline-flex items-center gap-2 rounded-lg border
+        ${styling.bg} ${styling.border} ${styling.text}
+        ${config.container} ${className}
+      `}
+    >
       <span className={config.star}>{styling.star}</span>
       <span className={config.number}>
         {stars} {stars === 1 ? 'star' : 'stars'}
