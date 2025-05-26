@@ -18,17 +18,18 @@ model Kid {
 }
 
 model Goal {
-  id        Int      @id @default(autoincrement())
-  title     String
-  desc      String?
-  targetXp  Int
-  pct       Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  entries   Entry[]
+  id          Int      @id @default(autoincrement())
+  title       String
+  desc        String?
+  pct         Int
+  pctComplete Int      @default(0)
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  entries     Entry[]
 
-  kidId     Int
-  kid       Kid      @relation(fields: [kidId], references: [id], onDelete: Cascade)
+  kidId       Int
+  kid         Kid      @relation(fields: [kidId], references: [id], onDelete: Cascade)
 }
 
 model Entry {
@@ -37,9 +38,14 @@ model Entry {
   subject   String?
   status    String
   due       DateTime?
+  notes     String?
+  delta     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  kidId     Int
   goalId    Int
   goal      Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@index([goalId])
 }
