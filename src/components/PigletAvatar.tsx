@@ -9,7 +9,7 @@ interface PigletAvatarProps {
 
 const PigletAvatar: React.FC<PigletAvatarProps> = ({ isConnected = false, isRecording = false }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;

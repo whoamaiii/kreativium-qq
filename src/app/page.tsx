@@ -24,6 +24,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {activityCards.map((card) => (
             <Link key={card.title} href={card.href} className="block bg-slate-700/50 hover:bg-slate-600/50 p-6 rounded-lg shadow-lg transition-colors">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={card.imgSrc} alt={card.title}
                    className="h-32 w-full object-cover rounded mb-4" />
               <h2 className="text-xl font-semibold">{card.title}</h2>
@@ -43,7 +44,7 @@ export default function DashboardPage() {
         <div className="w-full bg-slate-600 rounded-full h-2.5 mb-2">
           <div className="bg-purple-500 h-2.5 rounded-full" style={{ width: '45%' }}></div>
         </div>
-        <p className="text-sm text-slate-300">Keep it up! You're doing great.</p>
+        <p className="text-sm text-slate-300">Keep it up! You&apos;re doing great.</p>
       </section>
 
       {/* Quick Actions Section */}

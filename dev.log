@@ -1,0 +1,35 @@
+
+> kreativium-qq@0.1.0 dev
+> next dev --turbopack
+
+ ⚠ Port 3000 is in use, using available port 3001 instead.
+   ▲ Next.js 15.3.2 (Turbopack)
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.3.1:3001
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 601ms
+ ○ Compiling /kids/[kidId]/dashboard ...
+ ✓ Compiled /kids/[kidId]/dashboard in 1251ms
+ ⨯ TypeError: Cannot read properties of null (reading 'id')
+    at KidDashboardClient (src/app/kids/[kidId]/dashboard/KidDashboardClient.tsx:5:45)
+  3 |
+  4 | export default function KidDashboardClient({ kid }: { kid: any }) {
+> 5 |   const { stars, messages } = useKidLive(kid.id, kid.starTotal);
+    |                                             ^
+  6 |   
+  7 |   return (
+  8 |     <div className="container mx-auto p-6"> {
+  digest: '3131105545'
+}
+ HEAD /kids/1/dashboard 500 in 1723ms
+ ✓ Compiled in 53ms
+ ✓ Compiled /kids/[kidId]/dashboard in 8ms
+ HEAD /kids/1/dashboard 200 in 86ms
+ ✓ Compiled /chat in 443ms
+ HEAD /chat 200 in 501ms
+ ✓ Compiled in 88ms
+ ✓ Compiled in 118ms
+ ✓ Compiled in 249ms
+ ✓ Compiled in 732ms

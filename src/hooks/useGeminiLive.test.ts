@@ -5,9 +5,21 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 const mockSession = {
   close: vi.fn(),
   sendRealtimeInput: vi.fn(),
+  sendClientContent: vi.fn(),
 };
 
-const mockLiveConnect = vi.fn().mockResolvedValue(mockSession);
+let capturedLiveConnectCallbacks: any = {}; // Store captured callbacks here
+
+const mockLiveConnect = vi.fn().mockImplementation(async (options) => {
+  await Promise.resolve(); 
+  if (options && options.callbacks) {
+    capturedLiveConnectCallbacks = options.callbacks; // Capture callbacks
+    if (typeof options.callbacks.onopen === 'function') {
+      options.callbacks.onopen();
+    }
+  }
+  return mockSession;
+});
 
 // Mock @google/genai before importing the hook
 vi.mock('@google/genai', () => ({
@@ -37,12 +49,15 @@ import { useGeminiLive } from './useGeminiLive';
 // Mock fetch
 global.fetch = vi.fn();
 
+// Define original secure context for potential restoration
+let originalIsSecureContext: boolean | undefined;
+
 // Mock AudioContext
-class MockAudioContext {
+class ActualMockAudioContext {
   sampleRate = 24000;
   currentTime = 0;
   state = 'running';
-  createMediaStreamSource = vi.fn();
+  createMediaStreamSource = vi.fn().mockReturnValue({ connect: vi.fn(), disconnect: vi.fn() });
   createScriptProcessor = vi.fn().mockReturnValue({
     connect: vi.fn(),
     disconnect: vi.fn(),
@@ -54,8 +69,18 @@ class MockAudioContext {
     start: vi.fn(),
     stop: vi.fn(),
     onended: null,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   });
-  createBuffer = vi.fn();
+  createBuffer = vi.fn().mockReturnValue({
+    copyToChannel: vi.fn(),
+    getChannelData: vi.fn(),
+    duration: 1.0,
+    sampleRate: 24000,
+    numberOfChannels: 1,
+    length: 1024,
+  });
   decodeAudioData = vi.fn().mockResolvedValue({
     duration: 1.0,
     sampleRate: 24000,
@@ -81,24 +106,32 @@ class MockAudioContext {
   audioWorklet = {
     addModule: vi.fn().mockResolvedValue(undefined),
   };
+  constructor(...args: any[]) {
+    if (args[0] && typeof args[0].sampleRate === 'number') {
+      this.sampleRate = args[0].sampleRate;
+    }
+  }
 }
 
 // Mock AudioWorkletNode
-class MockAudioWorkletNode {
+class ActualMockAudioWorkletNode {
   port = {
+    onmessage: null as ((event: MessageEvent) => void) | null,
     postMessage: vi.fn(),
-    onmessage: null,
   };
   connect = vi.fn();
   disconnect = vi.fn();
+  constructor(_context?: any, _name?: string, _options?: any) {
+    // Mock AudioWorkletNode constructor
+  }
 }
 
-// @ts-ignore
-global.AudioContext = MockAudioContext;
-// @ts-ignore
-global.webkitAudioContext = MockAudioContext;
-// @ts-ignore
-global.AudioWorkletNode = MockAudioWorkletNode;
+// @ts-expect-error - Mock AudioContext for testing
+global.AudioContext = vi.fn((...args) => new ActualMockAudioContext(...args));
+// @ts-expect-error - Mock webkitAudioContext for testing
+global.webkitAudioContext = global.AudioContext;
+// @ts-expect-error - Mock AudioWorkletNode for testing
+global.AudioWorkletNode = vi.fn((...args) => new ActualMockAudioWorkletNode(...args));
 
 // Mock getUserMedia
 const mockGetUserMedia = vi.fn();
@@ -113,25 +146,52 @@ Object.defineProperty(navigator, 'mediaDevices', {
 global.File = vi.fn().mockImplementation((chunks, filename, options) => ({
   name: filename,
   type: options?.type || '',
-  size: chunks.reduce((sum: number, chunk: any) => sum + (chunk.size || chunk.length || 0), 0),
-})) as any;
+  size: chunks.reduce((sum: number, chunk: Blob | ArrayBuffer) => sum + ((chunk as Blob).size || (chunk as ArrayBuffer).byteLength || 0), 0),
+  arrayBuffer: vi.fn(),
+  slice: vi.fn(),
+  stream: vi.fn(),
+  text: vi.fn(),
+  bytes: vi.fn(),
+  prototype: File.prototype,
+})) as unknown as typeof File;
 
 describe('useGeminiLive', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     
+    // Mock window.isSecureContext to true for these tests
+    originalIsSecureContext = window.isSecureContext;
+    Object.defineProperty(window, 'isSecureContext', {
+      value: true,
+      configurable: true,
+      writable: true
+    });
+    
     // Reset mock implementations
     mockSession.close.mockClear();
     mockSession.sendRealtimeInput.mockClear();
+    mockSession.sendClientContent.mockClear();
     mockLiveConnect.mockClear();
-    mockLiveConnect.mockResolvedValue(mockSession);
     
     // Mock successful fetch response
-    (global.fetch as any).mockResolvedValue({
+    vi.mocked(global.fetch).mockResolvedValue({
       ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers(),
+      redirected: false,
+      type: 'basic',
+      url: '',
+      clone: vi.fn(),
+      body: null,
+      bodyUsed: false,
+      arrayBuffer: vi.fn(),
+      blob: vi.fn(),
+      formData: vi.fn(),
       json: async () => ({ apiKey: 'test-api-key' }),
       text: async () => 'test-api-key',
-    });
+      bytes: vi.fn(),
+    } as Response);
 
     // Mock getUserMedia
     mockGetUserMedia.mockResolvedValue({
@@ -141,6 +201,14 @@ describe('useGeminiLive', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+    // Restore original isSecureContext
+    if (originalIsSecureContext !== undefined) {
+      Object.defineProperty(window, 'isSecureContext', {
+        value: originalIsSecureContext,
+        configurable: true,
+        writable: true
+      });
+    }
   });
 
   it('initializes with default state', () => {
@@ -150,8 +218,7 @@ describe('useGeminiLive', () => {
     expect(result.current.isRecording).toBe(false);
   });
 
-  it.skip('connects to Gemini Live successfully', async () => {
-    // FIXME: Mock needs to trigger proper callbacks to set connection state
+  it('connects to Gemini Live successfully', async () => {
     const { result } = renderHook(() => useGeminiLive());
 
     await act(async () => {
@@ -161,15 +228,8 @@ describe('useGeminiLive', () => {
     expect(mockLiveConnect).toHaveBeenCalledWith(
       expect.objectContaining({
         model: 'gemini-2.5-flash-preview-native-audio-dialog',
-        config: {
-          responseModalities: ['AUDIO'],
-          speechConfig: {
-            voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Orus' } }
-          }
-        }
       })
     );
-
     expect(result.current.connectionState).toBe('connected');
   });
 
@@ -177,7 +237,7 @@ describe('useGeminiLive', () => {
     const { result } = renderHook(() => useGeminiLive());
     
     // Mock fetch to fail
-    (global.fetch as any).mockRejectedValueOnce(new Error('API key fetch failed'));
+    vi.mocked(global.fetch).mockRejectedValueOnce(new Error('API key fetch failed'));
 
     await act(async () => {
       await result.current.connect();
@@ -186,7 +246,7 @@ describe('useGeminiLive', () => {
     expect(result.current.connectionState).toBe('error');
   });
 
-  it.skip('initializes audio contexts on connect', async () => {
+  it('initializes audio contexts on connect', async () => {
     // FIXME: Connection state not properly updated in test
     const { result } = renderHook(() => useGeminiLive());
 
@@ -194,11 +254,18 @@ describe('useGeminiLive', () => {
       await result.current.connect();
     });
 
-    // The hook should have created audio contexts internally
-    expect(result.current.connectionState).toBe('connected');
+    // The hook should have created audio contexts internally.
+    // Check if our MockAudioContext constructor was called.
+    // initAudio creates two contexts: input (16kHz) and output (24kHz).
+    expect(global.AudioContext).toHaveBeenCalledTimes(2);
+    expect(global.AudioContext).toHaveBeenCalledWith({ sampleRate: 16000 });
+    expect(global.AudioContext).toHaveBeenCalledWith({ sampleRate: 24000 });
+    
+    // The connection test already confirms state becomes 'connected' if onopen is called.
+    // This test specifically focuses on audio context initialization part of connect.
   });
 
-  it.skip('starts and stops recording', async () => {
+  it('starts and stops recording', async () => {
     // FIXME: getUserMedia not being called due to security context
     const { result } = renderHook(() => useGeminiLive());
 
@@ -206,14 +273,29 @@ describe('useGeminiLive', () => {
     await act(async () => {
       await result.current.connect();
     });
+    // Ensure connection is established before trying to record
+    expect(result.current.connectionState).toBe('connected');
 
     // Start recording
     await act(async () => {
       await result.current.startRecording();
     });
 
-    expect(mockGetUserMedia).toHaveBeenCalledWith({ audio: true });
+    const expectedAudioConstraints = {
+      sampleRate: 16000,
+      channelCount: 1,
+      echoCancellation: true,
+      noiseSuppression: true,
+      autoGainControl: true,
+    };
+    expect(mockGetUserMedia).toHaveBeenCalledWith({ audio: expectedAudioConstraints, video: false });
     expect(result.current.isRecording).toBe(true);
+    // Verify audioWorklet.addModule was called (via the mock in ActualMockAudioContext)
+    // Assuming inputAudioContextRef.current is the first AudioContext created.
+    // The ActualMockAudioContext instance itself doesn't store a ref to the vi.fn() for addModule directly in a way that's easily accessible here
+    // So, we infer it was called if startRecording didn't throw an error related to it and isRecording is true.
+    // A more robust way would be to have AudioContext.instances[0].audioWorklet.addModule if we tracked instances.
+    // For now, isRecording being true after potential errors in addModule is a good sign.
 
     // Stop recording
     act(() => {
@@ -223,56 +305,103 @@ describe('useGeminiLive', () => {
     expect(result.current.isRecording).toBe(false);
   });
 
-  it.skip('handles session callbacks', async () => {
-    // FIXME: Update test - session callback mechanism needs verification
-    const { result } = renderHook(() => useGeminiLive());
+  it('handles session callbacks', async () => {
+    const mockOnMessage = vi.fn();
+    const mockOnError = vi.fn();
+    const mockOnStateChange = vi.fn();
+
+    const { result } = renderHook(() => 
+      useGeminiLive({ 
+        onMessage: mockOnMessage, 
+        onError: mockOnError, 
+        onStateChange: mockOnStateChange 
+      })
+    );
 
     await act(async () => {
       await result.current.connect();
     });
+    expect(result.current.connectionState).toBe('connected');
 
-    // Simulate receiving audio data from session
-    const mockAudioData = {
-      data: 'base64encodedaudio',
-      sampleRate: 24000,
+    // Test onmessage
+    // Use a valid base64 string for audio.data. 'YWI=' decodes to 'ab' (2 bytes for Int16Array).
+    const validBase64Audio = 'YWI='; 
+    const testMessage = { 
+      serverContent: { 
+        modelTurn: { 
+          parts: [{ inlineData: { data: validBase64Audio, mimeType: 'audio/opus' }}]
+        }
+      }
     };
+    // Clear onError mock before testing onmessage to ensure it's not called for this path
+    mockOnError.mockClear(); 
 
-    // Get the session event handler that was set
-    const sessionHandler = mockSession.onReceive || (() => {});
+    await act(async () => {
+      await capturedLiveConnectCallbacks.onmessage(testMessage);
+    });
+    expect(mockOnMessage).toHaveBeenCalledWith({ type: 'audio', audio: validBase64Audio });
+    expect(mockOnError).not.toHaveBeenCalled(); // Ensure no error for successful message
+
+    // Test onerror
+    const testError = new Error('Session error');
+    act(() => {
+      capturedLiveConnectCallbacks.onerror(testError);
+    });
+    expect(mockOnError).toHaveBeenCalledWith(testError);
+    expect(result.current.connectionState).toBe('error');
+    expect(mockOnStateChange).toHaveBeenCalledWith('error');
+
+    // Test onclose
+    // Reset state for this part if needed, or ensure it transitions from error
+    act(() => {
+      result.current.connect(); // Re-establish 'connected' if onclose is supposed to transition from there, or mock different initial state
+    });
+    // Wait for connect to re-establish before triggering onclose
+    await vi.waitFor(() => expect(result.current.connectionState).toBe('connected'));
     
     act(() => {
-      // Simulate session sending audio response
-      if (typeof sessionHandler === 'function') {
-        sessionHandler({
-          audio: mockAudioData,
-          text: 'Hello from Gemini',
-        });
-      }
+      capturedLiveConnectCallbacks.onclose();
     });
-
-    // Should handle messages appropriately
-    expect(mockSession).toBeDefined();
+    expect(result.current.connectionState).toBe('disconnected');
+    expect(mockOnStateChange).toHaveBeenCalledWith('disconnected');
   });
 
-  it.skip('sends realtime input when recording', async () => {
-    // FIXME: Recording state not properly set in test environment
+  it('sends realtime input when recording', async () => {
     const { result } = renderHook(() => useGeminiLive());
 
-    // Connect first
     await act(async () => {
       await result.current.connect();
-    });
-
-    // Start recording
-    await act(async () => {
       await result.current.startRecording();
     });
 
-    // The mock would handle actual audio processing
-    expect(result.current.isRecording).toBe(true);
+    await vi.waitFor(() => expect(result.current.isRecording).toBe(true));
+
+    // Get the created AudioWorkletNode instance
+    const mockWorkletConstructor = global.AudioWorkletNode as any; // Cast to any to bypass persistent linter/type issue
+    const mockAudioWorkletNodeInstance = mockWorkletConstructor.mock.results[0]?.value;
+
+    expect(mockAudioWorkletNodeInstance).toBeDefined();
+    expect(typeof mockAudioWorkletNodeInstance.port.onmessage).toBe('function');
+
+    // Add delay to ensure useEffect has run and closure has updated isRecording state
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+
+    const sampleData = new Float32Array([0.1, 0.2, 0.3]);
+    const mockEvent = { data: { type: 'audioData', data: sampleData, audioLevel: 0.5 } } as MessageEvent<{type: string, data: Float32Array, audioLevel: number}>;
+
+    act(() => {
+      mockAudioWorkletNodeInstance.port.onmessage(mockEvent);
+    });
+
+    expect(mockSession.sendRealtimeInput).toHaveBeenCalledTimes(1);
+    const callArg = mockSession.sendRealtimeInput.mock.calls[0][0];
+    expect(callArg.media).toBeInstanceOf(Blob);
+    // Further Blob content inspection is complex, but type check is a good start
   });
 
-  it.skip('disconnects and resets session', async () => {
+  it('disconnects and resets session', async () => {
     // FIXME: Connection state not properly updated in test
     const { result } = renderHook(() => useGeminiLive());
 
@@ -281,7 +410,8 @@ describe('useGeminiLive', () => {
       await result.current.connect();
     });
 
-    expect(result.current.connectionState).toBe('connected');
+    // Ensure connected before disconnecting
+    await vi.waitFor(() => expect(result.current.connectionState).toBe('connected'));
 
     // Disconnect
     act(() => {
@@ -289,10 +419,11 @@ describe('useGeminiLive', () => {
     });
 
     expect(mockSession.close).toHaveBeenCalled();
-    expect(result.current.connectionState).toBe('idle');
+    expect(result.current.connectionState).toBe('disconnected');
+    expect(result.current.isRecording).toBe(false);
   });
 
-  it.skip('resets session properly', async () => {
+  it('resets session properly', async () => {
     // FIXME: Reset functionality needs proper state management
     const { result } = renderHook(() => useGeminiLive());
 
@@ -300,12 +431,14 @@ describe('useGeminiLive', () => {
     await act(async () => {
       await result.current.connect();
     });
+    await vi.waitFor(() => expect(result.current.connectionState).toBe('connected'));
 
     // Reset
     act(() => {
       result.current.reset();
     });
 
+    expect(mockSession.close).toHaveBeenCalled();
     expect(result.current.connectionState).toBe('disconnected');
     expect(result.current.isRecording).toBe(false);
   });

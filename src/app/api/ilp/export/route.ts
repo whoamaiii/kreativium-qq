@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { makeIlpPdf } from '@/utils/pdf';
 
 export async function GET(request: Request) {
@@ -11,14 +11,14 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Fetch goals and entries for the student
+    // Fetch goals and entries for the kid
     const goals = await prisma.goal.findMany({
-      where: { studentId: kidId },
+      where: { kidId: parseInt(kidId, 10) },
       include: { entries: true },
     });
 
     const entries = await prisma.entry.findMany({
-      where: { studentId: kidId },
+      where: { kidId: parseInt(kidId, 10) },
     });
 
     // Generate PDF

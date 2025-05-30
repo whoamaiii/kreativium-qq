@@ -1,0 +1,2646 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilsyke og autisme – En enkel guide for foreldre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #14b8a6;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-warm: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --gradient-cool: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            --gradient-dark: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-2xl: 2rem;
+            --radius-full: 9999px;
+            
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slower: 700ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        @media print {
+            .page-break {
+                page-break-after: always;
+            }
+            
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            /* Reduce animations for print */
+            *, *::before, *::after {
+                animation-duration: 0s !important;
+                animation-delay: 0s !important;
+                transition-duration: 0s !important;
+                transition-delay: 0s !important;
+            }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            border: 2px solid var(--gray-100);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-secondary);
+        }
+        
+        /* Selection styling */
+        ::selection {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary-dark);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-900);
+            background: var(--light);
+            font-size: 16px;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background pattern - Performance optimized */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(20, 184, 166, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            will-change: transform;
+            transform: translateZ(0);
+            animation: float 40s linear infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(20px, -20px) scale(1.02); }
+            66% { transform: translate(-15px, 15px) scale(0.98); }
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Premium Cover Page */
+        .cover {
+            height: 297mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated gradient orbs - Optimized for performance */
+        .cover::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.35) 0%, transparent 45%),
+                radial-gradient(circle at 60% 60%, rgba(147, 51, 234, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 30% 70%, rgba(20, 184, 166, 0.3) 0%, transparent 40%);
+            filter: blur(60px);
+            will-change: transform;
+            transform: translateZ(0);
+            animation: morph 30s linear infinite;
+        }
+        
+        @keyframes morph {
+            0%, 100% { 
+                transform: translateZ(0) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translateZ(0) rotate(90deg) scale(1.05);
+            }
+            50% {
+                transform: translateZ(0) rotate(180deg) scale(0.95);
+            }
+            75% {
+                transform: translateZ(0) rotate(270deg) scale(1.02);
+            }
+        }
+        
+        /* Simple noise texture overlay */
+        .cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.02);
+            z-index: 1;
+            opacity: 0.5;
+            mix-blend-mode: overlay;
+        }
+        
+        .cover-content {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 5rem 4rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            transform: translateY(0);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            will-change: transform;
+        }
+        
+        .cover-content:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 30px 50px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(255, 255, 255, 0.08);
+        }
+        
+        .cover .emoji {
+            font-size: 8rem;
+            margin-bottom: 3rem;
+            display: inline-block;
+            will-change: transform;
+            animation: bounce 3s ease-in-out infinite;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.3));
+        }
+        
+        @keyframes bounce {
+            0%, 100% { 
+                transform: translateY(0);
+            }
+            50% { 
+                transform: translateY(-20px);
+            }
+        }
+        
+        .cover h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 5.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            background: linear-gradient(
+                135deg, 
+                #ffffff 0%, 
+                #e0e7ff 25%, 
+                #c7d2fe 50%, 
+                #a5b4fc 75%, 
+                #818cf8 100%
+            );
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: shimmer 4s linear infinite;
+            position: relative;
+            will-change: background-position;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { 
+                background-position: 0% 50%;
+            }
+            50% { 
+                background-position: 100% 50%;
+            }
+        }
+        
+        .cover .subtitle {
+            font-size: 1.75rem;
+            font-weight: 300;
+            margin-bottom: 5rem;
+            opacity: 0.95;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease-out 0.2s;
+            animation-fill-mode: both;
+            background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .cover .meta {
+            position: absolute;
+            bottom: 3rem;
+            font-size: 0.875rem;
+            opacity: 0.9;
+            line-height: 1.8;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 3rem;
+            border-radius: var(--radius-full);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
+            letter-spacing: 0.02em;
+            animation: fadeInUp 1s ease-out 0.4s;
+            animation-fill-mode: both;
+        }
+        
+        /* Content Pages */
+        .content {
+            padding: 5rem;
+            background: var(--light);
+            position: relative;
+            min-height: 297mm;
+            overflow: hidden;
+        }
+        
+        /* Animated mesh gradient background - Performance optimized */
+        .content::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: 
+                radial-gradient(at 20% 30%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                radial-gradient(at 80% 70%, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(20, 184, 166, 0.08) 0%, transparent 50%);
+            filter: blur(60px);
+            will-change: transform;
+            transform: translateZ(0);
+            animation: meshGradient 40s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        @keyframes meshGradient {
+            0%, 100% {
+                transform: translateZ(0) translate(0, 0);
+            }
+            50% {
+                transform: translateZ(0) translate(-30px, -30px);
+            }
+        }
+        
+        .content > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Modern Typography with Variable Fonts */
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            margin-top: 4rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--transition-slow);
+        }
+        
+        h1:hover::after {
+            transform: scaleX(1);
+        }
+        
+        h1:first-child {
+            margin-top: 0;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-top: 4rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            transition: all var(--transition-base);
+        }
+        
+        h2:hover::before {
+            height: 120%;
+            width: 8px;
+        }
+        
+        h3 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h3::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40%;
+            height: 2px;
+            background: var(--gradient-accent);
+            border-radius: var(--radius-full);
+            transition: width var(--transition-base);
+        }
+        
+        h3:hover::after {
+            width: 100%;
+        }
+        
+        h4 {
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--gray-700);
+            line-height: 1.8;
+            font-size: 1.0625rem;
+            letter-spacing: -0.01em;
+        }
+        
+        .intro-text {
+            font-size: 1.25rem;
+            line-height: 1.9;
+            color: var(--gray-800);
+            margin-bottom: 4rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.9) 100%);
+            border-radius: 1.5rem;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 
+                0 20px 40px rgba(99, 102, 241, 0.08),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        .intro-text::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: 
+                linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                linear-gradient(225deg, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            transition: opacity var(--transition-base);
+            opacity: 0;
+        }
+        
+        .intro-text:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 30px 60px rgba(99, 102, 241, 0.12),
+                inset 0 1px 3px rgba(255, 255, 255, 1);
+        }
+        
+        .intro-text:hover::before {
+            opacity: 1;
+        }
+        
+        /* Ultra-modern Cards */
+        .card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(249, 250, 251, 0.85) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient-primary);
+            border-radius: inherit;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity var(--transition-fast);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card:hover::before {
+            opacity: 0.08;
+        }
+        
+        .card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-gradient {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.9) 100%);
+            position: relative;
+            overflow: visible;
+        }
+        
+        .card-gradient::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity var(--transition-slow);
+            pointer-events: none;
+        }
+        
+        .card-gradient:hover::after {
+            opacity: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Premium Lists */
+        ul, ol {
+            margin-bottom: 1.5rem;
+            padding-left: 0;
+            list-style: none;
+        }
+        
+        li {
+            margin-bottom: 1rem;
+            padding-left: 2.5rem;
+            position: relative;
+            line-height: 1.8;
+            color: var(--gray-700);
+            transition: all var(--transition-fast);
+        }
+        
+        li:hover {
+            color: var(--gray-900);
+            transform: translateX(4px);
+        }
+        
+        ul li::before {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 0.75rem;
+            width: 8px;
+            height: 8px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            transition: all var(--transition-base);
+        }
+        
+        li:hover::before {
+            transform: scale(1.5);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Ultra-Premium Callouts */
+        .callout {
+            display: flex;
+            padding: 2rem 2.5rem;
+            border-radius: 1.25rem;
+            margin: 2.5rem 0;
+            align-items: flex-start;
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        .callout::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .callout:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .callout-icon {
+            font-size: 2rem;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            animation: float-icon 3s ease-in-out infinite;
+        }
+        
+        @keyframes float-icon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .callout-info {
+            background: linear-gradient(135deg, rgba(219, 234, 254, 0.9) 0%, rgba(191, 219, 254, 0.85) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
+        }
+        
+        .callout-tip {
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.9) 0%, rgba(253, 230, 138, 0.85) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.15);
+        }
+        
+        .callout-warning {
+            background: linear-gradient(135deg, rgba(254, 226, 226, 0.9) 0%, rgba(254, 202, 202, 0.85) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.15);
+        }
+        
+        .callout-success {
+            background: linear-gradient(135deg, rgba(198, 246, 213, 0.9) 0%, rgba(167, 243, 208, 0.85) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+        }
+        
+        /* Premium Tables */
+        .table-container {
+            margin: 2.5rem 0;
+            border-radius: 1.25rem;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all var(--transition-base);
+        }
+        
+        .table-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9375rem;
+        }
+        
+        th {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+        
+        th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--gray-700);
+            transition: all var(--transition-fast);
+        }
+        
+        tr {
+            transition: all var(--transition-fast);
+        }
+        
+        tr:hover td {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.05) 0%, rgba(99, 102, 241, 0.08) 100%);
+            color: var(--gray-900);
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Premium Checklist */
+        .checklist {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 250, 251, 0.95) 100%);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            margin: 2.5rem 0;
+            box-shadow: 
+                0 20px 40px rgba(99, 102, 241, 0.08),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .checklist::before {
+            content: '✓';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            font-size: 15rem;
+            color: rgba(99, 102, 241, 0.05);
+            transform: rotate(-15deg);
+            pointer-events: none;
+        }
+        
+        .checklist h3, .checklist h4 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            transition: all var(--transition-base);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border-left: 3px solid transparent;
+        }
+        
+        .checklist-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: left var(--transition-slow);
+        }
+        
+        .checklist-item:hover {
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateX(8px);
+        }
+        
+        .checklist-item:hover::before {
+            left: 100%;
+        }
+        
+        .checkbox {
+            width: 1.75rem;
+            height: 1.75rem;
+            border: 2.5px solid var(--primary);
+            border-radius: 0.5rem;
+            margin-right: 1.25rem;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.9);
+            position: relative;
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+        
+        .checklist-item:hover .checkbox {
+            border-color: var(--primary-dark);
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(99, 102, 241, 0.2);
+        }
+        
+        .checklist-item:active .checkbox {
+            transform: scale(0.95);
+        }
+        
+        .checkbox::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+            color: #10b981;
+            font-weight: 900;
+            font-size: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+        }
+        
+        .checklist-item.checked .checkbox {
+            background: #10b981;
+            border-color: #10b981;
+            transform: scale(1);
+        }
+        
+        .checklist-item.checked .checkbox::after {
+            transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            opacity: 1;
+            color: white;
+        }
+        
+        .checklist-item.checked {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.04) 100%);
+            border-left: 3px solid #10b981;
+            padding-left: calc(1.25rem - 3px);
+        }
+        
+        .checklist-item.checked span {
+            color: var(--gray-600);
+            position: relative;
+        }
+        
+        .checklist-item span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .checklist-item span::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gray-400);
+            transform-origin: left;
+            transition: width 0.3s ease-out 0.1s;
+        }
+        
+        .checklist-item.checked span::after {
+            width: 100%;
+        }
+        
+        /* Premium Blockquotes */
+        blockquote {
+            border-left: 5px solid transparent;
+            border-image: var(--gradient-primary);
+            border-image-slice: 1;
+            padding: 2rem 2.5rem;
+            margin: 2.5rem 0;
+            font-style: italic;
+            color: var(--gray-800);
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(249, 250, 251, 0.85) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 0 1.25rem 1.25rem 0;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.08);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        blockquote::before {
+            content: '"';
+            position: absolute;
+            top: -0.5rem;
+            left: 1.5rem;
+            font-size: 5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Georgia', serif;
+            opacity: 0.3;
+        }
+        
+        blockquote:hover {
+            transform: translateX(8px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.12);
+        }
+        
+        /* Code blocks */
+        pre {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%);
+            color: #e2e8f0;
+            padding: 2rem;
+            border-radius: 1rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            font-family: 'JetBrains Mono', 'SF Mono', Monaco, monospace;
+            font-size: 0.875rem;
+            line-height: 1.8;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            font-weight: 500;
+        }
+        
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0.75rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        pre::before {
+            content: '● ● ●';
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+            letter-spacing: 0.5rem;
+        }
+        
+        /* Premium Dividers */
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(99, 102, 241, 0.2), 
+                rgba(236, 72, 153, 0.2),
+                rgba(99, 102, 241, 0.2),
+                transparent
+            );
+            margin: 5rem auto;
+            max-width: 50%;
+            position: relative;
+            overflow: visible;
+        }
+        
+        hr::before {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--light);
+            padding: 0 1.5rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+            50% { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+            }
+        }
+        
+        /* Page Headers */
+        .page-header {
+            background: var(--gradient-dark);
+            color: white;
+            padding: 5rem;
+            margin: -5rem -5rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 70% 80%, rgba(236, 72, 153, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 50% 20%, rgba(20, 184, 166, 0.25) 0%, transparent 50%);
+            filter: blur(60px);
+            animation: morph 15s ease-in-out infinite;
+        }
+        
+        .page-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.02) 35px, rgba(255,255,255,.02) 70px);
+            z-index: 1;
+        }
+        
+        .page-header h1 {
+            position: relative;
+            color: white;
+            margin: 0;
+            font-size: 3.5rem;
+            -webkit-text-fill-color: white;
+            z-index: 2;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .page-header .subtitle {
+            font-size: 1.375rem;
+            opacity: 0.95;
+            margin-top: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Contact Card */
+        .contact-card {
+            background: var(--gradient-dark);
+            color: white;
+            padding: 4rem;
+            border-radius: 2rem;
+            text-align: center;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            transform: translateY(0);
+            transition: all var(--transition-slow);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+        }
+        
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.3) 0%, transparent 50%);
+            filter: blur(60px);
+            animation: morph 20s ease-in-out infinite reverse;
+        }
+        
+        .contact-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        
+        .contact-card h3 {
+            color: white;
+            margin-bottom: 2rem;
+            position: relative;
+            font-size: 2.25rem;
+            z-index: 2;
+            letter-spacing: -0.02em;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .contact-card p {
+            color: white;
+            margin-bottom: 1rem;
+            position: relative;
+            font-size: 1.25rem;
+            z-index: 2;
+            opacity: 0.95;
+        }
+        
+        /* Personal Message Box */
+        .personal-box {
+            background: var(--gradient-warm);
+            color: white;
+            border-radius: 1.75rem;
+            padding: 3.5rem;
+            margin: 3rem 0;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(245, 158, 11, 0.25);
+            overflow: hidden;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            transform: translateY(0);
+            transition: all var(--transition-slow);
+        }
+        
+        .personal-box:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 40px 80px rgba(245, 158, 11, 0.3);
+        }
+        
+        .personal-box::before {
+            content: '💛';
+            position: absolute;
+            top: -2rem;
+            right: 2.5rem;
+            font-size: 5rem;
+            opacity: 0.2;
+            transform: rotate(-15deg);
+            transition: all var(--transition-slow);
+            animation: float-icon 3s ease-in-out infinite;
+        }
+        
+        .personal-box:hover::before {
+            transform: rotate(-10deg) scale(1.2);
+            opacity: 0.3;
+        }
+        
+        .personal-box h2 {
+            color: white;
+            margin-top: 0;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .personal-box h2::before {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        .personal-box p {
+            color: white;
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Premium Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.9) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1.5px solid rgba(99, 102, 241, 0.3);
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            margin-right: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all var(--transition-base);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tag::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+            transition: all var(--transition-slow);
+            transform: translate(-50%, -50%);
+        }
+        
+        .tag:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+        
+        .tag:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .tag-primary {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.1) 100%);
+            color: var(--primary-dark);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+        
+        .tag-primary:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(99, 102, 241, 0.2) 100%);
+            color: var(--primary-dark);
+        }
+        
+        .tag-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
+            color: #059669;
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+        
+        .tag-success:hover {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0.2) 100%);
+            color: #047857;
+        }
+        
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        /* Premium Feature Boxes */
+        .feature-box {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.9) 100%);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-radius: 1.5rem;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            transition: all var(--transition-slow);
+            box-shadow: 
+                0 10px 30px rgba(99, 102, 241, 0.08),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-box::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 40%);
+            transition: all var(--transition-slower);
+            transform: scale(0);
+        }
+        
+        .feature-box:hover::before {
+            transform: scale(1);
+            top: -50%;
+            left: -50%;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 25px 50px rgba(99, 102, 241, 0.15),
+                inset 0 1px 3px rgba(255, 255, 255, 1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 250, 251, 0.95) 100%);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .feature-box .icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.25rem;
+            transition: all var(--transition-slow);
+            display: inline-block;
+        }
+        
+        .feature-box:hover .icon {
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 10px 20px rgba(99, 102, 241, 0.3));
+        }
+        
+        /* Performance optimizations */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .cover::before,
+            body::before,
+            .content::before {
+                animation: none !important;
+            }
+            
+            .cover-content,
+            .card,
+            .feature-box {
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
+            }
+        }
+        
+        /* Force GPU acceleration for smooth animations */
+        .cover::before,
+        .cover .emoji,
+        .cover-content,
+        body::before,
+        .content::before {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .grid, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 3rem 2rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .cover h1 {
+                font-size: 4rem;
+            }
+        }
+        
+        /* Ensure checked state is visible even on initial load */
+        .checklist-item.checked .checkbox {
+            background: #10b981 !important;
+            border-color: #10b981 !important;
+        }
+        
+        .checklist-item.checked .checkbox::after {
+            transform: translate(-50%, -50%) scale(1) rotate(0deg) !important;
+            opacity: 1 !important;
+        }
+        @media print {
+            body {
+                font-size: 14px;
+            }
+            
+            .page {
+                box-shadow: none !important;
+            }
+            
+            .content {
+                padding: 60px;
+            }
+            
+            /* Simplify gradients for print */
+            h1, h2, h3, h4 {
+                -webkit-text-fill-color: var(--gray-900) !important;
+                background: none !important;
+            }
+            
+            /* Reduce visual complexity */
+            .card, .callout, .table-container, .checklist, .feature-box {
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            
+            /* Ensure proper page breaks */
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+            
+            .card, .callout, .table-container {
+                page-break-inside: avoid;
+            }
+        }
+        .progress-container {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            transition: width 0.4s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shimmerProgress 2s linear infinite;
+        }
+        
+        @keyframes shimmerProgress {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        .progress-text {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            white-space: nowrap;
+        }
+        
+        .checklist.all-completed .progress-text {
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <!-- Premium Cover Page -->
+    <div class="page cover" id="cover">
+        <div class="cover-content">
+            <div class="emoji">🚗</div>
+            <h1>Bilsyke og autisme</h1>
+            <p class="subtitle">En enkel guide for foreldre</p>
+        </div>
+        <div class="meta">
+            Utarbeidet av Quentin Thiessen, Spesialpedagog<br>
+            Januar 2025 • Versjon 2.0
+        </div>
+    </div>
+    
+    <!-- Table of Contents -->
+    <nav id="toc-container" class="no-print">
+        <div class="toc-header">
+            <h2>Innholdsfortegnelse</h2>
+            <div class="toc-progress">
+                <div class="toc-progress-bar"></div>
+            </div>
+        </div>
+        <div class="toc-content">
+            <ul class="toc-list" id="toc-list">
+                <!-- Will be populated by JavaScript -->
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- TOC Toggle Button -->
+    <button class="toc-toggle no-print" id="toc-toggle" aria-label="Toggle navigation">
+        <svg viewBox="0 0 24 24">
+            <path d="M3 12h18M3 6h18M3 18h18" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+    
+    <!-- TOC Overlay -->
+    <div class="toc-overlay no-print" id="toc-overlay"></div>
+    
+    <!-- Page Indicator -->
+    <div class="page-indicator no-print">
+        Side <span class="current-page">1</span> av <span class="total-pages">20</span>
+    </div>
+    
+    <!-- Content Pages -->
+    <div class="page content" id="introduction">
+        <h1 id="introduksjon" class="fade-in">Introduksjon</h1>
+        <p class="intro-text fade-in">
+            Reiser skal være gøy – men for mange barn med autisme kan bilsetet raskt bli et sted fylt av kvalme, svette og uro som ødelegger hele opplevelsen for både barnet og resten av familien. I denne guiden forklarer vi på en enkel måte hva som skjer i kroppen når bilsyke slår til, hvorfor nettopp autistiske barn ofte er ekstra utsatt, og – kanskje viktigst – presenterer vi konkrete, lavterskel tiltak du kan teste allerede på neste kjøretur.
+        </p>
+
+        <h2 id="hva-er-bilsyke" class="fade-in">Hva er bilsyke?</h2>
+        
+        <p class="fade-in">
+            Når du sitter fastspent i bilsetet og ser rett frem, forteller øynene dine at kroppen er i ro – «vi står stille» – mens balansesystemet i det indre øret samtidig registrerer fartsøkninger, svinger og små humper på veien. Denne motstridende informasjonen forvirrer hjernen: den vet ikke om den skal tolke situasjonen som bevegelse eller stillstand.
+        </p>
+        
+        <p class="fade-in">
+            Resultatet kan bli en kjedereaksjon av autonome symptomer som kvalme, blekhet, svette, gjesping og økt puls – og hos noen munner det ut i oppkast. Dette kalles bilsyke.
+        </p>
+        
+        <div class="callout callout-success fade-in">
+            <div class="callout-icon">✨</div>
+            <div>
+                <strong>Den gode nyheten:</strong> Hjernens fantastiske evne til å tilpasse seg (nevroplastisitet) betyr at toleransen for disse sanseinntrykkene kan trenes opp over tid. Forskning viser at systematisk eksponering og riktige strategier kan øke toleransevinduet med opptil 70%.
+            </div>
+        </div>
+
+        <h2 id="hvorfor-autisme" class="fade-in">Hvorfor får mange barn med autisme bilsyke?</h2>
+        
+        <div class="grid fade-in">
+            <div class="card card-gradient">
+                <h4>🎯 Visuell dominans</h4>
+                <p>Mange autistiske barn bruker synet som sin viktigste «radar» i hverdagen. Når øynene melder «vi sitter helt stille i setet», mens balansesystemet i øret sier «vi beveger oss og svinger», blir konflikten mellom sansene ekstra sterk.</p>
+            </div>
+            
+            <div class="card card-gradient">
+                <h4>🌟 Overfølsomme sanser</h4>
+                <p>Lukt av bensin, lyden av motoren, vibrasjoner fra hjulene og blinkende lys fra forbipasserende biler registreres ofte kraftigere hos barn med autisme.</p>
+            </div>
+        </div>
+        
+        <div class="grid fade-in">
+            <div class="card card-gradient">
+                <h4>⏱️ Treg tilvenning</h4>
+                <p>Hjernen til autistiske barn bruker som regel lengre tid på å venne seg til nye kombinasjoner av sanseinntrykk. Etterdønningseffekten kan vare alt fra minutter til timer.</p>
+            </div>
+            
+            <div class="card card-gradient">
+                <h4>⚖️ Vestibulær dysfunksjon</h4>
+                <p>Hele <strong>62%</strong> av barn med autisme har målbare abnormaliteter i balansesystemet, noe som gjør at hjernens evne til å prosessere bevegelse er svekket fra starten av.</p>
+            </div>
+        </div>
+        
+        <div class="card fade-in" style="margin-top: 32px;">
+            <h4>🧠 Nevrologisk integrasjonssvikt</h4>
+            <p>Hjerneområdene som skal samarbeide (cerebellum for bevegelse, insula for kroppsopplevelse, prefrontalcortex for stressregulering) kommuniserer ikke optimalt. Dette betyr at kroppen lettere tolker bilbevegelser som trusler.</p>
+        </div>
+    </div>
+    
+    <div class="page content page-break" id="stress-section">
+        <h2 id="stress-og-bilsyke" class="fade-in">Stress og bilsyke – ro før turen er gull</h2>
+        
+        <p class="fade-in">
+            Når vi er stresset, trykker kroppen på gasspedalen: hjerte og pust går fortere, muskler blir strammere, og oppmerksomheten skjerpes. Hos barn med autisme står denne "gasspedalen" ofte litt for langt ned <em>hele tiden</em>.
+        </p>
+        
+        <div class="callout callout-info fade-in">
+            <div class="callout-icon">💡</div>
+            <div>
+                Dette betyr at deres nervesystem ofte er i en konstant tilstand av alarmberedskap, noe som gjør at kroppen lettere tolker sanseinntrykk som farlige eller ubehagelige. Jo høyere stress barnet opplever før turen starter, desto lettere kan bilsyke trigges.
+            </div>
+        </div>
+
+        <h3 id="hjelpe-kroppen" class="fade-in">Slik hjelper du kroppen å bremse</h3>
+        
+        <div class="table-responsive fade-in">
+            <table class="sortable-table">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-sort="text" style="width: 25%">Teknikk<span class="sort-indicator"></span></th>
+                        <th class="sortable" data-sort="text" style="width: 35%">Slik gjør dere<span class="sort-indicator"></span></th>
+                        <th style="width: 40%">Hvorfor det virker</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>🤗 Tyngdepledd</strong></td>
+                        <td>Legg et vektteppe (7-12% av kroppsvekt) over bein og mage i 10-15 min</td>
+                        <td>Aktiverer parasympatisk nervesystem via vagusnerven, reduserer kortisol med 25%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🌬️ Ro‑pust</strong></td>
+                        <td>4-6-8 metoden: Pust inn 4 sek, hold 6 sek, pust ut 8 sek × 6 ganger</td>
+                        <td>Øker CO2-nivåer som forbedrer hjerneoksygenering og demper amygdala-aktivitet</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🌊 Sakte gynge</strong></td>
+                        <td>Sitt i hengekøye eller på yogaball 5-10 min</td>
+                        <td>Rytmisk vestibulær stimulering øker GABA-produksjon som roer nervesystemet</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🔇 Dempe lys og lyd</strong></td>
+                        <td>Dempe lamper, ta på hodetelefoner med hvit støy</td>
+                        <td>Reduserer kortikalstimulering og senker stresshormon-produksjon</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🗺️ Fortell planen</strong></td>
+                        <td>Vis rutekart eller sosial historie dagen før + 1 time før</td>
+                        <td>Forutsigbarhet aktiverer prefrontalcortex som demper fryktsenter (amygdala)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card card-gradient fade-in" style="margin-top: 40px;">
+            <h4>Ekstra tips for stressreduksjon før turen:</h4>
+            <ul>
+                <li><strong>Rolig lek eller aktivitet</strong> – Tegning, puslespill eller en favorittleke som gir en følelse av kontroll og trygghet.</li>
+                <li><strong>Kort massasje</strong> – Rolige bevegelser på rygg, skuldre og armer kan bidra til å roe nervesystemet raskt.</li>
+                <li><strong>Trygghetssamtale</strong> – Minn barnet om tidligere ganger det gikk bra på biltur, og bekreft at du er der hele tiden for å passe på og hjelpe.</li>
+            </ul>
+            
+            <blockquote style="margin-top: 24px; margin-bottom: 0;">
+                <strong>Husk:</strong> Å roe nervesystemet før turen gir barnet bedre forutsetninger for å håndtere nye og uventede inntrykk underveis.
+            </blockquote>
+        </div>
+    </div>
+
+    <div class="page content page-break">
+        <h2>Langsiktig toleransebygging med VR og habitueringsøvelser</h2>
+
+        <h3>VR-teknologi som treningsverktøy</h3>
+        
+        <p>
+            Virtuell virkelighet har vist lovende resultater for å bygge opp toleranse mot bilsyke. Barn viser faktisk <span class="tag tag-success">82% bedre VR-toleranse</span> enn voksne, noe som gjør dette til et spesielt egnet verktøy for denne aldersgruppen.
+        </p>
+
+        <div class="card" style="background: var(--gradient-dark); color: white; margin: 32px 0; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);">
+            <h4 style="color: white; margin-top: 0; font-size: 24px; -webkit-text-fill-color: white;">🎮 6-ukers treningsprogram</h4>
+            
+            <div class="table-container" style="margin-top: 28px; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <table style="color: white;">
+                    <thead>
+                        <tr>
+                            <th style="background: rgba(255,255,255,0.1); color: white; font-size: 13px;">Uke</th>
+                            <th style="background: rgba(255,255,255,0.1); color: white; font-size: 13px;">Varighet</th>
+                            <th style="background: rgba(255,255,255,0.1); color: white; font-size: 13px;">Bevegelsesintensitet</th>
+                            <th style="background: rgba(255,255,255,0.1); color: white; font-size: 13px;">Visuelt miljø</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">1-2</td>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">10-15 min</td>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">Lett (0.2g lateral)</td>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">Statisk landskap</td>
+                        </tr>
+                        <tr>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">3-4</td>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">15-20 min</td>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">Moderat (0.5g blandet)</td>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">Bevegelige objekter</td>
+                        </tr>
+                        <tr>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">5-6</td>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">20-30 min</td>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">Høy (0.8g full sim)</td>
+                            <td style="border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.95);">Realistisk bilkjøring</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="callout callout-tip">
+            <div class="callout-icon">💡</div>
+            <div>
+                <strong>Tips for VR-trening:</strong>
+                <ul style="margin-bottom: 0; margin-top: 8px;">
+                    <li>Start alltid med kort økt og øk gradvis</li>
+                    <li>Ta minst 20 minutters pause mellom økter</li>
+                    <li>Kombiner med pusteøvelser før og etter</li>
+                    <li>Stopp hvis barnet viser tegn til ubehag</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="grid" style="margin-top: 32px;">
+            <div class="feature-box">
+                <div class="icon">🔄</div>
+                <h4>Balanse- og rotasjonstrening</h4>
+                <ul>
+                    <li>5-10 min daglig på kontorswivelstol</li>
+                    <li>Sakte rotasjoner mens barnet ser på et fast punkt</li>
+                    <li>Yogaball-øvelser med forsiktige vippebevegelser</li>
+                </ul>
+            </div>
+            
+            <div class="feature-box">
+                <div class="icon">🧩</div>
+                <h4>Sensorisk integrasjonstrening</h4>
+                <ul>
+                    <li>Gradvis øke eksponering for billukt (start hjemme)</li>
+                    <li>Lytte til motorlyder i trygge omgivelser</li>
+                    <li>Øve på å se ut sidevinduet i korte perioder</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2>En time før dere kjører</h2>
+
+        <div class="grid-3">
+            <div class="card card-gradient">
+                <h4>🏠 Miljø</h4>
+                <ul>
+                    <li><strong>Skru ned tempoet</strong> – dempet lys, rolig musikk, minimalt med skjermer</li>
+                    <li><strong>Ro‑pust og tyngdepledd</strong> – 5 minutter</li>
+                </ul>
+            </div>
+            
+            <div class="card card-gradient">
+                <h4>🍎 Mat & drikke</h4>
+                <ul>
+                    <li><strong>Lett mat</strong> – kjeks, banan eller yoghurt. Unngå tung, fet mat</li>
+                    <li><strong>Drikke</strong> – vann eller mild ingefærdrikk, ikke brus</li>
+                </ul>
+            </div>
+            
+            <div class="card card-gradient">
+                <h4>🎒 Forutsigbarhet & utstyr</h4>
+                <ul>
+                    <li><strong>Pakk sanseboksen</strong> – tyggis, kald klut, solbriller, hodetelefoner</li>
+                    <li><strong>Fortell reiseruten</strong> – «Nå svinger vi snart til venstre...»</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="page content page-break">
+        <h2>Triks i bilen</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sans</th>
+                        <th>Gjør dette</th>
+                        <th>Når</th>
+                        <th>Hva det hjelper</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>👀 Øyne</strong></td>
+                        <td>Se frem på veien eller horisonten</td>
+                        <td>Hele tiden</td>
+                        <td>Syn og balanse blir enige</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🤯 Hode</strong></td>
+                        <td>Lene hodet litt forover i sving</td>
+                        <td>Når bilen svinger</td>
+                        <td>Mindre «karusell‑følelse»</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🍬 Munn</strong></td>
+                        <td>Tygge ingefærtyggis (50-100mg gingerol)</td>
+                        <td>Kontinuerlig (bytt hvert 20. min)</td>
+                        <td>Hemmer 5-HT3 reseptorer</td>
+                    </tr>
+                    <tr>
+                        <td><strong>❄️ Kulde</strong></td>
+                        <td>Kald luft eller ispose (12-15°C) på håndledd</td>
+                        <td>Ved første kvalmesignal</td>
+                        <td>Hemmer C-fiber signaler</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🍋 Lukt</strong></td>
+                        <td>Snus på sitron‑ eller peppermynteklut</td>
+                        <td>Ved behov</td>
+                        <td>Frisk lukt distraherer</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🎧 Ører</strong></td>
+                        <td>Hør på rolig musikk eller hvit støy</td>
+                        <td>Hele turen</td>
+                        <td>Dekker brå lyder</td>
+                    </tr>
+                    <tr>
+                        <td><strong>⚡ Trykk</strong></td>
+                        <td>Akupressur-armbånd på P6-punkt</td>
+                        <td>Hele turen</td>
+                        <td>Stimulerer mediannerven</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card card-gradient" style="margin-top: 32px;">
+            <h4>🎯 Aktive avbrytelser</h4>
+            <ul>
+                <li><strong>Pause (hver 45 min):</strong> Stopp bilen, strekk armene opp og ta fem knebøy for å «nullstille» kroppen.</li>
+                <li><strong>Lek:</strong> Tell røde biler, syng eller lek bokstavspill – alt som flytter fokus bort fra kvalme.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2>Etter turen</h2>
+
+        <div class="checklist">
+            <h4>✨ Umiddelbar restitusjon (første 10 minutter)</h4>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>La barnet ligge flatt 2–3 min med kald klut (12-15°C) på pannen</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Tilby kaldt vann med sitron eller mild ingefærdrikk</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Bruk tyngdepledd (7-12% av kroppsvekt) i 10-15 minutter</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Unngå skjermbruk første halvtimen</span>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card card-gradient">
+                <h4>📊 Evaluering og logging</h4>
+                <p>Skriv ned følgende for å spore fremgang:</p>
+                <ul>
+                    <li><strong>Kvalme-skala (0-10):</strong> Hvor ille var det på det verste?</li>
+                    <li><strong>Varighet:</strong> Når startet kvalmen, når gikk den over?</li>
+                    <li><strong>Triggere:</strong> Hva skjedde rett før kvalmen kom?</li>
+                    <li><strong>Suksessfaktorer:</strong> Hva fungerte best denne gangen?</li>
+                </ul>
+            </div>
+            
+            <div class="card card-gradient">
+                <h4>🌟 Positiv forsterkning</h4>
+                <ul>
+                    <li>Ros for å ha klart turen, uansett utfall</li>
+                    <li>Marker små seire: "Du klarte 10 minutter lenger enn sist!"</li>
+                    <li>Planlegg noe hyggelig som ikke involverer skjerm eller raske bevegelser</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card" style="margin-top: 32px;">
+            <h4>🌀 Vestibulær gjenoppretting</h4>
+            <p style="margin-bottom: 12px;">15 minutter etter ankomst, hvis barnet føler seg bedre:</p>
+            <ul>
+                <li>5 minutter forsiktig rotasjon på kontorswivelstol</li>
+                <li>Balanseøvelser på ett ben (30 sek × 3)</li>
+                <li>Rolig gange med fokus på en veggplakat</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="page content page-break">
+        <h2>Måling av fremgang og gradvis økning av toleranse</h2>
+
+        <h3>Ukentlig progresjon</h3>
+        <p>Start med korte turer og øk gradvis:</p>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Uke</th>
+                        <th>Turlengde</th>
+                        <th>Mål</th>
+                        <th>Belønning ved suksess</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tag tag-primary">Uke 1-2</span></td>
+                        <td>5-10 min</td>
+                        <td>Ingen oppkast</td>
+                        <td>Favorittklistremerke</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-primary">Uke 3-4</span></td>
+                        <td>10-15 min</td>
+                        <td>Kvalme under 5/10</td>
+                        <td>Ekstra leketid</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-primary">Uke 5-6</span></td>
+                        <td>15-25 min</td>
+                        <td>Én pause er nok</td>
+                        <td>Velge helgeaktivitet</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-primary">Uke 7-8</span></td>
+                        <td>25-40 min</td>
+                        <td>Kan se ut sidevindu</td>
+                        <td>Spesiell utflukt</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid-3" style="margin-top: 32px;">
+            <div class="feature-box">
+                <div class="icon">🎯</div>
+                <h4>Fysiske tegn</h4>
+                <ul>
+                    <li>Mindre svetting</li>
+                    <li>Normal hudfarge</li>
+                    <li>Roligere pust</li>
+                </ul>
+            </div>
+            
+            <div class="feature-box">
+                <div class="icon">🧠</div>
+                <h4>Atferd</h4>
+                <ul>
+                    <li>Mer snakking</li>
+                    <li>Mindre griping i setet</li>
+                    <li>Interesse for omgivelsene</li>
+                </ul>
+            </div>
+            
+            <div class="feature-box">
+                <div class="icon">⏱️</div>
+                <h4>Restitusjon</h4>
+                <ul>
+                    <li>Raskere normalisering</li>
+                    <li>Fra timer til minutter</li>
+                    <li>Bedre humør etter</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: 32px;">
+            <div class="callout-icon">💡</div>
+            <div>
+                <strong>Når skal dere ta en pause i progresjonen?</strong>
+                <ul style="margin-top: 8px; margin-bottom: 0;">
+                    <li>Hvis barnet har 3 dårlige turer på rad</li>
+                    <li>Ved sykdom eller ekstra stress i hverdagen</li>
+                    <li>Etter større endringer (ny bil, nye ruter)</li>
+                </ul>
+                <p style="margin-bottom: 0; margin-top: 12px;"><strong>Husk:</strong> To skritt frem, ett tilbake er helt normalt! Fremgang er sjelden lineær.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="checklist">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0;">Rask sjekkliste før bilturen</h3>
+                <button class="reset-btn" onclick="if(window.resetChecklist) resetChecklist()" style="padding: 0.5rem 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 9999px; font-size: 0.875rem; cursor: pointer; transition: all 0.3s ease; font-weight: 600;">Reset ↻</button>
+            </div>
+            
+            <h4>✅ Kvelden før:</h4>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Vis barnet ruten på kart/bilder</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Legg vektteppe og utstyr klart</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Forbered lette snacks</span>
+            </div>
+
+            <h4>✅ 1 time før:</h4>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Ro-pust og vektteppe (10-15 min)</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Lett mat (banan, kjeks)</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Ingefærdrikk eller tyggis klar</span>
+            </div>
+
+            <h4>✅ I bilen:</h4>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Temperatur 18-20°C</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Kaldkompresser tilgjengelig</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Fokus på horisonten</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Pauseplan klar</span>
+            </div>
+
+            <h4>✅ Nødutstyr alltid med:</h4>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Spyposer og våtservietter</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Ekstra klær</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Vann og håndkle</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Favorittmusikk/lydbok</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page content page-break">
+        <h2>Medisinske alternativer</h2>
+        <p style="margin-bottom: 24px;">For noen barn kan medisinsk støtte være aktuelt i tillegg til atferdstiltak:</p>
+        
+        <div class="card card-gradient">
+            <h4>💊 Medikamentelle alternativer</h4>
+            <ul>
+                <li><strong>Scopolaminplaster:</strong> Festes bak øret, virker i opptil 72 timer</li>
+                <li><strong>Antihistaminer:</strong> Som dimenhydrinat, tas 30 min før avreise</li>
+                <li><strong>Naturlige alternativer:</strong> Ingefærkapsler (250-500mg) har dokumentert effekt</li>
+            </ul>
+        </div>
+
+        <div class="callout callout-warning">
+            <div class="callout-icon">⚠️</div>
+            <div>
+                <strong>Viktig:</strong> All medisinering bør diskuteres med barnelege eller fastlege først.
+            </div>
+        </div>
+    </div>
+
+    <!-- Part 2 Cover -->
+    <div class="page content page-break">
+        <div class="page-header">
+            <h1>Del 2</h1>
+            <p class="subtitle">VR-apper spesielt laget for å trene opp toleranse mot bil- og sjøsyke</p>
+        </div>
+
+        <h2>Oversikt over VR-apper for bil- og sjøsyke</h2>
+
+        <div class="grid">
+            <div class="card card-gradient">
+                <h3>🎯 BalanceVR</h3>
+                <p><strong>Hva det er:</strong> Klinisk treningsplattform med «busstur»‑ og «bølge»‑scenarioer.</p>
+                <p><strong>Tilgang:</strong> Send e‑post til info@balancevr.eu og be om evalueringslisens (vanlig svartid 1–3 dager).</p>
+                <p><strong>Pris:</strong> Lisens via klinikk</p>
+            </div>
+
+            <div class="card card-gradient">
+                <h3>🧠 MindMotion VR</h3>
+                <p><strong>Hva det er:</strong> Rehab‑pakke med vestibulær moduler og kvalme‑logging.</p>
+                <p><strong>Tilgang:</strong> Be fastlegen henvise til sykehusavdeling som bruker MindMaze; sykehuset søker demo på mindmaze.com/health.</p>
+                <p><strong>Pris:</strong> På forespørsel</p>
+            </div>
+
+            <div class="card card-gradient">
+                <h3>🔬 SeeSick VR (beta)</h3>
+                <p><strong>Hva det er:</strong> Forskningsapp som kombinerer VR med haptikk.</p>
+                <p><strong>Tilgang:</strong> Gå til GitHub‑repo: github.com/uofu‑haptics/seesickvr → Releases → last ned .apk → side‑load via SideQuest.</p>
+                <p><strong>Pris:</strong> Gratis (open source)</p>
+            </div>
+
+            <div class="card card-gradient">
+                <h3>🚌 Virtual Bus Ride</h3>
+                <p><strong>Hva det er:</strong> Unity‑scene brukt i Reh@City‑studien.</p>
+                <p><strong>Tilgang:</strong> Send kort e‑post til rehacity@ulisboa.pt (prosjektbeskrivelse og hvem som skal bruke appen).</p>
+                <p><strong>Pris:</strong> Gratis for forskning</p>
+            </div>
+        </div>
+        
+        <div class="card card-gradient" style="max-width: 48%; margin: 32px auto;">
+            <h3>👁️ VOR‑Trainer</h3>
+            <p><strong>Hva det er:</strong> Gaze‑stabiliseringsøvelser (Quest).</p>
+            <p><strong>Tilgang:</strong> SideQuest → søk «VOR Trainer»; evt. .apk fra itch.io/kush‑vor‑trainer.</p>
+            <p><strong>Pris:</strong> Gratis</p>
+        </div>
+    </div>
+
+    <div class="page content page-break">
+        <h2>Slik går du frem for å få MindMotion VR i Norge</h2>
+
+        <div class="card" style="background: var(--gradient-accent); color: white; box-shadow: 0 20px 60px rgba(79, 172, 254, 0.25);">
+            <h3 style="color: white; margin-top: 0; font-size: 26px; -webkit-text-fill-color: white;">📋 Steg 1: Snakk med fastlegen</h3>
+            <p style="font-size: 17px; line-height: 1.8; color: white;">Be om henvisning til et sykehus / rehab-institusjon med nevro­rehabilitering (f.eks. Sunnaas sykehus, Oslo Universitetssykehus, St. Olavs, Haukeland).</p>
+            <p style="margin-bottom: 0; font-size: 16px; opacity: 0.9; color: white;"><em>Sykehus må stå som medisinsk ansvarlig fordi MindMotion VR er et CE-merket medisinsk produkt klasse IIa.</em></p>
+        </div>
+
+        <div class="card card-gradient">
+            <h3>🏥 Steg 2: Kontakt VR-lab eller innovasjonsavdeling</h3>
+            <p>Når henvisningen er mottatt, be terapeuten videreformidle ønske om MindMotion VR til sykehusets VR-lab / teknologigruppe (Sunnaas har egen VR-lab med forskningskapasitet).</p>
+            <p><em>Laben kan vurdere klinisk nytte og søke pilot-midler. (Arbeid og Helse)</em></p>
+        </div>
+
+        <div class="card card-gradient">
+            <h3>📧 Steg 3: Henvendelse til MindMaze</h3>
+            <p>Send en kort e-post til [email protected] (angitt av produsenten for Norden/«other») med:</p>
+            <ul>
+                <li>Kort om pasienten og indikasjonen</li>
+                <li>Om dere søker demo kit eller permanent lisens</li>
+                <li>Kontaktinfo til ansvarlig behandlingssted</li>
+            </ul>
+            <p><em>MindMaze oppgir at de svarer innen 24 t på henvendelser og kobler dere til nærmeste distribusjonspartner eller sender demo-enhet for 4–6 ukers prøve.</em></p>
+        </div>
+
+        <div class="card card-gradient">
+            <h3>💰 Steg 4: Offentlig finansiering</h3>
+            <p>Når sykehuset bekrefter nytte, kan ergoterapeut/fysioterapeut utarbeide NAV-søknad (hjelpemiddel § 10-7) for å dekke utstyr til hjemmebruk; vedlegg behandlingsplan og MindMaze-pristilbud.</p>
+            <p><em>NAV kan finansiere medisinsk utstyr som er «nødvendig og hensiktsmessig» for daglig funksjon.</em></p>
+        </div>
+
+        <div class="card card-gradient">
+            <h3>🔬 Steg 5: Forsknings-/pilotvei (hvis sykehuset ikke har løsningen ennå)</h3>
+            <p>Spør om å bli med i pågående studier:</p>
+            <ul>
+                <li>Sunnaas VR-lab har løpende VR-forsøk</li>
+                <li>ClinicalTrials.gov har telerehab-studier med MindMotion GO – kontakt e-post på studiesiden</li>
+            </ul>
+            <p><em>Deltakelse gir gratis bruk under studien; data hjelper å bygge norsk evidens.</em></p>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: 32px;">
+            <div class="callout-icon">⏰</div>
+            <div>
+                <h4>Tidslinje som er realistisk</h4>
+                <ol style="margin-bottom: 12px;">
+                    <li><strong>Henvisning og vurdering:</strong> 2–6 uker.</li>
+                    <li><strong>Svar fra MindMaze og demo kit:</strong> 1–3 uker etter henvendelse.</li>
+                    <li><strong>NAV-vedtak (hvis aktuelt):</strong> 4–12 uker fra innsendt søknad.</li>
+                </ol>
+                <p style="margin-bottom: 0;"><strong>Praktisk tips:</strong> Skriv en kort prosedyrebetraktning sammen med terapeuten som viser hvordan MindMotion VR passer inn i barnets eksisterende treningsmål (balanse, reaksjonstid, utholdenhet). Dette øker sjansen for støtte fra både sykehusledelsen og NAV.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="page content page-break">
+        <h2>Mal – Henvendelsesbrev / NAV‑søknad</h2>
+
+        <p><em>Tilpasses med pasientens navn, fødselsdato og sykehusets brevmal</em></p>
+
+        <pre>
+Til: [Navn på VR‑lab / Innovasjonsavdeling]  
+Kopi: [Fastlege], [Ansvarlig lege/terapeut]
+
+Emne: Forespørsel om MindMotion VR for vestibulær rehabilitering
+
+Jeg/vi søker herved om å få prøve ut MindMotion VR for [Barnets navn, født DD.MM.ÅÅ], 
+som er under oppfølging ved [avdeling/sykehus].
+
+• Diagnoser: Autisme (ICD‑10 F84.0) og uttalt bevegelsesindusert kvalme (T75.3)  
+• Funksjonsutfordringer: Kvalme og oppkast på bilreiser > 5 min, hemmer skole/hverdagsfunksjon.  
+• Tidligere tiltak: Kosthold, pauser, medikamentell profylakse (meklozin) – begrenset effekt.  
+
+MindMotion VR tilbyr gradert vestibulær stimulering og kvalme‑logging som ikke er mulig 
+med konvensjonell terapi. En pilotperiode på 4–6 uker vil gi oss objektive data om effekt 
+før evt. permanent innkjøp.
+
+Vi ber om:
+1. Utlån av demo‑lisens / enhet (alternativt pristilbud for NAV‑søknad).  
+2. Teknisk oppsett i samarbeid med sykehusets VR‑lab.  
+3. Opplæring av foreldre og terapeut.
+
+Vedlagt finner dere behandlingsplan, risikovurdering og støttebrev fra fastlege.
+
+Med vennlig hilsen
+[Navn]  
+Ergoterapeut, [Avdeling]  
+Tlf: [ ]  
+E‑post: [ ]
+        </pre>
+
+        <h2>Viktige punkter som øker sjansen for innvilgelse</h2>
+
+        <div class="checklist">
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span><strong>Dokumenter funksjonstapet</strong> tydelig (f.eks. hvor mange ganger barnet kaster opp eller blir dårlig per uke eller per kjøretur).</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span><strong>Start å loggføre nå hvis dere ikke allerede gjør det</strong> – bruk en enkel app (f.eks. CarSickness Logger) eller et regneark til å notere dato, turlengde, kvalmeskala og eventuell oppkast.</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span><strong>Vis at annen behandling er prøvd</strong> (f.eks. reisesyketabletter/antihistaminer, skopolamin‑plaster, ingefærtabletter, akupressur‑armbånd, tyngdepledd, hyppige pauser) uten tilstrekkelig effekt.</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span><strong>Koble løsningen til klare mål</strong> (f.eks. «tåle 30 min bilreise uten kvalme»).</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span><strong>Vis sikkerhetsplan</strong> (pauser, tilsyn, CE‑merking).</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span><strong>Opplys at VR‑headsett allerede er i hus</strong> – da er det kun lisensnøkkelen (et par hundre kroner) som må dekkes.</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span><strong>Legg ved støttebrev</strong> fra både lege og fagterapeut.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page content page-break">
+        <div class="personal-box">
+            <h2>Personlig melding fra Quentin</h2>
+
+            <p>Ikke nøl med å ta kontakt! Send gjerne en e-post til Quentinthiessen@outlook.com eller SMS på 480 85 504 for spørsmål eller hjelp med søknader, skjemaer og oppsett.</p>
+
+            <p>Jeg brenner virkelig for dette arbeidet og har omfattende erfaring med disse prosessene og søknadene. Tenk aldri at det blir "for mye ekstra jobb" å spørre om hjelp til kartlegging, søknadsskriving eller lignende – det gir meg glede å kunne bidra! Spør heller én gang for mye enn én gang for lite. Dette handler om å forbedre livskvaliteten.</p>
+
+            <p>Jeg har også et nettverk av engasjerte kontakter som brenner like mye for dette arbeidet. De bidrar gjerne med gratis rådgivning innen alt fra spesialpedagogikk til spørsmål om lover, regler og rettigheter.</p>
+
+            <p>Ta kontakt for selv den minste ting – for barn med disse diagnosene er det nettopp de "små tingene" som kan være de største utfordringene i livet.</p>
+        </div>
+
+        <div class="contact-card">
+            <h3>Kontakt meg gjerne!</h3>
+            <p style="font-size: 20px; margin-bottom: 16px;">📧 Quentinthiessen@outlook.com</p>
+            <p style="font-size: 20px;">📱 480 85 504</p>
+        </div>
+
+        <h3>💡 Personlig tips om VR-briller og NAV-søknader</h3>
+
+        <p>Har dere ikke VR-briller fra før? Det kan lønne seg å skrive i søknaden at dere kun søker om lisens, og at dere låner VR-briller av bekjente i første omgang for å teste om løsningen fungerer.</p>
+
+        <div class="callout callout-tip">
+            <div class="callout-icon">🎯</div>
+            <div>
+                <strong>Viktig erfaring med NAV:</strong> NAV sier ofte nei på første søknad når det gjelder nye behandlingsformer som koster penger utenom det vanlige. MEN – av tidligere erfaring har NAV vært mye mer villige til å betale for VR-briller i etterkant når man allerede har klart å skaffe briller selv og kun trenger lisensen. Når det viser positiv effekt og legen bekrefter dette i en ny søknad, har NAV vist seg svært åpne og samarbeidsvillige.
+            </div>
+        </div>
+
+        <div class="card" style="background: var(--gradient-accent); color: white; margin-top: 40px; box-shadow: 0 20px 60px rgba(79, 172, 254, 0.25); transition: all 0.4s ease;">
+            <h4 style="color: white; margin-top: 0; font-size: 24px; -webkit-text-fill-color: white;">🎮 Jeg har 3 nye VR-briller tilgjengelig for utlån!</h4>
+            <p style="font-size: 17px; line-height: 1.8; color: white;">Disse og andre elektroniske hjelpemidler har jeg liggende til utlån for dem jeg jobber med. Ikke vær bekymret for å låne noe så dyrt – utstyret er sponset av Sony.no og Netonnet.no nettopp for å kunne hjelpe i arbeidet jeg gjør.</p>
+            
+            <p style="margin-bottom: 0; font-size: 17px; line-height: 1.8; color: white;">Husk: Dette er ikke leketøy, men verktøy. Verktøy skal brukes! Om noe blir ødelagt, betyr det bare at det har blitt brukt til sitt formål.</p>
+        </div>
+
+        <h3>🌟 En stor klapp på skulderen til dere foreldre!</h3>
+
+        <p>Gi dere selv ros for å legge ned denne innsatsen! Vi skal aldri sammenligne mennesker – alle er så utrolig forskjellige at man vet først om noe fungerer når man har prøvd.</p>
+
+        <p>Selv om dette ikke er 100% sikkert at det vil fungere for akkurat deres barn, kan jeg fortelle fra personlig erfaring med tidligere brukere: Resultatene har variert fra litt bedring til én bruker som gikk fra å bli bilsyk etter 2 minutter til å aldri bli bilsyk igjen. Nå kan hen sitte med iPad, lese bok, og aller viktigst – føle seg tryggere ute i den utrygge verden.</p>
+
+        <p>Og vet dere hva? Selv om dette mot formodning ikke skulle gi positiv effekt på bilsyken (noe som ofte skjer med tiltak for barn på autismespekteret), så vil alle punktene nevnt i denne guiden generelt forbedre livskvaliteten. Om det "eneste" det bringer er mer bevissthet om akkurat hvor vanskene og grensene til barnet deres ligger – ja, da er det også gull verdt! 💛</p>
+
+        <hr>
+
+        <h2>Avsluttende ord – en reality-sjekk... og en kraftig klapp på skulderen</h2>
+
+        <p>Foreldrerollen blir fort et heltidsprosjekt når et barn har ekstra behov. Forskning viser at foreldre til barn på autismespekteret ofte opplever høyere stress enn andre foreldre, men også at <strong>god sosial støtte og kunnskap senker belastningen betydelig</strong>. Det betyr i praksis at hver gang dere deler erfaringene deres eller ber om hjelp, øker dere både egen og andres motstandskraft – et funn som gjentas i familie-sentrerte studier verden over.</p>
+
+        <p>Jeg vokste opp i en familie som både har nytt godt av solide støttenettverk og erfart hvor tøft det kan være når ressursene glipper. Erfaringene – sammen med nyere forskning på <strong>familie-sentrerte tiltak, parental empowerment og «små justeringer gir store effekter»</strong> – har lært meg dette: Når vi møter barnet med riktige briller, målretter hjelpen mot de små hverdagshumpene og tør å spørre om råd tidlig, kan vi heve ikke bare barnets livskvalitet, men hele familiens.</p>
+
+        <p>Selv hvis dere «bare» ender opp med større forståelse for barnets grenser, har dere oppnådd noe verdifullt. Å formidle de erfaringene videre gjør søknadsprosessen enklere for neste familie – og kanskje er det nettopp deres innspill som gjør at et framtidig barn får den løsningen som forandrer alt. For fagfolk vet vi at <strong>hver ny søknad dokumenterer behovet</strong> og bidrar til raskere godkjenning ved neste runde – NAV og helsetjenestene reagerer sterkere når det finnes historikk og brukere som baner vei.</p>
+
+        <p>Derfor: <strong>Stå på!</strong> Dere er ikke alene – Autismeforeningen, Statped, lokale ergo- og fysioterapeuter og et vell av nettressurser er bare et spørsmål unna. Det verste som kan skje når dere spør, er at personen sier «det kan jeg ikke», men da kjenner de ofte noen som kan. Hver forespørsel som sendes ut, finner før eller siden veien til riktig kompetanse.</p>
+
+        <p>Små skritt – en ekstra pause, et tyngdepledd, en VR-økt – kan gi store seire. Heia dere som prøver, justerer og deler kunnskap videre. <strong>Dere gjør en forskjell, ikke bare for deres eget barn, men for hele feltet.</strong></p>
+
+        <p style="text-align: right; margin-top: 40px;">
+            <em>Med varme hilsener og stor respekt,</em><br>
+            <strong>Quentin Thiessen</strong>
+        </p>
+    </div>
+    
+    <script>
+        // Interactive checklist functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const checklistItems = document.querySelectorAll('.checklist-item');
+            
+            checklistItems.forEach((item, index) => {
+                // Add click event listener
+                item.addEventListener('click', function() {
+                    const wasChecked = this.classList.contains('checked');
+                    this.classList.toggle('checked');
+                    
+                    const checkbox = this.querySelector('.checkbox');
+                    
+                    if (!wasChecked) {
+                        // Add success animation when checking
+                        checkbox.style.animation = 'checkSuccess 0.6s ease-out';
+                        
+                        // Add a subtle confetti effect
+                        createConfetti(checkbox);
+                    } else {
+                        // Add uncheck animation
+                        checkbox.style.animation = 'uncheckPulse 0.3s ease-out';
+                    }
+                    
+                    // Remove animation after it completes
+                    setTimeout(() => {
+                        checkbox.style.animation = '';
+                    }, 600);
+                    
+                    // Store the state
+                    const itemText = this.querySelector('span').textContent;
+                    const isChecked = this.classList.contains('checked');
+                    localStorage.setItem(`checklist-${itemText}`, isChecked);
+                    
+                    // Check if all items are checked
+                    checkAllCompleted();
+                    updateProgress();
+                });
+                
+                // Restore saved state on page load
+                const itemText = item.querySelector('span').textContent;
+                const savedState = localStorage.getItem(`checklist-${itemText}`);
+                if (savedState === 'true') {
+                    item.classList.add('checked');
+                }
+            });
+            
+            checkAllCompleted();
+        });
+        
+        function createConfetti(element) {
+            const rect = element.getBoundingClientRect();
+            const confettiCount = 6;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = rect.left + rect.width / 2 + 'px';
+                confetti.style.top = rect.top + rect.height / 2 + 'px';
+                
+                // Calculate spread pattern
+                const angle = (i / confettiCount) * Math.PI * 2;
+                const distance = 40 + Math.random() * 20;
+                const xDistance = Math.cos(angle) * distance;
+                const yDistance = Math.sin(angle) * distance - 30;
+                
+                confetti.style.setProperty('--x-distance', xDistance + 'px');
+                confetti.style.setProperty('--y-distance', yDistance + 'px');
+                confetti.style.animationDelay = (i * 0.05) + 's';
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    if (confetti && confetti.parentNode) {
+                        confetti.remove();
+                    }
+                }, 1000);
+            }
+            }
+            
+            function updateProgress() {
+                document.querySelectorAll('.checklist').forEach(checklist => {
+                    const items = checklist.querySelectorAll('.checklist-item');
+                    const checkedItems = checklist.querySelectorAll('.checklist-item.checked');
+                    const progress = items.length > 0 ? (checkedItems.length / items.length) * 100 : 0;
+                    
+                    // Update progress bar if it exists
+                    let progressContainer = checklist.querySelector('.progress-container');
+                    if (!progressContainer && items.length > 0) {
+                        // Create progress bar
+                        progressContainer = document.createElement('div');
+                        progressContainer.className = 'progress-container';
+                        progressContainer.innerHTML = `
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <span class="progress-text">${checkedItems.length}/${items.length} fullført</span>
+                        `;
+                        checklist.insertBefore(progressContainer, checklist.firstChild.nextSibling);
+                    } else if (progressContainer) {
+                        // Update existing progress bar
+                        const progressFill = checklist.querySelector('.progress-fill');
+                        const progressText = checklist.querySelector('.progress-text');
+                        if (progressFill && progressText) {
+                            progressFill.style.width = progress + '%';
+                            progressText.textContent = `${checkedItems.length}/${items.length} fullført`;
+                        }
+                    }
+                });
+            }
+            
+            function checkAllCompleted() {
+                const allItems = document.querySelectorAll('.checklist-item');
+                const checkedItems = document.querySelectorAll('.checklist-item.checked');
+                
+                if (allItems.length > 0 && allItems.length === checkedItems.length) {
+                    // All items checked - show celebration
+                    document.querySelectorAll('.checklist').forEach(checklist => {
+                        checklist.classList.add('all-completed');
+                    });
+                } else {
+                    document.querySelectorAll('.checklist').forEach(checklist => {
+                        checklist.classList.remove('all-completed');
+                    });
+                }
+            }
+        
+        function resetChecklist() {
+            const checklistItems = document.querySelectorAll('.checklist-item');
+            checklistItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.remove('checked');
+                    const itemText = item.querySelector('span').textContent;
+                    localStorage.removeItem(`checklist-${itemText}`);
+                    updateProgress();
+                }, index * 50);
+            });
+            
+            setTimeout(() => {
+                checkAllCompleted();
+                updateProgress();
+            }, checklistItems.length * 50 + 100);
+        }
+    </script>
+    
+    <style>
+        @keyframes checkSuccess {
+            0% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            25% {
+                transform: scale(0.9) rotate(-5deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(5deg);
+                box-shadow: 0 0 0 15px rgba(16, 185, 129, 0);
+            }
+            75% {
+                transform: scale(0.95) rotate(-2deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        
+        @keyframes uncheckPulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: confettiFly 1s ease-out forwards;
+            z-index: 1000;
+        }
+        
+        @keyframes confettiFly {
+            0% {
+                transform: translate(0, 0) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: 
+                    translateX(var(--x-distance))
+                    translateY(var(--y-distance))
+                    scale(0.3)
+                    rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .confetti:nth-child(odd) {
+            background: #10b981;
+        }
+        
+        .confetti:nth-child(even) {
+            background: #34d399;
+            width: 8px;
+            height: 8px;
+        }
+        
+        .checklist.all-completed {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.04) 100%);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        
+        .checklist.all-completed::after {
+            content: '🎉 Alt fullført!';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            font-weight: 600;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .checklist-item {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        /* Ensure progress bar doesn't interfere with clicks */
+        .progress-container {
+            pointer-events: none;
+        }
+        
+        .progress-text {
+            pointer-events: auto;
+        }
+        
+        .reset-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .reset-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Print optimizations */
+        @media print {
+            .reset-btn {
+                display: none;
+            }
+        }
+    </style>
+</body>
+</html>

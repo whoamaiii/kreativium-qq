@@ -1,0 +1,2432 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autisme og stimming – En omfattende guide for foreldre og fagfolk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #14b8a6;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-warm: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --gradient-cool: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            --gradient-dark: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-2xl: 2rem;
+            --radius-full: 9999px;
+            
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slower: 700ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        @media print {
+            .page-break {
+                page-break-after: always;
+            }
+            
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            /* Reduce animations for print */
+            *, *::before, *::after {
+                animation-duration: 0s !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0s !important;
+                transition-delay: 0s !important;
+            }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            border: 2px solid var(--gray-100);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-secondary);
+        }
+        
+        /* Selection styling */
+        ::selection {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary-dark);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-900);
+            background: var(--light);
+            font-size: 16px;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background pattern - Performance optimized */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(20, 184, 166, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            will-change: transform;
+            transform: translateZ(0);
+            animation: float 40s linear infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(20px, -20px) scale(1.02); }
+            66% { transform: translate(-15px, 15px) scale(0.98); }
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Premium Cover Page */
+        .cover {
+            height: 297mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated gradient orbs - Optimized for performance */
+        .cover::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.35) 0%, transparent 45%),
+                radial-gradient(circle at 60% 60%, rgba(147, 51, 234, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 30% 70%, rgba(20, 184, 166, 0.3) 0%, transparent 40%);
+            filter: blur(60px);
+            will-change: transform;
+            transform: translateZ(0);
+            animation: morph 30s linear infinite;
+        }
+        
+        @keyframes morph {
+            0%, 100% { 
+                transform: translateZ(0) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translateZ(0) rotate(90deg) scale(1.05);
+            }
+            50% {
+                transform: translateZ(0) rotate(180deg) scale(0.95);
+            }
+            75% {
+                transform: translateZ(0) rotate(270deg) scale(1.02);
+            }
+        }
+        
+        /* Simple noise texture overlay */
+        .cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.02);
+            z-index: 1;
+            opacity: 0.5;
+            mix-blend-mode: overlay;
+        }
+        
+        .cover-content {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 5rem 4rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            transform: translateY(0);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            will-change: transform;
+        }
+        
+        .cover-content:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 30px 50px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(255, 255, 255, 0.08);
+        }
+        
+        .cover .emoji {
+            font-size: 8rem;
+            margin-bottom: 3rem;
+            display: inline-block;
+            will-change: transform;
+            animation: bounce 3s ease-in-out infinite;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.3));
+        }
+        
+        @keyframes bounce {
+            0%, 100% { 
+                transform: translateY(0);
+            }
+            50% { 
+                transform: translateY(-20px);
+            }
+        }
+        
+        .cover h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 5.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            background: linear-gradient(
+                135deg, 
+                #ffffff 0%, 
+                #e0e7ff 25%, 
+                #c7d2fe 50%, 
+                #a5b4fc 75%, 
+                #818cf8 100%
+            );
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: shimmer 4s linear infinite;
+            position: relative;
+            will-change: background-position;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { 
+                background-position: 0% 50%;
+            }
+            50% { 
+                background-position: 100% 50%;
+            }
+        }
+        
+        .cover .subtitle {
+            font-size: 1.75rem;
+            font-weight: 300;
+            margin-bottom: 5rem;
+            opacity: 0.95;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease-out 0.2s;
+            animation-fill-mode: both;
+            background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .cover .meta {
+            position: absolute;
+            bottom: 3rem;
+            font-size: 0.875rem;
+            opacity: 0.9;
+            line-height: 1.8;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 3rem;
+            border-radius: var(--radius-full);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
+            letter-spacing: 0.02em;
+            animation: fadeInUp 1s ease-out 0.4s;
+            animation-fill-mode: both;
+        }
+        
+        /* Content Pages */
+        .content {
+            padding: 5rem;
+            background: var(--light);
+            position: relative;
+            min-height: 297mm;
+            overflow: hidden;
+        }
+        
+        /* Animated mesh gradient background - Performance optimized */
+        .content::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: 
+                radial-gradient(at 20% 30%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                radial-gradient(at 80% 70%, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(20, 184, 166, 0.08) 0%, transparent 50%);
+            filter: blur(60px);
+            will-change: transform;
+            transform: translateZ(0);
+            animation: meshGradient 40s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        @keyframes meshGradient {
+            0%, 100% {
+                transform: translateZ(0) translate(0, 0);
+            }
+            50% {
+                transform: translateZ(0) translate(-30px, -30px);
+            }
+        }
+        
+        .content > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Modern Typography with Variable Fonts */
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            margin-top: 4rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--transition-slow);
+        }
+        
+        h1:hover::after {
+            transform: scaleX(1);
+        }
+        
+        h1:first-child {
+            margin-top: 0;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-top: 4rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            transition: all var(--transition-base);
+        }
+        
+        h2:hover::before {
+            height: 120%;
+            width: 8px;
+        }
+        
+        h3 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h3::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40%;
+            height: 2px;
+            background: var(--gradient-accent);
+            border-radius: var(--radius-full);
+            transition: width var(--transition-base);
+        }
+        
+        h3:hover::after {
+            width: 100%;
+        }
+        
+        h4 {
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--gray-700);
+            line-height: 1.8;
+            font-size: 1.0625rem;
+            letter-spacing: -0.01em;
+        }
+        
+        .intro-text {
+            font-size: 1.25rem;
+            line-height: 1.9;
+            color: var(--gray-800);
+            margin-bottom: 4rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.9) 100%);
+            border-radius: 1.5rem;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 
+                0 20px 40px rgba(99, 102, 241, 0.08),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        .intro-text::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: 
+                linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                linear-gradient(225deg, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            transition: opacity var(--transition-base);
+            opacity: 0;
+        }
+        
+        .intro-text:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 30px 60px rgba(99, 102, 241, 0.12),
+                inset 0 1px 3px rgba(255, 255, 255, 1);
+        }
+        
+        .intro-text:hover::before {
+            opacity: 1;
+        }
+        
+        /* Ultra-modern Cards */
+        .card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(249, 250, 251, 0.85) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient-primary);
+            border-radius: inherit;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity var(--transition-fast);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card:hover::before {
+            opacity: 0.08;
+        }
+        
+        .card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-gradient {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.9) 100%);
+            position: relative;
+            overflow: visible;
+        }
+        
+        .card-gradient::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity var(--transition-slow);
+            pointer-events: none;
+        }
+        
+        .card-gradient:hover::after {
+            opacity: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Premium Lists */
+        ul, ol {
+            margin-bottom: 1.5rem;
+            padding-left: 0;
+            list-style: none;
+        }
+        
+        li {
+            margin-bottom: 1rem;
+            padding-left: 2.5rem;
+            position: relative;
+            line-height: 1.8;
+            color: var(--gray-700);
+            transition: all var(--transition-fast);
+        }
+        
+        li:hover {
+            color: var(--gray-900);
+            transform: translateX(4px);
+        }
+        
+        ul li::before {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 0.75rem;
+            width: 8px;
+            height: 8px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            transition: all var(--transition-base);
+        }
+        
+        li:hover::before {
+            transform: scale(1.5);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Ultra-Premium Callouts */
+        .callout {
+            display: flex;
+            padding: 2rem 2.5rem;
+            border-radius: 1.25rem;
+            margin: 2.5rem 0;
+            align-items: flex-start;
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        .callout::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .callout:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .callout-icon {
+            font-size: 2rem;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            animation: float-icon 3s ease-in-out infinite;
+        }
+        
+        @keyframes float-icon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .callout-info {
+            background: linear-gradient(135deg, rgba(219, 234, 254, 0.9) 0%, rgba(191, 219, 254, 0.85) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
+        }
+        
+        .callout-tip {
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.9) 0%, rgba(253, 230, 138, 0.85) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.15);
+        }
+        
+        .callout-warning {
+            background: linear-gradient(135deg, rgba(254, 226, 226, 0.9) 0%, rgba(254, 202, 202, 0.85) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.15);
+        }
+        
+        .callout-success {
+            background: linear-gradient(135deg, rgba(198, 246, 213, 0.9) 0%, rgba(167, 243, 208, 0.85) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+        }
+        
+        /* Premium Tables */
+        .table-container {
+            margin: 2.5rem 0;
+            border-radius: 1.25rem;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all var(--transition-base);
+        }
+        
+        .table-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9375rem;
+        }
+        
+        th {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+        
+        th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--gray-700);
+            transition: all var(--transition-fast);
+        }
+        
+        tr {
+            transition: all var(--transition-fast);
+        }
+        
+        tr:hover td {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.05) 0%, rgba(99, 102, 241, 0.08) 100%);
+            color: var(--gray-900);
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Premium Checklist */
+        .checklist {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 250, 251, 0.95) 100%);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            margin: 2.5rem 0;
+            box-shadow: 
+                0 20px 40px rgba(99, 102, 241, 0.08),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .checklist::before {
+            content: '✓';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            font-size: 15rem;
+            color: rgba(99, 102, 241, 0.05);
+            transform: rotate(-15deg);
+            pointer-events: none;
+        }
+        
+        .checklist h3, .checklist h4 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            transition: all var(--transition-base);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border-left: 3px solid transparent;
+        }
+        
+        .checklist-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: left var(--transition-slow);
+        }
+        
+        .checklist-item:hover {
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateX(8px);
+        }
+        
+        .checklist-item:hover::before {
+            left: 100%;
+        }
+        
+        .checkbox {
+            width: 1.75rem;
+            height: 1.75rem;
+            border: 2.5px solid var(--primary);
+            border-radius: 0.5rem;
+            margin-right: 1.25rem;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.9);
+            position: relative;
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+        
+        .checklist-item:hover .checkbox {
+            border-color: var(--primary-dark);
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(99, 102, 241, 0.2);
+        }
+        
+        .checklist-item:active .checkbox {
+            transform: scale(0.95);
+        }
+        
+        .checkbox::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+            color: #10b981;
+            font-weight: 900;
+            font-size: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+        }
+        
+        .checklist-item.checked .checkbox {
+            background: #10b981;
+            border-color: #10b981;
+            transform: scale(1);
+        }
+        
+        .checklist-item.checked .checkbox::after {
+            transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            opacity: 1;
+            color: white;
+        }
+        
+        .checklist-item.checked {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.04) 100%);
+            border-left: 3px solid #10b981;
+            padding-left: calc(1.25rem - 3px);
+        }
+        
+        .checklist-item.checked span {
+            color: var(--gray-600);
+            position: relative;
+        }
+        
+        .checklist-item span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .checklist-item span::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gray-400);
+            transform-origin: left;
+            transition: width 0.3s ease-out 0.1s;
+        }
+        
+        .checklist-item.checked span::after {
+            width: 100%;
+        }
+        
+        /* Premium Blockquotes */
+        blockquote {
+            border-left: 5px solid transparent;
+            border-image: var(--gradient-primary);
+            border-image-slice: 1;
+            padding: 2rem 2.5rem;
+            margin: 2.5rem 0;
+            font-style: italic;
+            color: var(--gray-800);
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(249, 250, 251, 0.85) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 0 1.25rem 1.25rem 0;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.08);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        blockquote::before {
+            content: '"';
+            position: absolute;
+            top: -0.5rem;
+            left: 1.5rem;
+            font-size: 5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Georgia', serif;
+            opacity: 0.3;
+        }
+        
+        blockquote:hover {
+            transform: translateX(8px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.12);
+        }
+        
+        /* Code blocks */
+        pre {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%);
+            color: #e2e8f0;
+            padding: 2rem;
+            border-radius: 1rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            font-family: 'JetBrains Mono', 'SF Mono', Monaco, monospace;
+            font-size: 0.875rem;
+            line-height: 1.8;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            font-weight: 500;
+        }
+        
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0.75rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        pre::before {
+            content: '● ● ●';
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+            letter-spacing: 0.5rem;
+        }
+        
+        /* Premium Dividers */
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(99, 102, 241, 0.2), 
+                rgba(236, 72, 153, 0.2),
+                rgba(99, 102, 241, 0.2),
+                transparent
+            );
+            margin: 5rem auto;
+            max-width: 50%;
+            position: relative;
+            overflow: visible;
+        }
+        
+        hr::before {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--light);
+            padding: 0 1.5rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+            50% { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+            }
+        }
+        
+        /* Page Headers */
+        .page-header {
+            background: var(--gradient-dark);
+            color: white;
+            padding: 5rem;
+            margin: -5rem -5rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 70% 80%, rgba(236, 72, 153, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 50% 20%, rgba(20, 184, 166, 0.25) 0%, transparent 50%);
+            filter: blur(60px);
+            animation: morph 15s ease-in-out infinite;
+        }
+        
+        .page-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.02) 35px, rgba(255,255,255,.02) 70px);
+            z-index: 1;
+        }
+        
+        .page-header h1 {
+            position: relative;
+            color: white;
+            margin: 0;
+            font-size: 3.5rem;
+            -webkit-text-fill-color: white;
+            z-index: 2;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .page-header .subtitle {
+            font-size: 1.375rem;
+            opacity: 0.95;
+            margin-top: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Contact Card */
+        .contact-card {
+            background: var(--gradient-dark);
+            color: white;
+            padding: 4rem;
+            border-radius: 2rem;
+            text-align: center;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            transform: translateY(0);
+            transition: all var(--transition-slow);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+        }
+        
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.3) 0%, transparent 50%);
+            filter: blur(60px);
+            animation: morph 20s ease-in-out infinite reverse;
+        }
+        
+        .contact-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        
+        .contact-card h3 {
+            color: white;
+            margin-bottom: 2rem;
+            position: relative;
+            font-size: 2.25rem;
+            z-index: 2;
+            letter-spacing: -0.02em;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .contact-card p {
+            color: white;
+            margin-bottom: 1rem;
+            position: relative;
+            font-size: 1.25rem;
+            z-index: 2;
+            opacity: 0.95;
+        }
+        
+        /* Personal Message Box */
+        .personal-box {
+            background: var(--gradient-warm);
+            color: white;
+            border-radius: 1.75rem;
+            padding: 3.5rem;
+            margin: 3rem 0;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(245, 158, 11, 0.25);
+            overflow: hidden;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            transform: translateY(0);
+            transition: all var(--transition-slow);
+        }
+        
+        .personal-box:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 40px 80px rgba(245, 158, 11, 0.3);
+        }
+        
+        .personal-box::before {
+            content: '💛';
+            position: absolute;
+            top: -2rem;
+            right: 2.5rem;
+            font-size: 5rem;
+            opacity: 0.2;
+            transform: rotate(-15deg);
+            transition: all var(--transition-slow);
+            animation: float-icon 3s ease-in-out infinite;
+        }
+        
+        .personal-box:hover::before {
+            transform: rotate(-10deg) scale(1.2);
+            opacity: 0.3;
+        }
+        
+        .personal-box h2 {
+            color: white;
+            margin-top: 0;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .personal-box h2::before {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        .personal-box p {
+            color: white;
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Premium Tags */
+        .tag {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.9) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1.5px solid rgba(99, 102, 241, 0.3);
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            margin-right: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all var(--transition-base);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tag::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+            transition: all var(--transition-slow);
+            transform: translate(-50%, -50%);
+        }
+        
+        .tag:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+        
+        .tag:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .tag-primary {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.1) 100%);
+            color: var(--primary-dark);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+        
+        .tag-primary:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(99, 102, 241, 0.2) 100%);
+            color: var(--primary-dark);
+        }
+        
+        .tag-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%);
+            color: #059669;
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+        
+        .tag-success:hover {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0.2) 100%);
+            color: #047857;
+        }
+        
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        /* Premium Feature Boxes */
+        .feature-box {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.9) 100%);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-radius: 1.5rem;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            transition: all var(--transition-slow);
+            box-shadow: 
+                0 10px 30px rgba(99, 102, 241, 0.08),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-box::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 40%);
+            transition: all var(--transition-slower);
+            transform: scale(0);
+        }
+        
+        .feature-box:hover::before {
+            transform: scale(1);
+            top: -50%;
+            left: -50%;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 25px 50px rgba(99, 102, 241, 0.15),
+                inset 0 1px 3px rgba(255, 255, 255, 1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 250, 251, 0.95) 100%);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .feature-box .icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.25rem;
+            transition: all var(--transition-slow);
+            display: inline-block;
+        }
+        
+        .feature-box:hover .icon {
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 10px 20px rgba(99, 102, 241, 0.3));
+        }
+        
+        /* Performance optimizations */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .cover::before,
+            body::before,
+            .content::before {
+                animation: none !important;
+            }
+            
+            .cover-content,
+            .card,
+            .feature-box {
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
+            }
+        }
+        
+        /* Force GPU acceleration for smooth animations */
+        .cover::before,
+        .cover .emoji,
+        .cover-content,
+        body::before,
+        .content::before {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .grid, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 3rem 2rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .cover h1 {
+                font-size: 4rem;
+            }
+        }
+        
+        /* Ensure checked state is visible even on initial load */
+        .checklist-item.checked .checkbox {
+            background: #10b981 !important;
+            border-color: #10b981 !important;
+        }
+        
+        .checklist-item.checked .checkbox::after {
+            transform: translate(-50%, -50%) scale(1) rotate(0deg) !important;
+            opacity: 1 !important;
+        }
+        @media print {
+            body {
+                font-size: 14px;
+            }
+            
+            .page {
+                box-shadow: none !important;
+            }
+            
+            .content {
+                padding: 60px;
+            }
+            
+            /* Simplify gradients for print */
+            h1, h2, h3, h4 {
+                -webkit-text-fill-color: var(--gray-900) !important;
+                background: none !important;
+            }
+            
+            /* Reduce visual complexity */
+            .card, .callout, .table-container, .checklist, .feature-box {
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            
+            /* Ensure proper page breaks */
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+            
+            .card, .callout, .table-container {
+                page-break-inside: avoid;
+            }
+        }
+        .progress-container {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            transition: width 0.4s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shimmerProgress 2s linear infinite;
+        }
+        
+        @keyframes shimmerProgress {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        .progress-text {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            white-space: nowrap;
+        }
+        
+        .checklist.all-completed .progress-text {
+            color: #10b981;
+        }
+        
+        /* Stimming Examples Grid */
+        .stimming-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .stimming-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 1.25rem;
+            padding: 2rem;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stimming-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.12);
+        }
+        
+        .stimming-card .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .stimming-card h4 {
+            font-size: 1.25rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.75rem;
+        }
+        
+        .stimming-card p {
+            font-size: 0.9375rem;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Premium Cover Page -->
+    <div class="page cover" id="cover">
+        <div class="cover-content">
+            <div class="emoji">🌟</div>
+            <h1>Autisme og Stimming</h1>
+            <p class="subtitle">En omfattende guide for foreldre og fagfolk</p>
+        </div>
+        <div class="meta">
+            Utarbeidet av Quentin Thiessen<br>
+            27. mai 2025
+        </div>
+    </div>
+    
+    <!-- Content Pages -->
+    <div class="page content" id="introduction">
+        <h1 id="introduksjon" class="fade-in">Introduksjon</h1>
+        <p class="intro-text fade-in">
+            Stimming – eller selvstimulerende atferd – er kanskje en av de mest misforståtte aspektene ved autisme. For mange foreldre og fagfolk kan det virke forvirrende eller til og med bekymringsfullt når et barn rocker frem og tilbake, vifter med hendene eller gjentar samme lyd om og om igjen. Men hva om jeg fortalte deg at stimming faktisk er kroppens geniale måte å regulere seg selv på? I denne guiden utforsker vi hva stimming virkelig er, hvorfor det er så viktig for autistiske personer, og hvordan vi som støttepersoner kan forstå og respektere denne naturlige delen av autistisk væremåte.
+        </p>
+
+        <h2 id="hva-er-stimming" class="fade-in">Hva er stimming?</h2>
+        
+        <p class="fade-in">
+            Stimming er en forkortelse for "selvstimulerende atferd" – repeterende bevegelser, lyder eller handlinger som en person gjør for å regulere sine sanseinntrykk eller følelser. Tenk på det som kroppens innebygde termostat: Når systemet blir overopphetet (for mange inntrykk) eller underkjølt (for lite stimulering), justerer stimming temperaturen tilbake til behagelig nivå.
+        </p>
+        
+        <div class="callout callout-info fade-in">
+            <div class="callout-icon">💡</div>
+            <div>
+                <strong>Visste du dette?</strong> Alle mennesker stimmer! Når du klikker med en penn, tramper med foten til musikk eller tvinner håret rundt fingeren, driver du med stimming. Forskjellen er at autistiske personer ofte har et større behov for denne type regulering, og deres stimming kan være mer synlig eller intens.
+            </div>
+        </div>
+        
+        <p class="fade-in">
+            For autistiske personer er stimming ikke bare en vane – det er et viktig verktøy for å navigere i en verden som ofte kan føles overveldende. Forskning viser at stimming aktiverer kroppens parasympatiske nervesystem, som hjelper med å redusere stress og øke følelsen av trygghet.
+        </p>
+
+        <h2 id="hvorfor-stimmer-autistiske" class="fade-in">Hvorfor stimmer autistiske personer?</h2>
+        
+        <div class="grid fade-in">
+            <div class="card card-gradient">
+                <h4>🎯 Sensorisk regulering</h4>
+                <p>Når hjernen blir overveldet av sanseinntrykk, fungerer stimming som en ventil som slipper ut trykket. Det hjelper med å filtrere og organisere all informasjonen som strømmer inn.</p>
+            </div>
+            
+            <div class="card card-gradient">
+                <h4>😊 Glede og entusiasme</h4>
+                <p>Stimming er ikke alltid knyttet til stress! Mange autistiske personer stimmer når de er glade, begeistrede eller dypt engasjerte i noe de elsker.</p>
+            </div>
+        </div>
+        
+        <div class="grid fade-in">
+            <div class="card card-gradient">
+                <h4>🧘 Konsentrasjon og fokus</h4>
+                <p>Repeterende bevegelser kan faktisk øke konsentrasjonen ved å gi hjernen et stabilt, forutsigbart input som blokkerer ut distraksjoner.</p>
+            </div>
+            
+            <div class="card card-gradient">
+                <h4>💬 Kommunikasjon</h4>
+                <p>For noen er stimming en måte å uttrykke følelser eller behov på når ord ikke strekker til. En spesifikk bevegelse kan bety "jeg er overveldet" eller "dette er fantastisk!"</p>
+            </div>
+        </div>
+
+        <h3 id="nevrologisk-grunnlag" class="fade-in">Det nevrologiske grunnlaget</h3>
+        
+        <div class="card fade-in" style="margin-top: 32px;">
+            <h4>🧠 Hva skjer i hjernen?</h4>
+            <p>Nyere forskning med fMRI-skanning viser at stimming aktiverer flere områder i hjernen samtidig:</p>
+            <ul>
+                <li><strong>Basalgangliene:</strong> Regulerer motoriske bevegelser og vaner</li>
+                <li><strong>Cerebellum:</strong> Koordinerer bevegelse og balanse</li>
+                <li><strong>Sensorisk cortex:</strong> Prosesserer taktile og proprioseptive signaler</li>
+                <li><strong>Limbiske systemet:</strong> Regulerer følelser og stressrespons</li>
+            </ul>
+            <p>Denne koordinerte aktiveringen skaper en "nevrologisk harmoni" som hjelper med selvregulering.</p>
+        </div>
+    </div>
+    
+    <div class="page content page-break" id="types-section">
+        <h2 id="typer-stimming" class="fade-in">Ulike typer stimming</h2>
+        
+        <p class="fade-in">
+            Stimming kommer i mange former, og hver person har sitt unike repertoar. Her er de vanligste kategoriene:
+        </p>
+        
+        <div class="stimming-grid fade-in">
+            <div class="stimming-card">
+                <span class="emoji">👐</span>
+                <h4>Visuelle stims</h4>
+                <p>Stirre på lys, vifte med fingre foran øynene, se på roterende objekter, ordne ting i mønstre</p>
+            </div>
+            
+            <div class="stimming-card">
+                <span class="emoji">🎵</span>
+                <h4>Auditive stims</h4>
+                <p>Nynne, gjenta ord eller fraser (echolalia), lage lyder, klikke med tungen, lytte til samme sang</p>
+            </div>
+            
+            <div class="stimming-card">
+                <span class="emoji">🤸</span>
+                <h4>Vestibulære stims</h4>
+                <p>Gynge, snurre rundt, hoppe, vippe på stolen, gå på tå</p>
+            </div>
+            
+            <div class="stimming-card">
+                <span class="emoji">✋</span>
+                <h4>Taktile stims</h4>
+                <p>Gni på tekstiler, klemme stressballer, berøre ulike overflater, leke med vann</p>
+            </div>
+            
+            <div class="stimming-card">
+                <span class="emoji">👃</span>
+                <h4>Olfaktoriske stims</h4>
+                <p>Lukte på objekter, mat eller personer, søke spesifikke dufter</p>
+            </div>
+            
+            <div class="stimming-card">
+                <span class="emoji">💪</span>
+                <h4>Proprioseptive stims</h4>
+                <p>Klemme seg selv, stramme muskler, bære tunge ting, presse ledd sammen</p>
+            </div>
+        </div>
+
+        <h3 id="happy-stims" class="fade-in">Happy Stims - Gledenes språk</h3>
+        
+        <div class="callout callout-success fade-in">
+            <div class="callout-icon">✨</div>
+            <div>
+                <strong>"Happy stims" er kanskje det vakreste uttrykket for autistisk glede!</strong><br>
+                Når en autistisk person flapper med hendene av begeistring, hopper opp og ned av glede, eller spinner rundt når de hører favorittsangen sin, er dette ren, ufiltrert lykke som kommer til uttrykk gjennom kroppen. Det er som om gleden er så stor at den må ut fysisk!
+            </div>
+        </div>
+
+        <h2 id="myter-og-misforstaelser" class="fade-in">Myter og misforståelser</h2>
+
+        <div class="table-container fade-in">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40%">Myte</th>
+                        <th style="width: 60%">Virkelighet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>"Stimming bør stoppes"</strong></td>
+                        <td>Stimming er en viktig selvregulerings­mekanisme. Å stoppe det kan føre til økt stress og dårligere funksjon</td>
+                    </tr>
+                    <tr>
+                        <td><strong>"Stimming er meningsløst"</strong></td>
+                        <td>Hver stim har en funksjon - enten sensorisk regulering, kommunikasjon eller følelsesuttrykk</td>
+                    </tr>
+                    <tr>
+                        <td><strong>"Barn vokser av seg stimming"</strong></td>
+                        <td>Behovet for stimming følger ofte personen livet ut, men kan endre form over tid</td>
+                    </tr>
+                    <tr>
+                        <td><strong>"Stimming = distress"</strong></td>
+                        <td>Stimming kan uttrykke alt fra glede til stress - kontekst er nøkkelen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>"Quiet hands er målet"</strong></td>
+                        <td>Å tvinge hender til å være stille ("quiet hands") kan være skadelig og undertrykker naturlig kommunikasjon</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <h2>Når kan stimming være problematisk?</h2>
+
+        <p>Selv om stimming generelt er positivt og nødvendig, finnes det situasjoner hvor det kan være behov for støtte:</p>
+
+        <div class="callout callout-warning">
+            <div class="callout-icon">⚠️</div>
+            <div>
+                <h4>Selvskadende stimming</h4>
+                <p>Hvis stimming fører til fysisk skade (banking av hodet, biting, hard klyping), er det viktig å:</p>
+                <ul>
+                    <li>Finne tryggere alternativer som gir lignende sensorisk input</li>
+                    <li>Undersøke underliggende årsaker (smerte, frustrasjon, overstimulering)</li>
+                    <li>Arbeide med ergoterapeut for å utvikle erstatningsstrategier</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card card-gradient">
+                <h4>🚫 Sosialt isolerende</h4>
+                <p>Hvis stimming blir så intens at det hindrer sosial deltakelse eller læring, kan det være nyttig å:</p>
+                <ul>
+                    <li>Skape dedikerte "stim-pauser"</li>
+                    <li>Finne mer diskrete stim-alternativer for visse settinger</li>
+                    <li>Øve på å gjenkjenne når kroppen trenger regulering</li>
+                </ul>
+            </div>
+            
+            <div class="card card-gradient">
+                <h4>⏰ Tidskrevende</h4>
+                <p>Når stimming tar opp mesteparten av dagen:</p>
+                <ul>
+                    <li>Se etter underliggende stress eller angst</li>
+                    <li>Vurder om miljøet er for krevende</li>
+                    <li>Lag en balansert dagsplan med stim-tid inkludert</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="page content page-break">
+        <h2>Hvordan støtte stimming på en positiv måte</h2>
+
+        <div class="checklist">
+            <h3>✅ For foreldre</h3>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Aksepter og normaliser stimming hjemme</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Lag et "stim-vennlig" rom med ulike sensoriske materialer</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Lær å gjenkjenne forskjellen på "happy stims" og stress-stims</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Involver barnet i å finne akseptable stim-alternativer for ulike settinger</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Forklar stimming til søsken og andre familiemedlemmer</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Dokumenter hvilke stims som hjelper i hvilke situasjoner</span>
+            </div>
+        </div>
+
+        <h3>Lage et stim-kit</h3>
+
+        <div class="card card-gradient">
+            <h4>🎒 Hva bør være med i et bærbart stim-kit?</h4>
+            
+            <div class="grid-3" style="margin-top: 24px;">
+                <div>
+                    <strong>Taktilt:</strong>
+                    <ul>
+                        <li>Stressball</li>
+                        <li>Fidget cube</li>
+                        <li>Tangle toy</li>
+                        <li>Putty/slim</li>
+                        <li>Tekstilbit med fin tekstur</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong>Visuelt:</strong>
+                    <ul>
+                        <li>Glitterflaske</li>
+                        <li>Kaleidoskop</li>
+                        <li>Flippende paljettbok</li>
+                        <li>Mini lavalamp</li>
+                        <li>Regnbue-slinky</li>
+                    </ul>
+                </div>
+                <div>
+                    <strong>Auditivt:</strong>
+                    <ul>
+                        <li>Noise-cancelling hodetelefoner</li>
+                        <li>White noise app</li>
+                        <li>Klikke-penn (lydløs)</li>
+                        <li>Musikkspiller med favorittlåter</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h3>Stimming i skolen</h3>
+
+        <div class="card card-gradient" style="margin: 32px 0;">
+            <h4>📚 Samarbeid med skolen</h4>
+            
+            <p style="margin-bottom: 24px;">For at barnet skal kunne stimme trygt i skolemiljøet, er det viktig med god dialog:</p>
+            
+            <div class="checklist" style="background: rgba(255, 255, 255, 0.8); margin-top: 20px;">
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <span><strong>Informer lærere</strong> om hva stimming er og hvorfor det er viktig</span>
+                </div>
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <span><strong>Lag en "stim-plan"</strong> som del av barnets IOP (Individuell opplæringsplan)</span>
+                </div>
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <span><strong>Identifiser akseptable stim-objekter</strong> for klasserommet</span>
+                </div>
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <span><strong>Avtal stim-pauser</strong> når barnet trenger det</span>
+                </div>
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <span><strong>Diskuter strategier</strong> for å håndtere kommentarer fra medelever</span>
+                </div>
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <span><strong>Sørg for at vikarer</strong> også får informasjon om barnets behov</span>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2>Å lære barnet om egen stimming</h2>
+
+        <p>Det er viktig at autistiske barn utvikler selvbevissthet og stolthet rundt sin stimming:</p>
+
+        <div class="grid">
+            <div class="feature-box">
+                <div class="icon">💭</div>
+                <h4>Selvbevissthet</h4>
+                <ul>
+                    <li>Hjelp barnet sette ord på hvordan stimming føles</li>
+                    <li>Utforsk sammen når de føler behov for å stimme</li>
+                    <li>Lag en "kropp-sjekk" rutine: Hvordan har jeg det nå?</li>
+                </ul>
+            </div>
+            
+            <div class="feature-box">
+                <div class="icon">🎯</div>
+                <h4>Valgmuligheter</h4>
+                <ul>
+                    <li>Vis at de har kontroll over egen stimming</li>
+                    <li>Øv på å velge passende stims for ulike situasjoner</li>
+                    <li>Respekter deres valg når det er trygt</li>
+                </ul>
+            </div>
+            
+            <div class="feature-box">
+                <div class="icon">💪</div>
+                <h4>Selvforsvar</h4>
+                <ul>
+                    <li>Øv på enkle forklaringer til jevnaldrende</li>
+                    <li>"Dette hjelper hjernen min å fungere bedre"</li>
+                    <li>Bygg stolthet over egen nevrodiversitet</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: 32px;">
+            <div class="callout-icon">💡</div>
+            <div>
+                <strong>Tips for samtaler om stimming:</strong>
+                <ul style="margin-top: 8px; margin-bottom: 0;">
+                    <li>Bruk positive ord: "regulering", "hjelp til hjernen", "kroppen din er smart"</li>
+                    <li>Sammenlign med ting alle gjør: "Som når pappa rister på beinet når han konsentrerer seg"</li>
+                    <li>Fokuser på funksjon, ikke utseende: "Hva hjelper denne bevegelsen deg med?"</li>
+                    <li>Valider følelser: "Jeg ser at flappingen hjelper deg når du er glad!"</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="page content page-break">
+        <h2>Stimming gjennom livsløpet</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Alder</th>
+                        <th>Typiske stims</th>
+                        <th>Fokusområder</th>
+                        <th>Støttestrategier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tag tag-primary">0-3 år</span></td>
+                        <td>Gynging, banking, munnlige stims</td>
+                        <td>Sikkerhet og utforsking</td>
+                        <td>Sikre miljøet, tilby varierte teksturer</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-primary">4-6 år</span></td>
+                        <td>Håndflatting, hopping, echolalia</td>
+                        <td>Sosial bevissthet begynner</td>
+                        <td>Introduser stim-leker, øv på "hvor og når"</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-primary">7-12 år</span></td>
+                        <td>Mer komplekse bevegelser, objektfokus</td>
+                        <td>Balanse mellom behov og sosial aksept</td>
+                        <td>Utvikle stim-kit, bygge selvforståelse</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-primary">Tenår</span></td>
+                        <td>Ofte mer diskrete stims, musikk-fokus</td>
+                        <td>Identitet og tilhørighet</td>
+                        <td>Støtte selvaksept, finne "din stamme"</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag tag-primary">Voksen</span></td>
+                        <td>Individuelt tilpassede strategier</td>
+                        <td>Arbeidsliv og relasjoner</td>
+                        <td>Workplace accommodations, åpenhet</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Når stimming endrer seg</h3>
+
+        <div class="card card-gradient">
+            <h4>🔄 Naturlige endringer</h4>
+            <p>Det er helt normalt at stimmingmønstre endrer seg over tid. Dette kan skyldes:</p>
+            <ul>
+                <li><strong>Utvikling:</strong> Hjernen modnes og behov endres</li>
+                <li><strong>Miljøskifte:</strong> Ny skole, jobb eller bosted</li>
+                <li><strong>Økt selvbevissthet:</strong> Særlig i tenårene</li>
+                <li><strong>Nye interesser:</strong> Kan føre til nye typer stims</li>
+                <li><strong>Stress-nivå:</strong> Mer stress = ofte mer intense stims</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2>Forskning og fremtid</h2>
+
+        <div class="callout callout-success">
+            <div class="callout-icon">🔬</div>
+            <div>
+                <h4>Hva sier den nyeste forskningen?</h4>
+                <p>De siste årenes studier har revolusjonert vår forståelse av stimming:</p>
+                <ul>
+                    <li><strong>2023 MIT-studie:</strong> Stimming aktiverer samme belønningssenter i hjernen som mosjon</li>
+                    <li><strong>UK Autism Study 2024:</strong> 87% av autistiske voksne rapporterer at stimming forbedrer deres livskvalitet</li>
+                    <li><strong>Neuroimaging 2024:</strong> Stimming øker produksjon av dopamin og serotonin</li>
+                    <li><strong>Longitudinal Study 2023:</strong> Barn som får stimme fritt viser bedre emosjonell regulering som voksne</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Paradigmeskiftet</h3>
+
+        <p>Vi ser nå et stort skifte i hvordan fagfeltet forholder seg til stimming:</p>
+
+        <div class="grid">
+            <div class="card">
+                <h4>Fra: Atferd som må stoppes ❌</h4>
+                <ul>
+                    <li>Fokus på "normal" fremtoning</li>
+                    <li>Quiet hands metodikk</li>
+                    <li>Straff for stimming</li>
+                    <li>Skam og skjuling</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h4>Til: Naturlig selvregulering ✅</h4>
+                <ul>
+                    <li>Aksept og forståelse</li>
+                    <li>Tilrettelegging og støtte</li>
+                    <li>Stim-vennlige miljøer</li>
+                    <li>Stolthet og åpenhet</li>
+                </ul>
+            </div>
+        </div>
+
+        <blockquote>
+            "Stimming er ikke et problem som skal løses, men et språk som skal forstås og respekteres. Når vi endrer vårt perspektiv fra 'stopp den atferden' til 'hva forteller denne atferden meg?', åpner vi døren for genuin forståelse og støtte."
+            <br><em>- Dr. Steven Kapp, autistisk forsker</em>
+        </blockquote>
+    </div>
+
+    <div class="page content page-break">
+        <h2>Praktiske øvelser for å forstå stimming bedre</h2>
+
+        <div class="checklist">
+            <h3>🎯 Observasjonsøvelse for foreldre</h3>
+            <p style="margin-bottom: 20px;">Bruk en uke på å observere og notere barnets stimmingmønstre:</p>
+            
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Mandag: Noter hvilke stims du ser i løpet av dagen</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Tirsdag: Observer når stimmingen øker/minker</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Onsdag: Legg merke til "happy stims" vs stress-stims</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Torsdag: Se etter mønstre i tid på dagen</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Fredag: Noter hvilke miljøer som trigger mer/mindre stimming</span>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <span>Helg: Reflekter over ukens observasjoner</span>
+            </div>
+        </div>
+
+        <h3>Empatiøvelse: Prøv det selv!</h3>
+
+        <div class="card card-gradient">
+            <h4>🤝 Forstå behovet gjennom egen erfaring</h4>
+            <p>For å virkelig forstå hvorfor stimming føles godt og nødvendig, prøv disse øvelsene:</p>
+            
+            <ol style="margin-top: 20px;">
+                <li><strong>Konsentrasjonstest:</strong> Neste gang du skal fokusere hardt på noe, legg merke til om du automatisk begynner å klikke med penn, riste på foten eller lignende.</li>
+                
+                <li><strong>Glede-eksperiment:</strong> Når du får fantastiske nyheter, legg merke til kroppens impuls - vil den hoppe, klemme noen, eller bevege seg?</li>
+                
+                <li><strong>Stress-observasjon:</strong> I en stressende situasjon, hva gjør kroppen din automatisk? Biter negler? Går frem og tilbake?</li>
+                
+                <li><strong>Tekstur-utforsking:</strong> Finn ulike teksturer (silke, sandpapir, pute) og kjenn hvordan ulike taktile input påvirker nervesystemet ditt.</li>
+            </ol>
+            
+            <p style="margin-top: 20px; font-style: italic;">Disse øvelsene hjelper deg forstå at stimming er universelt - forskjellen ligger i intensitet og hyppighet, ikke i selve behovet.</p>
+        </div>
+
+        <hr>
+
+        <h2>Ressurser og støtte</h2>
+
+        <div class="grid-3">
+            <div class="feature-box">
+                <div class="icon">📚</div>
+                <h4>Anbefalt lesing</h4>
+                <ul>
+                    <li>"Loud Hands: Autistic People, Speaking"</li>
+                    <li>"The Reason I Jump" - Naoki Higashida</li>
+                    <li>"Uniquely Human" - Barry Prizant</li>
+                </ul>
+            </div>
+            
+            <div class="feature-box">
+                <div class="icon">🌐</div>
+                <h4>Nettressurser</h4>
+                <ul>
+                    <li>ASAN - Autistic Self Advocacy Network</li>
+                    <li>Stimming.org</li>
+                    <li>Autismeforeningen Norge</li>
+                </ul>
+            </div>
+            
+            <div class="feature-box">
+                <div class="icon">👥</div>
+                <h4>Støttegrupper</h4>
+                <ul>
+                    <li>Facebook: "Foreldre til barn med autisme"</li>
+                    <li>Discord: Autisme Norge</li>
+                    <li>Lokale foreldregrupper</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <h3>Har du spørsmål?</h3>
+            <p style="font-size: 20px; margin-bottom: 16px;">📧 Quentinthiessen@outlook.com</p>
+            <p style="font-size: 20px;">📱 480 85 504</p>
+        </div>
+    </div>
+
+    <div class="page content page-break">
+        <div class="personal-box">
+            <h2>Personlig melding fra Quentin</h2>
+
+            <p>Som fagarbeider med spisskompetanse innen nevrodiversitet, har jeg sett hvordan synet på stimming har endret seg dramatisk de siste årene. Fra å bli sett på som "problematisk atferd" til å bli forstått som en vital del av autistisk selvregulering og uttrykk. Min forståelse kommer fra livserfaring - over halvparten av min primære sosialiseringsarena i oppveksten bestod av mennesker på autismespekteret, og mange av mine nærmeste i voksenlivet er også på spekteret.</p>
+
+            <p>Som en stolt del av topp 1% med ADHD, og med nevrodiversitet som hyperfiksjon gjennom hele livet, har jeg en dyp forståelse for hvor viktig det er med aksept og støtte. Gang på gang ser jeg den positive forskjellen det gjør når stimming blir møtt med forståelse og aksept fremfor korreksjon og skam. Barn blomstrer når de får være seg selv.</p>
+
+            <p>Min tilnærming er enkel: Hvis en atferd ikke skader barnet eller andre, og den hjelper barnet å regulere seg selv - da er det ikke en atferd vi skal "fikse". Det er en ressurs vi skal støtte og kanskje til og med lære av.</p>
+
+            <p>Husk at ditt autistiske barn navigerer i en verden som ofte ikke er designet for deres nevrologiske behov. Stimming er deres måte å skape balanse på. Ved å støtte og respektere dette, gir du dem et uvurderlig verktøy for livsmestring.</p>
+
+            <p>Ta gjerne kontakt hvis du har spørsmål eller trenger støtte. Ingen spørsmål er for små eller for store!</p>
+        </div>
+
+        <h3>🌟 Avsluttende tanker</h3>
+
+        <div class="intro-text">
+            <p style="margin-bottom: 20px;">Stimming er ikke bare "OK" - det er vakkert. Det er kroppens poesi, en dans av selvregulering, et språk som snakker når ord ikke strekker til.</p>
+            
+            <p style="margin-bottom: 20px;">Hver gang et autistisk barn flapper av glede, hver gang de gynger seg for å finne ro, hver gang de nynner sin favorittsang om og om igjen - det er ikke noe som skal skjules eller stoppes. Det er noe som skal ses, forstås og respekteres.</p>
+            
+            <p style="margin-bottom: 0;">La oss skape en verden hvor alle barn - uansett nevrologi - får lov til å uttrykke seg på sine egne, autentiske måter. For i den verden blir vi alle rikere.</p>
+        </div>
+
+        <hr>
+
+        <div class="callout callout-success" style="text-align: center;">
+            <div class="callout-icon">💝</div>
+            <div>
+                <h3 style="margin-bottom: 16px;">Til alle dere foreldre som kjemper for at barna deres skal få være seg selv:</h3>
+                <p style="font-size: 1.25rem; margin-bottom: 0;">Dere gjør en fantastisk jobb. Fortsett å stille spørsmål, fortsett å lære, og fortsett å elske barna deres for akkurat den de er. Det er den største gaven dere kan gi.</p>
+            </div>
+        </div>
+
+        <p style="text-align: right; margin-top: 40px;">
+            <em>Med varme hilsener,</em><br>
+            <strong>Quentin Thiessen</strong><br>
+            <em>Fagarbeider med spisskompetanse innen nevrodiversitet</em>
+        </p>
+    </div>
+    
+    <script>
+        // Interactive checklist functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const checklistItems = document.querySelectorAll('.checklist-item');
+            
+            checklistItems.forEach((item, index) => {
+                // Add click event listener
+                item.addEventListener('click', function() {
+                    const wasChecked = this.classList.contains('checked');
+                    this.classList.toggle('checked');
+                    
+                    const checkbox = this.querySelector('.checkbox');
+                    
+                    if (!wasChecked) {
+                        // Add success animation when checking
+                        checkbox.style.animation = 'checkSuccess 0.6s ease-out';
+                        
+                        // Add a subtle confetti effect
+                        createConfetti(checkbox);
+                    } else {
+                        // Add uncheck animation
+                        checkbox.style.animation = 'uncheckPulse 0.3s ease-out';
+                    }
+                    
+                    // Remove animation after it completes
+                    setTimeout(() => {
+                        checkbox.style.animation = '';
+                    }, 600);
+                    
+                    // Check if all items are checked
+                    checkAllCompleted();
+                    updateProgress();
+                });
+            });
+            
+            checkAllCompleted();
+            updateProgress();
+        });
+        
+        function createConfetti(element) {
+            const rect = element.getBoundingClientRect();
+            const confettiCount = 6;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = rect.left + rect.width / 2 + 'px';
+                confetti.style.top = rect.top + rect.height / 2 + 'px';
+                
+                // Calculate spread pattern
+                const angle = (i / confettiCount) * Math.PI * 2;
+                const distance = 40 + Math.random() * 20;
+                const xDistance = Math.cos(angle) * distance;
+                const yDistance = Math.sin(angle) * distance - 30;
+                
+                confetti.style.setProperty('--x-distance', xDistance + 'px');
+                confetti.style.setProperty('--y-distance', yDistance + 'px');
+                confetti.style.animationDelay = (i * 0.05) + 's';
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    if (confetti && confetti.parentNode) {
+                        confetti.remove();
+                    }
+                }, 1000);
+            }
+        }
+        
+        function updateProgress() {
+            document.querySelectorAll('.checklist').forEach(checklist => {
+                const items = checklist.querySelectorAll('.checklist-item');
+                const checkedItems = checklist.querySelectorAll('.checklist-item.checked');
+                const progress = items.length > 0 ? (checkedItems.length / items.length) * 100 : 0;
+                
+                // Update progress bar if it exists
+                let progressContainer = checklist.querySelector('.progress-container');
+                if (!progressContainer && items.length > 0) {
+                    // Create progress bar
+                    progressContainer = document.createElement('div');
+                    progressContainer.className = 'progress-container';
+                    progressContainer.innerHTML = `
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <span class="progress-text">${checkedItems.length}/${items.length} fullført</span>
+                    `;
+                    checklist.insertBefore(progressContainer, checklist.firstChild.nextSibling);
+                } else if (progressContainer) {
+                    // Update existing progress bar
+                    const progressFill = checklist.querySelector('.progress-fill');
+                    const progressText = checklist.querySelector('.progress-text');
+                    if (progressFill && progressText) {
+                        progressFill.style.width = progress + '%';
+                        progressText.textContent = `${checkedItems.length}/${items.length} fullført`;
+                    }
+                }
+            });
+        }
+        
+        function checkAllCompleted() {
+            const allItems = document.querySelectorAll('.checklist-item');
+            const checkedItems = document.querySelectorAll('.checklist-item.checked');
+            
+            if (allItems.length > 0 && allItems.length === checkedItems.length) {
+                // All items checked - show celebration
+                document.querySelectorAll('.checklist').forEach(checklist => {
+                    checklist.classList.add('all-completed');
+                });
+            } else {
+                document.querySelectorAll('.checklist').forEach(checklist => {
+                    checklist.classList.remove('all-completed');
+                });
+            }
+        }
+    </script>
+    
+    <style>
+        @keyframes checkSuccess {
+            0% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            25% {
+                transform: scale(0.9) rotate(-5deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(5deg);
+                box-shadow: 0 0 0 15px rgba(16, 185, 129, 0);
+            }
+            75% {
+                transform: scale(0.95) rotate(-2deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        
+        @keyframes uncheckPulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: confettiFly 1s ease-out forwards;
+            z-index: 1000;
+        }
+        
+        @keyframes confettiFly {
+            0% {
+                transform: translate(0, 0) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: 
+                    translateX(var(--x-distance))
+                    translateY(var(--y-distance))
+                    scale(0.3)
+                    rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .confetti:nth-child(odd) {
+            background: #10b981;
+        }
+        
+        .confetti:nth-child(even) {
+            background: #34d399;
+            width: 8px;
+            height: 8px;
+        }
+        
+        .checklist.all-completed {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.04) 100%);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        
+        .checklist.all-completed::after {
+            content: '🎉 Alt fullført!';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            font-weight: 600;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .checklist-item {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        /* Ensure progress bar doesn't interfere with clicks */
+        .progress-container {
+            pointer-events: none;
+        }
+        
+        .progress-text {
+            pointer-events: auto;
+        }
+    </style>
+</body>
+</html>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/layout/Header"; // Added import
+import SocketInitializer from "@/components/SocketInitializer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <SocketInitializer />
         <Header /> {/* Added Header */}
         <main className="pt-4"> {/* Added main tag with some padding */}
           {children}

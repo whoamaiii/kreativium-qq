@@ -1,0 +1,30 @@
+
+> kreativium-qq@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.3.2 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.3.1:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 616ms
+
+-----
+[1m[31mFATAL[39m[0m: An unexpected Turbopack error occurred. A panic log has been written to /var/folders/83/0hsrnl3x45580bzvtzcfcnvh0000gn/T/next-panic-c214a68140a8a926a7d1d61d3261a9f8.log.
+
+To help make Turbopack better, report this error by clicking here: https://github.com/vercel/next.js/discussions/new?category=turbopack-error-report&title=Turbopack%20Error%3A%20Next.js%20package%20not%20found&body=Turbopack%20version%3A%20%60v15.3.2%60%0A%0AError%20message%3A%0A%60%60%60%0ATurbopack%20Error%3A%20Next.js%20package%20not%20found%0A%60%60%60&labels=Turbopack,Turbopack%20Panic%20Backtrace
+-----
+
+[Error [TurbopackInternalError]: Next.js package not found
+
+Debug info:
+- Execution of get_entrypoints_with_issues_operation failed
+- Execution of EntrypointsOperation::new failed
+- Execution of Project::entrypoints failed
+- Execution of AppProject::routes failed
+- Execution of directory_tree_to_entrypoints_internal failed
+- Execution of directory_tree_to_loader_tree failed
+- Execution of get_next_package failed
+- Next.js package not found]
+[?25h

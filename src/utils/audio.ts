@@ -3,7 +3,7 @@
  * Based on the LitElement example implementation
  */
 
-export function createBlob(pcmData: Float32Array): MediaStream {
+export function createBlob(): MediaStream {
   // Convert Float32Array PCM data to a MediaStream blob
   // This is a simplified implementation - in practice you might need more sophisticated audio processing
   const canvas = document.createElement('canvas');
@@ -22,9 +22,7 @@ export function decode(base64Data: string): ArrayBuffer {
 
 export async function decodeAudioData(
   arrayBuffer: ArrayBuffer,
-  audioContext: AudioContext,
-  sampleRate: number,
-  channels: number
+  audioContext: AudioContext
 ): Promise<AudioBuffer> {
   return audioContext.decodeAudioData(arrayBuffer);
 }
