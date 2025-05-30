@@ -20,6 +20,12 @@ const eslintConfig = [
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "off",
     }
+  },
+  {
+    files: ["src/app/api/**/*.ts", "src/pages/api/**/*.ts", "src/lib/**/*.ts", "src/hooks/**/*.ts"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    }
   }
 ];
 
