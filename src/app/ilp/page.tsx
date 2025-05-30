@@ -1,20 +1,24 @@
-import prisma from "@/lib/prisma";
-import ILPClient from "./ILPClient";
+import { prisma } from "@/lib/prisma";
+import ILPClientEnhanced from "./ILPClientEnhanced";
 import { notFound } from "next/navigation";
 
-export default async function ILPPage({ searchParams }: { searchParams?: Promise<{ kidId?: string }> }) {
+export default async function ILPPage({ searchParams }: { searchParams?: Promise<{ kid?: string }> }) {
   try {
     // Await searchParams to avoid Next.js warning
     const params = await searchParams;
-    const kidIdParam = params?.kidId;
-    const targetKidId = kidIdParam ? parseInt(kidIdParam, 10) : 5; // Default to kid ID 5 (Alex)
-
-    if (isNaN(targetKidId)) {
-      notFound(); // Handle invalid kidId parameter
+    
+    // Resolve kidId from query param or get first kid
+    const queryKidId = Number(params?.kid);
+    const kidId = Number.isFinite(queryKidId) && queryKidId > 0
+      ? queryKidId
+      : (await prisma.kid.findFirst({ orderBy: { id: "asc" } }))?.id;
+    
+    if (!kidId) {
+      notFound(); // No kids exist in the system
     }
 
     const kidData = await prisma.kid.findUnique({
-      where: { id: targetKidId },
+      where: { id: kidId },
       include: {
         goals: {
           orderBy: { createdAt: 'desc' },
@@ -28,16 +32,21 @@ export default async function ILPPage({ searchParams }: { searchParams?: Promise
     });
 
     if (!kidData) {
-      // Log available kids for debugging
-      const allKids = await prisma.kid.findMany();
-      console.error(`Kid with ID ${targetKidId} not found. Available kids:`, allKids);
       notFound(); // Kid not found
     }
 
     // Flatten all entries from all goals for the main activity log table
     const allKidEntries = kidData.goals.flatMap((goal) => goal.entries);
 
-    return <ILPClient kidName={kidData.name} stars={kidData.stars} goals={kidData.goals} activities={allKidEntries} />;
+    return (
+      <ILPClientEnhanced 
+        kidName={kidData.name} 
+        kidId={kidData.id}
+        initialStars={kidData.stars} 
+        goals={kidData.goals} 
+        activities={allKidEntries} 
+      />
+    );
   } catch (error) {
     console.error('Error in ILPPage:', error);
     throw error; // Re-throw to show Next.js error page with details

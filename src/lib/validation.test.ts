@@ -119,13 +119,8 @@ describe('Validation Schemas', () => {
   describe('zEntryCreate', () => {
     it('should validate valid entry creation data', () => {
       const validData = {
-        kidId: 1,
-        activity: 'Math homework',
-        subject: 'Math',
-        status: 'completed',
-        due: '2024-01-01T10:00:00Z',
-        notes: 'Great work!',
-        delta: 10
+        delta: 10,
+        notes: 'Great work!'
       }
 
       const result = zEntryCreate.safeParse(validData)
@@ -137,9 +132,6 @@ describe('Validation Schemas', () => {
 
     it('should validate entry without optional fields', () => {
       const validData = {
-        kidId: 1,
-        activity: 'Math homework',
-        status: 'completed',
         delta: 10
       }
 
@@ -149,9 +141,8 @@ describe('Validation Schemas', () => {
 
     it('should reject missing required fields', () => {
       const invalidData = {
-        kidId: 1,
-        activity: 'Math homework'
-        // missing status and delta
+        notes: 'Some notes'
+        // missing delta
       }
 
       const result = zEntryCreate.safeParse(invalidData)
@@ -161,9 +152,6 @@ describe('Validation Schemas', () => {
         expect(result.error.issues).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
-              path: ['status']
-            }),
-            expect.objectContaining({
               path: ['delta']
             })
           ])
@@ -171,35 +159,28 @@ describe('Validation Schemas', () => {
       }
     })
 
-    it('should reject invalid kidId', () => {
+    it('should reject invalid delta type', () => {
       const invalidData = {
-        kidId: 0, // not positive
-        activity: 'Math homework',
-        status: 'completed',
-        delta: 10
+        delta: '10', // string instead of number
+        notes: 'Some notes'
       }
 
       const result = zEntryCreate.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
 
-    it('should reject empty activity', () => {
-      const invalidData = {
-        kidId: 1,
-        activity: '', // empty
-        status: 'completed',
-        delta: 10
+    it('should accept empty notes', () => {
+      const validData = {
+        delta: 10,
+        notes: '' // empty is ok for optional field
       }
 
-      const result = zEntryCreate.safeParse(invalidData)
-      expect(result.success).toBe(false)
+      const result = zEntryCreate.safeParse(validData)
+      expect(result.success).toBe(true)
     })
 
     it('should accept negative delta', () => {
       const validData = {
-        kidId: 1,
-        activity: 'Math homework',
-        status: 'incomplete',
         delta: -5
       }
 
@@ -207,17 +188,13 @@ describe('Validation Schemas', () => {
       expect(result.success).toBe(true)
     })
 
-    it('should reject invalid date format', () => {
-      const invalidData = {
-        kidId: 1,
-        activity: 'Math homework',
-        status: 'completed',
-        due: 'invalid-date',
-        delta: 10
+    it('should accept float delta as integer', () => {
+      const validData = {
+        delta: 10.0 // float that's actually an integer
       }
 
-      const result = zEntryCreate.safeParse(invalidData)
-      expect(result.success).toBe(false)
+      const result = zEntryCreate.safeParse(validData)
+      expect(result.success).toBe(true)
     })
   })
 })

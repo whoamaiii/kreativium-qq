@@ -3,20 +3,25 @@ import { awardStar, getKidStars, recalculateStars } from './stars'
 import { prisma } from '@/lib/prisma'
 
 // Mock Prisma
-vi.mock('@/lib/prisma', () => ({
-  prisma: {
+vi.mock('@/lib/prisma', () => {
+  const mockPrisma = {
+    $transaction: vi.fn(),
     goal: {
       findUnique: vi.fn(),
-      findMany: vi.fn(),
+      update: vi.fn(),
       count: vi.fn()
     },
     kid: {
       findUnique: vi.fn(),
       update: vi.fn()
-    },
-    $transaction: vi.fn()
+    }
   }
-}))
+  
+  return {
+    default: mockPrisma,
+    prisma: mockPrisma
+  }
+})
 
 // Mock Next.js cache revalidation
 vi.mock('next/cache', () => ({
@@ -33,7 +38,14 @@ describe('Star Awarding System', () => {
       const mockGoal = {
         id: 1,
         kidId: 1,
+        title: 'Test Goal',
+        desc: null,
         pct: 100,
+        pctComplete: 100,
+        targetXp: 100,
+        isCompleted: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         kid: { id: 1, name: 'Test Kid', stars: 0 }
       }
 
@@ -64,7 +76,14 @@ describe('Star Awarding System', () => {
       const mockGoal = {
         id: 1,
         kidId: 1,
+        title: 'Test Goal',
+        desc: null,
         pct: 75,
+        pctComplete: 75,
+        targetXp: 100,
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         kid: { id: 1, name: 'Test Kid', stars: 0 }
       }
 
@@ -81,7 +100,14 @@ describe('Star Awarding System', () => {
       const mockGoal = {
         id: 1,
         kidId: 1,
+        title: 'Test Goal',
+        desc: null,
         pct: 100,
+        pctComplete: 100,
+        targetXp: 100,
+        isCompleted: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         kid: { id: 1, name: 'Test Kid', stars: 1 }
       }
 
@@ -121,7 +147,14 @@ describe('Star Awarding System', () => {
       const mockGoal = {
         id: 3,
         kidId: 1,
+        title: 'Test Goal',
+        desc: null,
         pct: 100,
+        pctComplete: 100,
+        targetXp: 100,
+        isCompleted: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         kid: { id: 1, name: 'Test Kid', stars: 2 }
       }
 
@@ -156,7 +189,10 @@ describe('Star Awarding System', () => {
   describe('getKidStars', () => {
     it('should return the star count for a kid', async () => {
       vi.mocked(prisma.kid.findUnique).mockResolvedValue({
-        stars: 5
+        id: 1,
+        name: 'Test Kid',
+        stars: 5,
+        starTotal: 5
       })
 
       const stars = await getKidStars(1)
@@ -177,7 +213,8 @@ describe('Star Awarding System', () => {
       vi.mocked(prisma.kid.update).mockResolvedValue({
         id: 1,
         name: 'Test Kid',
-        stars: 4
+        stars: 4,
+        starTotal: 4
       })
 
       const stars = await recalculateStars(1)

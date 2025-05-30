@@ -12,4 +12,5 @@ if (process.env.NODE_ENV !== "production") {
   global.prisma = client;
 }
 
+export const prisma = client;
 export default client; 

@@ -13,6 +13,11 @@ export default function StarsIntegrationDemo() {
         title: "Complete Math Homework",
         desc: "Finish all assigned problems from Chapter 5",
         pct: 90,
+        pctComplete: 90,
+        targetXp: 100,
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         entries: []
       },
       {
@@ -21,6 +26,11 @@ export default function StarsIntegrationDemo() {
         title: "Read 20 Pages",
         desc: "Continue reading 'The Adventure Book'",
         pct: 75,
+        pctComplete: 75,
+        targetXp: 100,
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         entries: []
       },
       {
@@ -29,6 +39,11 @@ export default function StarsIntegrationDemo() {
         title: "Science Project",
         desc: "Build volcano model for science fair",
         pct: 40,
+        pctComplete: 40,
+        targetXp: 100,
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         entries: []
       }
     ],
@@ -41,6 +56,8 @@ export default function StarsIntegrationDemo() {
         subject: "Math",
         status: "IN_PROGRESS" as const,
         due: new Date("2025-06-01"),
+        notes: null,
+        delta: 10,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -52,6 +69,8 @@ export default function StarsIntegrationDemo() {
         subject: "English",
         status: "COMPLETED" as const,
         due: new Date("2025-05-30"),
+        notes: null,
+        delta: 15,
         createdAt: new Date(),
         updatedAt: new Date()
       }

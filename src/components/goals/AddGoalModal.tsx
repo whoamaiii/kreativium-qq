@@ -3,18 +3,7 @@
 import React, { useState } from 'react'
 import { z } from 'zod'
 import { zGoalCreate } from '@/lib/validation'
-
-interface Goal {
-  id: number
-  title: string
-  desc?: string | null
-  pct: number
-  pctComplete: number
-  isCompleted: boolean
-  kidId: number
-  createdAt: Date
-  updatedAt: Date
-}
+import type { Goal } from '@prisma/client'
 
 interface AddGoalModalProps {
   kidId: number

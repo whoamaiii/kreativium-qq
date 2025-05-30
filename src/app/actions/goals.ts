@@ -33,13 +33,13 @@ export async function updateGoalProgress(
     // Update the goal
     const updatedGoal = await prisma.goal.update({
       where: { id: goalId },
-      data: { pct: Math.round(newPercentage) }
+      data: { pctComplete: Math.round(newPercentage) }
     })
 
     let starsAwarded = 0
 
     // If goal reached 100%, award a star
-    if (updatedGoal.pct === 100) {
+    if (updatedGoal.pctComplete === 100) {
       const starResult = await awardStar(goalId)
       if (starResult.success) {
         starsAwarded = starResult.starsAwarded
@@ -53,7 +53,7 @@ export async function updateGoalProgress(
       success: true,
       goal: {
         id: updatedGoal.id,
-        pct: updatedGoal.pct
+        pct: updatedGoal.pctComplete
       },
       starsAwarded
     }
@@ -80,7 +80,8 @@ export async function createGoal(
         kidId,
         title,
         desc,
-        pct: 0
+        pct: 0,
+        pctComplete: 0
       }
     })
 

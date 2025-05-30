@@ -4,14 +4,19 @@ import { awardStar } from './stars'
 import { prisma } from '@/lib/prisma'
 
 // Mock dependencies
-vi.mock('@/lib/prisma', () => ({
-  prisma: {
+vi.mock('@/lib/prisma', () => {
+  const mockPrisma = {
     goal: {
       update: vi.fn(),
       create: vi.fn()
     }
   }
-}))
+  
+  return {
+    default: mockPrisma,
+    prisma: mockPrisma
+  }
+})
 
 vi.mock('./stars', () => ({
   awardStar: vi.fn()
@@ -33,7 +38,12 @@ describe('Goal Actions', () => {
         kidId: 1,
         title: 'Test Goal',
         desc: 'Test Description',
-        pct: 75
+        pct: 75,
+        pctComplete: 75,
+        targetXp: 100,
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
 
       vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal)
@@ -44,7 +54,7 @@ describe('Goal Actions', () => {
       expect(result.goal?.pct).toBe(75)
       expect(prisma.goal.update).toHaveBeenCalledWith({
         where: { id: 1 },
-        data: { pct: 75 }
+        data: { pctComplete: 75 }
       })
     })
 
@@ -54,7 +64,12 @@ describe('Goal Actions', () => {
         kidId: 1,
         title: 'Test Goal',
         desc: 'Test Description',
-        pct: 100
+        pct: 100,
+        pctComplete: 100,
+        targetXp: 100,
+        isCompleted: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
 
       vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal)
@@ -78,7 +93,12 @@ describe('Goal Actions', () => {
         kidId: 1,
         title: 'Test Goal',
         desc: 'Test Description',
-        pct: 95
+        pct: 95,
+        pctComplete: 95,
+        targetXp: 100,
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
 
       vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal)
@@ -106,7 +126,12 @@ describe('Goal Actions', () => {
         kidId: 1,
         title: 'Test Goal',
         desc: 'Test Description',
-        pct: 76
+        pct: 76,
+        pctComplete: 76,
+        targetXp: 100,
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
 
       vi.mocked(prisma.goal.update).mockResolvedValue(mockGoal)
@@ -115,7 +140,7 @@ describe('Goal Actions', () => {
 
       expect(prisma.goal.update).toHaveBeenCalledWith({
         where: { id: 1 },
-        data: { pct: 76 }
+        data: { pctComplete: 76 }
       })
     })
   })
@@ -127,7 +152,12 @@ describe('Goal Actions', () => {
         kidId: 1,
         title: 'New Goal',
         desc: 'Goal Description',
-        pct: 0
+        pct: 0,
+        pctComplete: 0,
+        targetXp: 100,
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
 
       vi.mocked(prisma.goal.create).mockResolvedValue(mockGoal)
@@ -141,7 +171,8 @@ describe('Goal Actions', () => {
           kidId: 1,
           title: 'New Goal',
           desc: 'Goal Description',
-          pct: 0
+          pct: 0,
+          pctComplete: 0
         }
       })
     })

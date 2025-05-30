@@ -12,7 +12,8 @@
     "test:specific": "vitest src/components/layout/Header.test.tsx --run",
     "e2e": "playwright test --config=playwright.config.ts",
     "prisma:seed": "prisma db seed",
-    "db:reset": "pnpm exec prisma migrate reset --force && node prisma/seed.ts"
+    "db:reset": "pnpm exec prisma migrate reset --force && node prisma/seed.ts",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@google/genai": "^1.0.1",
@@ -22,6 +23,9 @@
     "pdf-lib": "^1.17.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "ws": "^8.18.2",
     "zod": "^3.25.28"
   },
   "devDependencies": {
@@ -36,6 +40,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/ws": "^8.18.1",
     "@vitejs/plugin-react": "^4.4.1",
     "@vitest/ui": "^3.1.4",
     "eslint": "^9",

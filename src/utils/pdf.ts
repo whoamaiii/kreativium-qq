@@ -96,7 +96,7 @@ export async function makeIlpPdf(goals: Goal[], entries: Entry[]) {
       x += columnWidths[0];
 
       // Subject
-      currentPage.drawText(entry.subject, {
+      currentPage.drawText(entry.subject ?? 'Unknown subject', {
         x,
         y,
         size: 10,

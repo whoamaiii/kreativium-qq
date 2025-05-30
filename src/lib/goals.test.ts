@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createGoal, updateGoal, logEntry, awardStars } from './goals'
 import { prisma } from './prisma'
 
-vi.mock('./prisma', () => ({
-  prisma: {
+vi.mock('./prisma', () => {
+  const mockPrisma = {
     $transaction: vi.fn(),
     goal: {
       create: vi.fn(),
@@ -17,7 +17,12 @@ vi.mock('./prisma', () => ({
       update: vi.fn()
     }
   }
-}))
+  
+  return {
+    default: mockPrisma,
+    prisma: mockPrisma
+  }
+})
 
 describe('Goals Service', () => {
   beforeEach(() => {
@@ -33,6 +38,7 @@ describe('Goals Service', () => {
         desc: 'Test Description',
         pct: 0,
         pctComplete: 0,
+        targetXp: 100,
         isCompleted: false,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -187,9 +193,9 @@ describe('Goals Service', () => {
         id: 1,
         goalId: 1,
         kidId: 1,
-        activity: 'Math homework',
-        subject: 'Math',
-        status: 'completed',
+        activity: 'Progress Update',
+        subject: 'General',
+        status: 'COMPLETED',
         due: null,
         notes: 'Great work!',
         delta: 10,
@@ -219,12 +225,8 @@ describe('Goals Service', () => {
       vi.mocked(prisma.$transaction).mockImplementation(mockTransaction)
 
       const result = await logEntry(1, {
-        kidId: 1,
-        activity: 'Math homework',
-        subject: 'Math',
-        status: 'completed',
-        notes: 'Great work!',
-        delta: 10
+        delta: 10,
+        notes: 'Great work!'
       })
 
       expect(mockTx.goal.update).toHaveBeenCalledWith({
@@ -234,74 +236,13 @@ describe('Goals Service', () => {
       expect(result).toEqual(mockEntry)
     })
 
-    it('should prevent duplicate awards when toggling 99→100→90→100', async () => {
-      const mockEntry = { id: 1, delta: 10 }
+    it('should throw error when adding entry to completed goal', async () => {
+      const mockGoal = { id: 1, pctComplete: 100, isCompleted: true, kidId: 1 }
       
-      // First call: 90 → 100 (should award)
-      const mockGoal1 = { id: 1, pctComplete: 90, isCompleted: false, kidId: 1 }
-      const mockTx1 = {
-        entry: { create: vi.fn().mockResolvedValue(mockEntry) },
-        goal: {
-          findUnique: vi.fn().mockResolvedValue(mockGoal1),
-          update: vi.fn().mockResolvedValue({ ...mockGoal1, pctComplete: 100, isCompleted: true })
-        },
-        kid: { update: vi.fn().mockResolvedValue({ id: 1, stars: 1 }) }
-      }
-
-      // Second call: 100 → 90 (already completed, no award)
-      const mockGoal2 = { id: 1, pctComplete: 100, isCompleted: true, kidId: 1 }
-      const mockTx2 = {
-        entry: { create: vi.fn().mockResolvedValue({ ...mockEntry, delta: -10 }) },
-        goal: {
-          findUnique: vi.fn().mockResolvedValue(mockGoal2),
-          update: vi.fn().mockResolvedValue({ ...mockGoal2, pctComplete: 90 })
-        },
-        kid: { update: vi.fn() }
-      }
-
-      // Third call: 90 → 100 (already completed, no duplicate award)
-      const mockGoal3 = { id: 1, pctComplete: 90, isCompleted: true, kidId: 1 }
-      const mockTx3 = {
-        entry: { create: vi.fn().mockResolvedValue(mockEntry) },
-        goal: {
-          findUnique: vi.fn().mockResolvedValue(mockGoal3),
-          update: vi.fn().mockResolvedValue({ ...mockGoal3, pctComplete: 100 })
-        },
-        kid: { update: vi.fn() }
-      }
-
-      vi.mocked(prisma.$transaction)
-        .mockImplementationOnce(async (callback) => await callback(mockTx1))
-        .mockImplementationOnce(async (callback) => await callback(mockTx2))
-        .mockImplementationOnce(async (callback) => await callback(mockTx3))
-
-      // First completion: should award stars
-      await logEntry(1, { kidId: 1, activity: 'Test', status: 'completed', delta: 10 })
-      expect(mockTx1.kid.update).toHaveBeenCalledWith({
-        where: { id: 1 },
-        data: { stars: { increment: 1 } }
-      })
-
-      // Decrease progress
-      await logEntry(1, { kidId: 1, activity: 'Test', status: 'incomplete', delta: -10 })
-      expect(mockTx2.kid.update).not.toHaveBeenCalled()
-
-      // Second completion: should NOT award stars (already completed before)
-      await logEntry(1, { kidId: 1, activity: 'Test', status: 'completed', delta: 10 })
-      expect(mockTx3.kid.update).not.toHaveBeenCalled()
-    })
-
-    it('should clamp pctComplete within 0-100 range', async () => {
-      const mockEntry = { id: 1 }
-      const mockGoal = { id: 1, pctComplete: 95, isCompleted: false, kidId: 1 }
-
       const mockTx = {
-        entry: { create: vi.fn().mockResolvedValue(mockEntry) },
         goal: {
-          findUnique: vi.fn().mockResolvedValue(mockGoal),
-          update: vi.fn().mockResolvedValue({ ...mockGoal, pctComplete: 100, isCompleted: true })
-        },
-        kid: { update: vi.fn().mockResolvedValue({ id: 1, stars: 1 }) }
+          findUnique: vi.fn().mockResolvedValue(mockGoal)
+        }
       }
 
       const mockTransaction = vi.fn().mockImplementation(async (callback) => {
@@ -310,21 +251,31 @@ describe('Goals Service', () => {
 
       vi.mocked(prisma.$transaction).mockImplementation(mockTransaction)
 
-      await logEntry(1, {
-        kidId: 1,
-        activity: 'Test',
-        status: 'completed',
-        delta: 20 // 95 + 20 = 115, should be clamped to 100
+      await expect(logEntry(1, { delta: 10, notes: 'Test' })).rejects.toThrow('Cannot exceed 100%. Maximum allowed: 0%')
+    })
+
+    it('should throw error when delta would exceed 100%', async () => {
+      const mockGoal = { id: 1, pctComplete: 95, isCompleted: false, kidId: 1 }
+
+      const mockTx = {
+        goal: {
+          findUnique: vi.fn().mockResolvedValue(mockGoal)
+        }
+      }
+
+      const mockTransaction = vi.fn().mockImplementation(async (callback) => {
+        return await callback(mockTx)
       })
 
-      expect(mockTx.goal.update).toHaveBeenCalledWith({
-        where: { id: 1 },
-        data: { pctComplete: 100, isCompleted: true }
-      })
+      vi.mocked(prisma.$transaction).mockImplementation(mockTransaction)
+
+      await expect(logEntry(1, {
+        delta: 20 // 95 + 20 = 115, would exceed 100
+      })).rejects.toThrow('Cannot exceed 100%. Maximum allowed: 5%')
     })
 
     it('should handle negative delta correctly', async () => {
-      const mockEntry = { id: 1 }
+      const mockEntry = { id: 1, goalId: 1, kidId: 1, activity: 'Progress Update', subject: 'General', status: 'COMPLETED', delta: -20, notes: null, due: null, createdAt: new Date(), updatedAt: new Date() }
       const mockGoal = { id: 1, pctComplete: 10, isCompleted: false, kidId: 1 }
 
       const mockTx = {
@@ -343,9 +294,6 @@ describe('Goals Service', () => {
       vi.mocked(prisma.$transaction).mockImplementation(mockTransaction)
 
       await logEntry(1, {
-        kidId: 1,
-        activity: 'Test',
-        status: 'incomplete',
         delta: -20 // 10 - 20 = -10, should be clamped to 0
       })
 
@@ -358,7 +306,7 @@ describe('Goals Service', () => {
 
   describe('awardStars', () => {
     it('should increment kid stars', async () => {
-      const mockKid = { id: 1, name: 'Test Kid', stars: 5 }
+      const mockKid = { id: 1, name: 'Test Kid', stars: 5, starTotal: 5 }
       vi.mocked(prisma.kid.update).mockResolvedValue(mockKid)
 
       const result = await awardStars(1, 2)

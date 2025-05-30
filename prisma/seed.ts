@@ -77,6 +77,8 @@ async function main() {
         subject: 'Mathematics',
         status: 'COMPLETED',
         due: new Date('2025-06-01T00:00:00.000Z'),
+        delta: 25,
+        kidId: kid1.id,
         goalId: goal1Kid1.id,
       },
     });
@@ -88,6 +90,8 @@ async function main() {
         subject: 'Mathematics',
         status: 'IN_PROGRESS',
         due: new Date('2025-06-10T00:00:00.000Z'),
+        delta: 15,
+        kidId: kid1.id,
         goalId: goal1Kid1.id,
       },
     });
@@ -100,6 +104,8 @@ async function main() {
         subject: 'Reading',
         status: 'PENDING',
         due: new Date('2025-06-05T00:00:00.000Z'),
+        delta: 0,
+        kidId: kid1.id,
         goalId: goal2Kid1.id,
       },
     });
@@ -111,6 +117,8 @@ async function main() {
         subject: 'Reading',
         status: 'COMPLETED',
         due: new Date('2025-05-20T00:00:00.000Z'),
+        delta: 30,
+        kidId: kid1.id,
         goalId: goal2Kid1.id,
       },
     });

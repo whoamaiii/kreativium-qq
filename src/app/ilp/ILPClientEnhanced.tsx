@@ -2,15 +2,12 @@
 
 import React, { useState } from "react";
 import type { Goal, Entry } from "@prisma/client";
-import { z } from "zod";
-import { zGoalUpdate } from "@/lib/validation";
 import StarsBadge from "@/components/StarsBadge";
 import { useStars } from "@/hooks/useStars";
 import { launchConfetti } from "@/utils/confetti";
 import AddGoalModal from "@/components/goals/AddGoalModal";
 import ActivityDrawer from "@/components/goals/ActivityDrawer";
-
-type GoalUpdateData = z.infer<typeof zGoalUpdate>;
+import KidSwitcher from "@/components/KidSwitcher";
 
 // Define types for fetched data, matching the new schema
 type EntryData = Entry;
@@ -43,8 +40,10 @@ export default function ILPClientEnhanced({
   const [showActivityDrawer, setShowActivityDrawer] = useState(false);
   const [selectedGoalId, setSelectedGoalId] = useState<number | null>(null);
 
-  const handleGoalAdded = (newGoal: GoalData) => {
-    setGoals(prev => [...prev, newGoal]);
+  const handleGoalAdded = (newGoal: Goal) => {
+    // Convert Goal to GoalData by adding empty entries array
+    const goalWithEntries: GoalData = { ...newGoal, entries: [] };
+    setGoals(prev => [...prev, goalWithEntries]);
   };
 
   const handleActivityAdded = (goalId: string | number, updatedGoal: { pctComplete: number; isCompleted: boolean }) => {
@@ -69,13 +68,26 @@ export default function ILPClientEnhanced({
     setShowActivityDrawer(true);
   };
 
-  const handleExportPDF = () => {
-    const link = document.createElement('a');
-    link.href = `/api/ilp/export?kid=${kidId}`;
-    link.download = `${kidName.replace(/\s+/g, '_')}_ILP_Export.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleExportPDF = async () => {
+    try {
+      const response = await fetch(`/api/ilp/export?kid=${kidId}`);
+      if (!response.ok) throw new Error('Failed to export PDF');
+      
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${kidName.replace(/\s+/g, '_')}_ILP_Export.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up the blob URL
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+    }
   };
 
   return (
@@ -90,12 +102,15 @@ export default function ILPClientEnhanced({
             Track progress and activities for personalized learning.
           </p>
         </div>
-        <button
-          onClick={handleExportPDF}
-          className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors"
-        >
-          Export PDF
-        </button>
+        <div className="flex items-center gap-4">
+          <KidSwitcher currentKidId={kidId} currentPath="/ilp" />
+          <button
+            onClick={handleExportPDF}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors"
+          >
+            Export PDF
+          </button>
+        </div>
       </div>
 
       <section className="mb-12">

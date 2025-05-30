@@ -5,108 +5,84 @@ import MicControls from './MicControls';
 // Mock console.log to avoid test output noise
 vi.spyOn(console, 'log').mockImplementation(() => {});
 
+// Mock window.confirm
+global.confirm = vi.fn(() => true);
+
 describe('MicControls', () => {
-  it.skip('renders all control buttons', () => {
-    // FIXME: Update test after MicControls refactor - component now uses props-based state
-    // and different button structure than expected by original tests
+  it('renders all control buttons', () => {
     render(<MicControls />);
     
     const resetButton = screen.getByTitle('Reset');
-    const recordButton = screen.getByTitle('Record');
-    const stopButton = screen.getByTitle('Stop');
+    const startButton = screen.getByTitle('Start Live Chat');
+    const infoButton = screen.getByTitle('Info');
     
     expect(resetButton).toBeInTheDocument();
-    expect(recordButton).toBeInTheDocument();
+    expect(startButton).toBeInTheDocument();
+    expect(infoButton).toBeInTheDocument();
+    expect(infoButton).toBeDisabled(); // Info button is always disabled
+  });
+
+  it('displays initial status correctly', () => {
+    render(<MicControls />);
+    
+    const status = screen.getByText('Not connected');
+    expect(status).toBeInTheDocument();
+  });
+
+  it('calls onStartLiveChat when start button is clicked', () => {
+    const mockStartLiveChat = vi.fn();
+    render(<MicControls onStartLiveChat={mockStartLiveChat} />);
+    
+    const startButton = screen.getByTitle('Start Live Chat');
+    fireEvent.click(startButton);
+    
+    expect(mockStartLiveChat).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith('[MicControls] Starting live chat (will auto-connect)');
+  });
+
+  it('shows stop button and calls onStopLiveChat when active', () => {
+    const mockStopLiveChat = vi.fn();
+    render(<MicControls isLiveChatActive={true} onStopLiveChat={mockStopLiveChat} />);
+    
+    const stopButton = screen.getByTitle('Stop Live Chat');
     expect(stopButton).toBeInTheDocument();
-  });
-
-  it.skip('displays initial status correctly', () => {
-    // FIXME: Update test - MicControls no longer displays status text directly
-    render(<MicControls />);
     
-    const status = screen.getByText('Ready to record');
-    expect(status).toBeInTheDocument();
-    expect(status).toHaveClass('text-gray-300');
-  });
-
-  it.skip('starts recording when record button is clicked', () => {
-    // FIXME: Update test - component now uses onStartLiveChat prop instead of internal state
-    render(<MicControls />);
-    
-    const recordButton = screen.getByTitle('Record');
-    fireEvent.click(recordButton);
-    
-    const status = screen.getByText('Recording...');
-    expect(status).toBeInTheDocument();
-    expect(status).toHaveClass('text-red-400');
-    expect(console.log).toHaveBeenCalledWith('Recording started');
-  });
-
-  it.skip('stops recording when stop button is clicked during recording', () => {
-    // FIXME: Update test - component now uses onStopLiveChat prop
-    render(<MicControls />);
-    
-    // Start recording first
-    const recordButton = screen.getByTitle('Record');
-    fireEvent.click(recordButton);
-    
-    // Then stop
-    const stopButton = screen.getByTitle('Stop');
     fireEvent.click(stopButton);
     
-    const status = screen.getByText('Stopped');
-    expect(status).toBeInTheDocument();
-    expect(status).toHaveClass('text-yellow-400');
-    expect(console.log).toHaveBeenCalledWith('Recording stopped');
+    expect(global.confirm).toHaveBeenCalledWith('Are you sure you want to stop the live chat?');
+    expect(mockStopLiveChat).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith('[MicControls] Stopping live chat (confirmed)');
   });
 
-  it.skip('resets to initial state when reset button is clicked', () => {
-    // FIXME: Update test - component now uses onReset prop
-    render(<MicControls />);
+  it('calls onReset when reset button is clicked', () => {
+    const mockReset = vi.fn();
+    render(<MicControls onReset={mockReset} />);
     
-    // Start and stop recording
-    const recordButton = screen.getByTitle('Record');
-    fireEvent.click(recordButton);
-    const stopButton = screen.getByTitle('Stop');
-    fireEvent.click(stopButton);
-    
-    // Reset
     const resetButton = screen.getByTitle('Reset');
     fireEvent.click(resetButton);
     
-    const status = screen.getByText('Ready to record');
-    expect(status).toBeInTheDocument();
-    expect(status).toHaveClass('text-gray-300');
-    expect(console.log).toHaveBeenCalledWith('Recording reset');
+    expect(mockReset).toHaveBeenCalled();
+    expect(console.log).toHaveBeenCalledWith('[MicControls] Reset triggered via onReset prop');
   });
 
-  it.skip('prevents recording when already recording', () => {
-    // FIXME: Update test - behavior now controlled by parent component via props
-    render(<MicControls />);
+  it('disables reset button when live chat is active', () => {
+    render(<MicControls isLiveChatActive={true} />);
     
-    const recordButton = screen.getByTitle('Record');
-    
-    // Start recording
-    fireEvent.click(recordButton);
-    expect(screen.getByText('Recording...')).toBeInTheDocument();
-    
-    // Try to record again
-    fireEvent.click(recordButton);
-    
-    // Should still be recording
-    expect(screen.getByText('Recording...')).toBeInTheDocument();
-    expect(console.log).toHaveBeenCalledWith('Already recording');
+    const resetButton = screen.getByTitle('Reset');
+    expect(resetButton).toBeDisabled();
   });
 
-  it.skip('prevents stopping when not recording', () => {
-    // FIXME: Update test - behavior now controlled by parent component via props
-    render(<MicControls />);
+  it('shows correct status based on connection and recording state', () => {
+    const { rerender } = render(<MicControls />);
+    expect(screen.getByText('Not connected')).toBeInTheDocument();
     
-    const stopButton = screen.getByTitle('Stop');
-    fireEvent.click(stopButton);
+    rerender(<MicControls isConnected={true} />);
+    expect(screen.getByText('Ready for live chat')).toBeInTheDocument();
     
-    // Should still be in ready state
-    expect(screen.getByText('Ready to record')).toBeInTheDocument();
-    expect(console.log).toHaveBeenCalledWith('Not recording');
+    rerender(<MicControls isLiveChatActive={true} />);
+    expect(screen.getByText('Live chat starting...')).toBeInTheDocument();
+    
+    rerender(<MicControls isLiveChatActive={true} isRecording={true} />);
+    expect(screen.getByText('🔴 LIVE CHAT ACTIVE 🎙️')).toBeInTheDocument();
   });
 });

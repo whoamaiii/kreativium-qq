@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma'
+import { prisma } from '@/lib/prisma'
 
 // Constants
 const GOAL_COMPLETE = 100
@@ -41,7 +41,7 @@ export async function updateGoal(id: number, data: {
     }
 
     // Clamp pctComplete if provided
-    const updateData = { ...data }
+    const updateData: any = { ...data }
     if (updateData.pctComplete !== undefined) {
       updateData.pctComplete = clamp(updateData.pctComplete, 0, GOAL_COMPLETE)
     }
