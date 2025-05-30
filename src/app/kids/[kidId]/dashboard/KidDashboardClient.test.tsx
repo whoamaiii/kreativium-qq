@@ -10,7 +10,7 @@ vi.mock('@/hooks/useKidLive', () => ({
 
 // Mock the GoalCard component
 vi.mock('@/components/goals/GoalCard', () => ({
-  default: ({ goal, onUpdate }: any) => (
+  default: ({ goal }: { goal: { id: number; title: string; desc?: string; pctComplete: number } }) => (
     <div data-testid={`goal-card-${goal.id}`}>
       <h3>{goal.title}</h3>
       <p>{goal.desc}</p>

@@ -2,16 +2,28 @@
 import { useKidLive } from '@/hooks/useKidLive';
 import LiveChat from '@/components/LiveChat';
 import GoalCard from '@/components/goals/GoalCard';
-import { useRouter } from 'next/navigation';
 
-export default function KidDashboardClient({ kid }: { kid: any }) {
-  const { stars, messages } = useKidLive(kid.id, kid.starTotal);
-  const router = useRouter();
-  
-  const handleGoalUpdate = () => {
-    // Refresh the page to get updated data
-    router.refresh();
-  };
+interface Kid {
+  id: number;
+  name: string;
+  starTotal: number;
+  goals: Array<{
+    id: number;
+    title: string;
+    desc?: string | null;
+    pctComplete: number;
+  }>;
+}
+
+interface Goal {
+  id: number;
+  title: string;
+  desc?: string | null;
+  pctComplete: number;
+}
+
+export default function KidDashboardClient({ kid }: { kid: Kid }) {
+  const { stars } = useKidLive(kid.id, kid.starTotal);
   
   return (
     <div className="container mx-auto p-6">
@@ -21,7 +33,7 @@ export default function KidDashboardClient({ kid }: { kid: any }) {
         <section>
           <h2 className="text-2xl font-semibold mb-4">Goals</h2>
           <div className="space-y-4">
-            {kid.goals.map((g: any) => (
+            {kid.goals.map((g: Goal) => (
               <GoalCard key={g.id} goal={g} />
             ))}
           </div>

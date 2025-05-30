@@ -2,9 +2,16 @@
 import { useState, useEffect } from 'react';
 import io, { Socket } from 'socket.io-client';
 
+interface Message {
+  id: string;
+  content: string;
+  role: string;
+  createdAt: string;
+}
+
 export function useKidLive(kidId: number, initialStars: number) {
   const [stars, setStars] = useState(initialStars);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     // Connect to Socket.IO server
