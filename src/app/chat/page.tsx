@@ -30,7 +30,7 @@ const symbolCategories: Record<string, { id: string; label: string; imgSrc: stri
   ],
 };
 
-type Message = {
+type GeminiChatMessage = {
   id: string;
   text: string;
   sender: 'user' | 'assistant';
@@ -45,7 +45,7 @@ export default function ChatPage() {
   const [currentCategory, setCurrentCategory] = useState<string>("Core");
   const [search, setSearch] = useState("");
   const [sentence, setSentence] = useState<string[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<GeminiChatMessage[]>([]);
   const [showSymbols, setShowSymbols] = useState(true);
   const [textInput, setTextInput] = useState("");
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -86,7 +86,7 @@ export default function ChatPage() {
       if (message.type === 'text' && message.content) {
         console.log('Gemini says:', message.content);
         // Add assistant message to chat history
-        const newMessage: Message = {
+        const newMessage: GeminiChatMessage = {
           id: Date.now().toString(),
           text: message.content,
           sender: 'assistant',
@@ -234,7 +234,7 @@ export default function ChatPage() {
     if (sentence.length === 0) return;
     
     const messageText = sentence.join(" ");
-    const newMessage: Message = {
+    const newMessage: GeminiChatMessage = {
       id: Date.now().toString(),
       text: messageText,
       sender: 'user',
@@ -254,7 +254,7 @@ export default function ChatPage() {
   const handleSendTextMessage = () => {
     if (!textInput.trim()) return;
     
-    const newMessage: Message = {
+    const newMessage: GeminiChatMessage = {
       id: Date.now().toString(),
       text: textInput,
       sender: 'user',
