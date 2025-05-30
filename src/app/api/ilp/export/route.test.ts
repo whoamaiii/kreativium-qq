@@ -1,4 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+// ---- test‑only stubs --------------------------------------------------
+globalThis.WebSocket = class FakeWebSocket {
+  simulateMessage = vi.fn();
+  close = vi.fn();
+} as unknown as typeof WebSocket;
+// -----------------------------------------------------------------------
+
 import { GET } from './route';
 
 // Mock dependencies
@@ -107,4 +114,4 @@ describe('/api/ilp/export', () => {
 
     expect(makeIlpPdf).toHaveBeenCalledWith(mockGoals, mockEntries);
   });
-}); 
+});

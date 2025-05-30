@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import io, { Socket } from 'socket.io-client';
 
-interface Message {
+export interface Message {
   id: string;
   content: string;
   role: string;

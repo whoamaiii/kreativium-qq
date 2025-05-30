@@ -2,31 +2,23 @@ import { renderHook, act } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { useKidLive } from './useKidLive';
 
-// Mock WebSocket
-let mockWebSocketInstances: MockWebSocket[] = [];
+// Mock Socket.IO
+const mockSocket = {
+  emit: vi.fn(),
+  on: vi.fn(),
+  disconnect: vi.fn(),
+};
 
-class MockWebSocket {
-  onmessage: ((event: MessageEvent) => void) | null = null;
-  close = vi.fn();
-  
-  constructor(public url: string) {
-    mockWebSocketInstances.push(this);
-  }
-  
-  simulateMessage(data: any) {
-    if (this.onmessage) {
-      this.onmessage(new MessageEvent('message', { data: JSON.stringify(data) }));
-    }
-  }
-}
-
-// Replace global WebSocket with mock
-(global as any).WebSocket = MockWebSocket;
+vi.mock('socket.io-client', () => ({
+  default: vi.fn(() => mockSocket),
+  io: vi.fn(() => mockSocket),
+}));
 
 describe('useKidLive', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockWebSocketInstances = [];
+    // Reset the on handlers
+    mockSocket.on.mockClear();
   });
 
   it('should initialize with provided stars', () => {
@@ -38,11 +30,11 @@ describe('useKidLive', () => {
   it('should update stars when receiving stars message', () => {
     const { result } = renderHook(() => useKidLive(1, 50));
     
-    // Get the WebSocket instance
-    const ws = mockWebSocketInstances[0];
+    // Get the stars-update handler that was registered
+    const starsHandler = mockSocket.on.mock.calls.find(call => call[0] === 'stars-update')?.[1];
     
     act(() => {
-      ws.simulateMessage({ type: 'stars', kidId: 1, total: 75 });
+      starsHandler?.({ kidId: 1, total: 75 });
     });
     
     expect(result.current.stars).toBe(75);
@@ -51,23 +43,25 @@ describe('useKidLive', () => {
   it('should add feedback messages when receiving feedback', () => {
     const { result } = renderHook(() => useKidLive(1, 50));
     
-    const ws = mockWebSocketInstances[0];
-    const feedback = { id: 1, content: 'Great job!', role: 'assistant' };
+    // Get the feedback-update handler that was registered
+    const feedbackHandler = mockSocket.on.mock.calls.find(call => call[0] === 'feedback-update')?.[1];
+    const message = { id: '1', content: 'Great job!', role: 'assistant', createdAt: new Date().toISOString() };
     
     act(() => {
-      ws.simulateMessage({ type: 'feedback', kidId: 1, msg: feedback });
+      feedbackHandler?.({ kidId: 1, message });
     });
     
-    expect(result.current.messages).toEqual([feedback]);
+    expect(result.current.messages).toEqual([message]);
   });
 
   it('should ignore messages for different kidId', () => {
     const { result } = renderHook(() => useKidLive(1, 50));
     
-    const ws = mockWebSocketInstances[0];
+    // Get the stars-update handler that was registered
+    const starsHandler = mockSocket.on.mock.calls.find(call => call[0] === 'stars-update')?.[1];
     
     act(() => {
-      ws.simulateMessage({ type: 'stars', kidId: 2, total: 100 });
+      starsHandler?.({ kidId: 2, total: 100 });
     });
     
     expect(result.current.stars).toBe(50); // Unchanged
@@ -75,10 +69,9 @@ describe('useKidLive', () => {
 
   it('should close WebSocket on unmount', () => {
     const { unmount } = renderHook(() => useKidLive(1, 50));
-    const ws = mockWebSocketInstances[0];
     
     unmount();
     
-    expect(ws.close).toHaveBeenCalled();
+    expect(mockSocket.disconnect).toHaveBeenCalled();
   });
 }); 

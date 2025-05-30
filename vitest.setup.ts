@@ -50,3 +50,6 @@ global.requestAnimationFrame = vi.fn((cb) => {
 }) as any;
 
 global.cancelAnimationFrame = vi.fn() as any;
+
+// Mock scrollIntoView for JSDOM (not implemented by default)
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
