@@ -53,3 +53,29 @@ global.cancelAnimationFrame = vi.fn() as any;
 
 // Mock scrollIntoView for JSDOM (not implemented by default)
 window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
+// --- WebSocket Mock for useKidLive & dashboard components ---
+type WSListener = (event: MessageEvent) => void;
+
+class WebSocketMock {
+  private listeners: Record<string, WSListener[]> = {};
+  readyState = 1;              // OPEN
+  simulateMessage = (data: any) => {
+    const evt = { data: JSON.stringify(data) } as MessageEvent;
+    this.listeners['message']?.forEach(fn => fn(evt));
+  };
+  close = vi.fn();
+
+  constructor() {
+    // expose for tests that need direct access
+    (globalThis as any).__currentWS = this;
+  }
+
+  addEventListener = (type: string, cb: WSListener) =>
+    (this.listeners[type] ??= []).push(cb);
+  removeEventListener = (type: string, cb: WSListener) =>
+    this.listeners[type] = (this.listeners[type] || []).filter(f => f !== cb);
+}
+
+// Replace the real WebSocket for every test file
+globalThis.WebSocket = WebSocketMock as unknown as typeof WebSocket;
