@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import prisma from '@/lib/prisma'
 
 // Constants
 const GOAL_COMPLETE = 100

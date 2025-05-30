@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 import { GET, POST } from './route';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 
 // Mock prisma
 vi.mock('@/lib/prisma', () => {

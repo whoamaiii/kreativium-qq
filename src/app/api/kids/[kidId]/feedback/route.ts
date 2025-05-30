@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { wss } from '@/pages/api/ws';
 
 // Since we can't access the Socket.IO server directly from App Router,
@@ -20,7 +20,7 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid kid ID' }, { status: 400 });
     }
 
-    const feedback = await (prisma as any).feedback.findMany({
+    const feedback = await prisma.feedback.findMany({
       where: { kidId },
       orderBy: { createdAt: 'asc' },
       select: {
@@ -71,7 +71,7 @@ export async function POST(
       );
     }
 
-    const feedback = await (prisma as any).feedback.create({
+    const feedback = await prisma.feedback.create({
       data: {
         kidId,
         content,

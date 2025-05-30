@@ -61,12 +61,11 @@ describe('ILPClient Component', () => {
     },
   ];
 
-  it.skip('renders goal progress', () => {
-    // FIXME: Update test - ILPClient component rendering needs verification
+  it('renders goal progress', () => {
     render(
-      <ILPClient 
-        goals={mockGoals} 
-        activities={mockActivities} 
+      <ILPClient
+        goals={mockGoals}
+        activities={mockActivities}
         kidName="Tommy"
         stars={5}
       />
@@ -77,12 +76,11 @@ describe('ILPClient Component', () => {
     expect(screen.getByText('Math Problem Solving')).toBeInTheDocument();
   });
 
-  it.skip('displays percentage correctly', () => {
-    // FIXME: Update test - percentage display format may have changed
+  it('displays percentage correctly', () => {
     render(
-      <ILPClient 
-        goals={mockGoals} 
-        activities={mockActivities} 
+      <ILPClient
+        goals={mockGoals}
+        activities={mockActivities}
         kidName="Tommy"
         stars={5}
       />
@@ -92,12 +90,11 @@ describe('ILPClient Component', () => {
     expect(screen.getByText('60%')).toBeInTheDocument();
   });
 
-  it.skip('shows activity list', () => {
-    // FIXME: Update test - activity list rendering needs verification
+  it('shows activity list', () => {
     render(
-      <ILPClient 
-        goals={mockGoals} 
-        activities={mockActivities} 
+      <ILPClient
+        goals={mockGoals}
+        activities={mockActivities}
         kidName="Tommy"
         stars={5}
       />
@@ -108,12 +105,11 @@ describe('ILPClient Component', () => {
     expect(screen.getByText('Math Quiz')).toBeInTheDocument();
   });
 
-  it.skip('renders export button', () => {
-    // FIXME: Update test - export button functionality needs verification
+  it('renders export button', () => {
     render(
-      <ILPClient 
-        goals={mockGoals} 
-        activities={mockActivities} 
+      <ILPClient
+        goals={mockGoals}
+        activities={mockActivities}
         kidName="Tommy"
         stars={5}
       />

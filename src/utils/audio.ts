@@ -3,12 +3,47 @@
  * Based on the LitElement example implementation
  */
 
-export function createBlob(): MediaStream {
-  // Convert Float32Array PCM data to a MediaStream blob
-  // This is a simplified implementation - in practice you might need more sophisticated audio processing
-  const canvas = document.createElement('canvas');
-  const mediaStream = canvas.captureStream();
-  return mediaStream;
+// Convert PCM samples to a simple WAV blob
+export function createBlob(
+  pcmData: Float32Array,
+  sampleRate = 48000
+): Blob {
+  const buffer = new ArrayBuffer(44 + pcmData.length * 2);
+  const view = new DataView(buffer);
+
+  // RIFF chunk descriptor
+  writeString(view, 0, 'RIFF');
+  view.setUint32(4, 36 + pcmData.length * 2, true);
+  writeString(view, 8, 'WAVE');
+
+  // fmt sub-chunk
+  writeString(view, 12, 'fmt ');
+  view.setUint32(16, 16, true); // PCM
+  view.setUint16(20, 1, true); // linear quantization
+  view.setUint16(22, 1, true); // channels
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true); // byte rate
+  view.setUint16(32, 2, true); // block align
+  view.setUint16(34, 16, true); // bits per sample
+
+  // data sub-chunk
+  writeString(view, 36, 'data');
+  view.setUint32(40, pcmData.length * 2, true);
+
+  // write PCM samples
+  const offset = 44;
+  for (let i = 0; i < pcmData.length; i++) {
+    const s = Math.max(-1, Math.min(1, pcmData[i]));
+    view.setInt16(offset + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+  }
+
+  return new Blob([view], { type: 'audio/wav' });
+}
+
+function writeString(view: DataView, offset: number, str: string) {
+  for (let i = 0; i < str.length; i++) {
+    view.setUint8(offset + i, str.charCodeAt(i));
+  }
 }
 
 export function decode(base64Data: string): ArrayBuffer {

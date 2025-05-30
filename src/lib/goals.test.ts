@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createGoal, updateGoal, logEntry, awardStars } from './goals'
-import { prisma } from './prisma'
+import prisma from './prisma'
 
 vi.mock('./prisma', () => {
   const mockPrisma = {
