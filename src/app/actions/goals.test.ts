@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { updateGoalProgress, createGoal } from './goals'
 import { awardStar } from './stars'
-import { prisma } from '@/lib/prisma'
+import prisma from '@/lib/prisma'
 
 // Mock dependencies
 vi.mock('@/lib/prisma', () => {

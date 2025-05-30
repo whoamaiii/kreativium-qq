@@ -10,7 +10,7 @@ const Waveform: React.FC<WaveformProps> = ({ isActive = false }) => {
   const [bars, setBars] = useState<number[]>([]);
 
   useEffect(() => {
-    // Generate dummy waveform data
+    // Generate placeholder waveform data
     const generateBars = () => {
       const barCount = 40;
       const newBars = Array.from({ length: barCount }, () => 

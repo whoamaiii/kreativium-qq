@@ -2,11 +2,11 @@
 
 ## Environment Configuration
 
-Create a `.env.local` file in the project root with your Gemini API key:
+Create a `.env.local` file in the project root and store your Gemini API key there. **Do not commit this file to version control.**
 
 ```bash
-# Add your Gemini API key here
-GEMINI_API_KEY=your_api_key_here
+# .env.local
+GEMINI_API_KEY=<your_api_key>
 ```
 
 **Get your API key from:** https://aistudio.google.com/app/apikey

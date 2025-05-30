@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { updateGoal } from '@/lib/goals'
 import { zGoalUpdate } from '@/lib/validation'
-import { prisma } from '@/lib/prisma'
+import prisma from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,

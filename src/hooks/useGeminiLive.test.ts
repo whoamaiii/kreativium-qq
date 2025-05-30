@@ -247,7 +247,6 @@ describe('useGeminiLive', () => {
   });
 
   it('initializes audio contexts on connect', async () => {
-    // FIXME: Connection state not properly updated in test
     const { result } = renderHook(() => useGeminiLive());
 
     await act(async () => {
@@ -266,7 +265,6 @@ describe('useGeminiLive', () => {
   });
 
   it('starts and stops recording', async () => {
-    // FIXME: getUserMedia not being called due to security context
     const { result } = renderHook(() => useGeminiLive());
 
     // Connect first
@@ -402,7 +400,6 @@ describe('useGeminiLive', () => {
   });
 
   it('disconnects and resets session', async () => {
-    // FIXME: Connection state not properly updated in test
     const { result } = renderHook(() => useGeminiLive());
 
     // Connect first
@@ -424,7 +421,6 @@ describe('useGeminiLive', () => {
   });
 
   it('resets session properly', async () => {
-    // FIXME: Reset functionality needs proper state management
     const { result } = renderHook(() => useGeminiLive());
 
     // Connect and add some state
