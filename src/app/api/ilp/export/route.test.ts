@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GET } from './route';
-import { NextResponse } from 'next/server';
 
 // Mock dependencies
 vi.mock('@/lib/prisma', () => {
@@ -50,12 +49,12 @@ describe('/api/ilp/export', () => {
       { id: 2, kidId: 123, content: 'Entry 2' },
     ];
 
-    (prisma.goal.findMany as any).mockResolvedValue(mockGoals);
-    (prisma.entry.findMany as any).mockResolvedValue(mockEntries);
-    (makeIlpPdf as any).mockResolvedValue(new Uint8Array([1, 2, 3, 4]));
+    (prisma.goal.findMany as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(mockGoals);
+    (prisma.entry.findMany as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(mockEntries);
+    (makeIlpPdf as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(new Uint8Array([1, 2, 3, 4]));
 
     const request = new Request('http://localhost:3000/api/ilp/export?kid=123');
-    const response = await GET(request);
+    await GET(request);
 
     expect(prisma.goal.findMany).toHaveBeenCalledWith({
       where: { kidId: 123 },
@@ -69,9 +68,9 @@ describe('/api/ilp/export', () => {
   it('should return PDF with correct headers', async () => {
     const mockPdfBytes = new Uint8Array([1, 2, 3, 4, 5]);
     
-    (prisma.goal.findMany as any).mockResolvedValue([]);
-    (prisma.entry.findMany as any).mockResolvedValue([]);
-    (makeIlpPdf as any).mockResolvedValue(mockPdfBytes);
+    (prisma.goal.findMany as unknown as ReturnType<typeof vi.fn>).mockResolvedValue([]);
+    (prisma.entry.findMany as unknown as ReturnType<typeof vi.fn>).mockResolvedValue([]);
+    (makeIlpPdf as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(mockPdfBytes);
 
     const request = new Request('http://localhost:3000/api/ilp/export?kid=456');
     const response = await GET(request);
@@ -85,7 +84,7 @@ describe('/api/ilp/export', () => {
   });
 
   it('should handle errors gracefully', async () => {
-    (prisma.goal.findMany as any).mockRejectedValue(new Error('Database error'));
+    (prisma.goal.findMany as unknown as ReturnType<typeof vi.fn>).mockRejectedValue(new Error('Database error'));
 
     const request = new Request('http://localhost:3000/api/ilp/export?kid=789');
     const response = await GET(request);
@@ -99,9 +98,9 @@ describe('/api/ilp/export', () => {
     const mockGoals = [{ id: 1, kidId: 111, title: 'Test Goal' }];
     const mockEntries = [{ id: 1, kidId: 111, content: 'Test Entry' }];
     
-    (prisma.goal.findMany as any).mockResolvedValue(mockGoals);
-    (prisma.entry.findMany as any).mockResolvedValue(mockEntries);
-    (makeIlpPdf as any).mockResolvedValue(new Uint8Array());
+    (prisma.goal.findMany as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(mockGoals);
+    (prisma.entry.findMany as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(mockEntries);
+    (makeIlpPdf as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(new Uint8Array());
 
     const request = new Request('http://localhost:3000/api/ilp/export?kid=111');
     await GET(request);

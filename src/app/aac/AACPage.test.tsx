@@ -14,11 +14,10 @@ const mockSpeechSynthesis = {
   onvoiceschanged: null,
 };
 
-// @ts-ignore
+// @ts-expect-error - Mocking global speechSynthesis for test environment
 global.window.speechSynthesis = mockSpeechSynthesis;
 
 // Mock SpeechSynthesisUtterance
-// @ts-ignore
 global.SpeechSynthesisUtterance = vi.fn().mockImplementation((text) => {
   return { text }; // Return a simple object, or more properties if needed by the component
 });
@@ -27,8 +26,7 @@ global.SpeechSynthesisUtterance = vi.fn().mockImplementation((text) => {
 beforeEach(() => {
   mockSpeechSynthesis.speak.mockClear();
   mockSpeechSynthesis.cancel.mockClear();
-  // @ts-ignore
-  global.SpeechSynthesisUtterance.mockClear();
+  (global.SpeechSynthesisUtterance as ReturnType<typeof vi.fn>).mockClear();
 });
 
 describe('AACPage Component', () => {

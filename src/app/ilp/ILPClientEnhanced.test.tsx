@@ -1,8 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import ILPClientEnhanced from './ILPClientEnhanced'
-import { launchConfetti } from '@/utils/confetti'
 
 // Mock Next.js router
 vi.mock('next/navigation', () => ({
@@ -29,7 +27,7 @@ global.fetch = mockFetch
 
 // Mock URL.createObjectURL and revokeObjectURL for JSDOM
 if (typeof window !== 'undefined' && typeof window.URL === 'undefined') {
-  // @ts-ignore
+  // @ts-expect-error - Mocking window.URL for test environment
   window.URL = { createObjectURL: vi.fn(), revokeObjectURL: vi.fn() };
 } else if (typeof window !== 'undefined') {
   window.URL.createObjectURL = vi.fn(() => 'mock-object-url');
@@ -95,9 +93,9 @@ describe('ILPClientEnhanced - Star Integration', () => {
 
     // Reset an
     if (typeof window !== 'undefined') {
-        // @ts-ignore
+        // @ts-expect-error - Mocking window URL methods for test environment
         window.URL.createObjectURL.mockClear();
-        // @ts-ignore
+        // @ts-expect-error - Mocking window URL methods for test environment
         window.URL.revokeObjectURL.mockClear();
     }
   })
@@ -270,10 +268,9 @@ describe('ILPClientEnhanced - Star Integration', () => {
       return Promise.reject(new Error('Unknown URL'))
     })
     
-    const { rerender } = render(<ILPClientEnhanced {...completedGoalData} />)
+    render(<ILPClientEnhanced {...completedGoalData} />)
     
     // Since handleActivityAdded would trigger confetti, we simulate its effect
-    const updatedStars = 3
     const starsBadgeElement = container.querySelector('[data-stars-badge]')
     
     // Verify confetti would be launched with correct element
