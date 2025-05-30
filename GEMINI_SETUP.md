@@ -2,14 +2,52 @@
 
 ## Environment Configuration
 
-Create a `.env.local` file in the project root with your Gemini API key:
+### 🔐 Secure API Key Setup
+
+1. **Create a `.env.local` file** in the project root (this file is gitignored by default):
 
 ```bash
-# Add your Gemini API key here
-GEMINI_API_KEY=your_api_key_here
+# IMPORTANT: Never commit this file to version control!
+GEMINI_API_KEY=your_actual_api_key_here
 ```
 
-**Get your API key from:** https://aistudio.google.com/app/apikey
+2. **Get your API key from:** https://aistudio.google.com/app/apikey
+
+### ⚠️ Security Best Practices
+
+- **NEVER commit API keys to version control**
+- Add `.env.local` to your `.gitignore` file (should already be there)
+- Use environment variables only on the server side
+- The `/api/live-token` endpoint securely provides the key to the client
+- Never expose API keys in client-side code or browser console
+
+### 📋 Environment Variable Checklist
+
+- [ ] Created `.env.local` file
+- [ ] Added `GEMINI_API_KEY` with your actual key
+- [ ] Verified `.env.local` is in `.gitignore`
+- [ ] Restarted development server after adding the key
+
+### 🚀 Production Deployment
+
+For production deployments, set the `GEMINI_API_KEY` environment variable in your hosting provider's dashboard:
+
+- **Vercel**: Project Settings → Environment Variables
+- **Netlify**: Site Settings → Environment Variables
+- **Railway**: Variables tab in your project
+- **Heroku**: Config Vars in Settings
+
+**Never hardcode API keys in your application code!**
+
+### 🔄 Key Rotation
+
+If you suspect your API key has been compromised:
+
+1. **Generate a new key** at https://aistudio.google.com/app/apikey
+2. **Update** your `.env.local` file with the new key
+3. **Delete** the old key from Google AI Studio
+4. **Update** production environment variables
+5. **Restart** all services using the key
 
 ## Installation
 

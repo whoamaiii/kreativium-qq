@@ -19,6 +19,15 @@ export interface UseGeminiLiveOptions {
   onAudioLevel?: (level: number) => void;
 }
 
+// Session wrapper type to handle the Google AI SDK session
+interface SessionWrapper {
+  close: () => void;
+  send?: (data: unknown) => void;
+  sendRealtimeInput?: (audioData: unknown) => void;
+  sendClientContent?: (content: unknown) => void;
+  onReceive?: (callback: (message: any) => void) => void;
+}
+
 interface WebkitWindow extends Window {
   webkitAudioContext?: typeof AudioContext;
   AudioContext?: typeof AudioContext;
@@ -85,9 +94,9 @@ export function useGeminiLive({
   
   interface LiveSession {
     close(): void;
-    send(data: unknown): void;
-    sendRealtimeInput?(data: unknown): void;
-    sendClientContent?(data: unknown): void;
+    send?: (data: unknown) => void;
+    sendRealtimeInput?: (data: unknown) => void;
+    sendClientContent?: (data: unknown) => void;
   }
   
   const sessionRef = useRef<LiveSession | null>(null);
@@ -117,10 +126,10 @@ export function useGeminiLive({
   const initAudio = useCallback(() => {
     console.log('[useGeminiLive] Initializing audio contexts...');
     const SafeWindow = window as WebkitWindow;
-    const inputContext = new (SafeWindow.AudioContext || SafeWindow.webkitAudioContext!)({
+    const inputContext = new ((window as any).AudioContext || (window as any).webkitAudioContext)({
       sampleRate: 16000
     });
-    const outputContext = new (SafeWindow.AudioContext || SafeWindow.webkitAudioContext!)({
+    const outputContext = new ((window as any).AudioContext || (window as any).webkitAudioContext)({
       sampleRate: 24000
     });
     
@@ -269,7 +278,12 @@ export function useGeminiLive({
       });
       
       // Cast to any due to complex Google AI LiveSession types
-      sessionRef.current = session as any;
+      sessionRef.current = {
+        close: () => session.close(),
+        sendRealtimeInput: (data: unknown) => (session as any).sendRealtimeInput?.(data),
+        sendClientContent: (data: unknown) => (session as any).sendClientContent?.(data),
+        send: (data: unknown) => (session as any).send?.(data)
+      };
       console.log('[useGeminiLive] Gemini Live session assigned to ref.');
       
     } catch (error) {

@@ -50,7 +50,7 @@ export async function updateGoal(id: number, data: {
     const shouldComplete = !goal.isCompleted && newPct === GOAL_COMPLETE
     
     if (shouldComplete) {
-      updateData.isCompleted = true
+      (updateData as any).isCompleted = true
     }
 
     const updated = await tx.goal.update({

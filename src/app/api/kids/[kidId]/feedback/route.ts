@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { wss } from '@/pages/api/ws';
+import prisma from '@/lib/prisma';
+import { broadcastFeedbackUpdate } from './stream/route';
 
-// Since we can't access the Socket.IO server directly from App Router,
-// we'll need to implement a different approach for real-time updates.
-// For now, we'll keep the standard REST endpoints and rely on client-side polling
-// or Server-Sent Events for real-time updates.
+// Real-time updates can be implemented using:
+// 1. Server-Sent Events (SSE) for unidirectional updates
+// 2. WebSockets through a separate server
+// 3. Polling on the client side
+// 4. Using Next.js App Router streaming responses
 
 // GET /api/kids/[kidId]/feedback
 export async function GET(
@@ -20,7 +21,7 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid kid ID' }, { status: 400 });
     }
 
-    const feedback = await (prisma as any).feedback.findMany({
+    const feedback = await prisma.feedback.findMany({
       where: { kidId },
       orderBy: { createdAt: 'asc' },
       select: {
@@ -71,7 +72,7 @@ export async function POST(
       );
     }
 
-    const feedback = await (prisma as any).feedback.create({
+    const feedback = await prisma.feedback.create({
       data: {
         kidId,
         content,
@@ -85,10 +86,8 @@ export async function POST(
       },
     });
 
-    // Broadcast the new feedback via WebSocket
-    wss.clients.forEach((c) =>
-      c.send(JSON.stringify({ type: 'feedback', kidId, msg: feedback }))
-    );
+    // Broadcast the update via Server-Sent Events
+    broadcastFeedbackUpdate(kidId, feedback);
 
     return NextResponse.json(feedback, { status: 201 });
   } catch (error) {

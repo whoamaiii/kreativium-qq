@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createGoal, updateGoal, logEntry, awardStars } from './goals'
-import { prisma } from './prisma'
+import prisma from './prisma'
 
 vi.mock('./prisma', () => {
   const mockPrisma = {
@@ -69,7 +69,7 @@ describe('Goals Service', () => {
       const mockGoal = { id: 1, pctComplete: 50, isCompleted: false, kidId: 1 }
       const updatedGoal = { ...mockGoal, title: 'Updated Goal', pctComplete: 75 }
 
-      const mockTransaction = vi.fn().mockImplementation(async (callback) => {
+      const mockTransaction = vi.fn().mockImplementation(async (callback: (tx: any) => Promise<any>) => {
         const mockTx = {
           goal: {
             findUnique: vi.fn().mockResolvedValue(mockGoal),
@@ -103,7 +103,7 @@ describe('Goals Service', () => {
         }
       }
 
-      const mockTransaction = vi.fn().mockImplementation(async (callback) => {
+      const mockTransaction = vi.fn().mockImplementation(async (callback: (tx: any) => Promise<any>) => {
         return await callback(mockTx)
       })
 
@@ -131,7 +131,7 @@ describe('Goals Service', () => {
         }
       }
 
-      const mockTransaction = vi.fn().mockImplementation(async (callback) => {
+      const mockTransaction = vi.fn().mockImplementation(async (callback: (tx: any) => Promise<any>) => {
         return await callback(mockTx)
       })
 
@@ -156,7 +156,7 @@ describe('Goals Service', () => {
         }
       }
 
-      const mockTransaction = vi.fn().mockImplementation(async (callback) => {
+      const mockTransaction = vi.fn().mockImplementation(async (callback: (tx: any) => Promise<any>) => {
         return await callback(mockTx)
       })
 
@@ -177,7 +177,7 @@ describe('Goals Service', () => {
         }
       }
 
-      const mockTransaction = vi.fn().mockImplementation(async (callback) => {
+      const mockTransaction = vi.fn().mockImplementation(async (callback: (tx: any) => Promise<any>) => {
         return await callback(mockTx)
       })
 
@@ -218,7 +218,7 @@ describe('Goals Service', () => {
         }
       }
 
-      const mockTransaction = vi.fn().mockImplementation(async (callback) => {
+      const mockTransaction = vi.fn().mockImplementation(async (callback: (tx: any) => Promise<any>) => {
         return await callback(mockTx)
       })
 
@@ -245,7 +245,7 @@ describe('Goals Service', () => {
         }
       }
 
-      const mockTransaction = vi.fn().mockImplementation(async (callback) => {
+      const mockTransaction = vi.fn().mockImplementation(async (callback: (tx: any) => Promise<any>) => {
         return await callback(mockTx)
       })
 
@@ -263,7 +263,7 @@ describe('Goals Service', () => {
         }
       }
 
-      const mockTransaction = vi.fn().mockImplementation(async (callback) => {
+      const mockTransaction = vi.fn().mockImplementation(async (callback: (tx: any) => Promise<any>) => {
         return await callback(mockTx)
       })
 
@@ -287,7 +287,7 @@ describe('Goals Service', () => {
         kid: { update: vi.fn() }
       }
 
-      const mockTransaction = vi.fn().mockImplementation(async (callback) => {
+      const mockTransaction = vi.fn().mockImplementation(async (callback: (tx: any) => Promise<any>) => {
         return await callback(mockTx)
       })
 

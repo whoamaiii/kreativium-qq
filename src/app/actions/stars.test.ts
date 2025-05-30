@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { awardStar, getKidStars, recalculateStars } from './stars'
-import { prisma } from '@/lib/prisma'
+import prisma from '@/lib/prisma'
 
 // Mock Prisma
 vi.mock('@/lib/prisma', () => {
