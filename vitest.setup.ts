@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import { vi, afterEach } from 'vitest';
 
 // Mock HTMLCanvasElement.getContext for canvas-based components
 HTMLCanvasElement.prototype.getContext = vi.fn(function(contextType: string) {
@@ -57,7 +57,15 @@ window.HTMLElement.prototype.scrollIntoView = vi.fn();
 // --- WebSocket Mock for useKidLive & dashboard components ---
 type WSListener = (event: MessageEvent) => void;
 
-class WebSocketMock {
+export interface MockWebSocket {
+  readyState: number;
+  simulateMessage: (data: any) => void;
+  close: ReturnType<typeof vi.fn>;
+  addEventListener: (type: string, cb: WSListener) => void;
+  removeEventListener: (type: string, cb: WSListener) => void;
+}
+
+class WebSocketMock implements MockWebSocket {
   private listeners: Record<string, WSListener[]> = {};
   readyState = 1;              // OPEN
   simulateMessage = (data: any) => {
@@ -79,3 +87,15 @@ class WebSocketMock {
 
 // Replace the real WebSocket for every test file
 globalThis.WebSocket = WebSocketMock as unknown as typeof WebSocket;
+
+// --- Global test cleanup ---
+afterEach(() => {
+  // Clean up any open WebSocket connections to prevent leaks
+  const currentWS = (globalThis as any).__currentWS as MockWebSocket;
+  if (currentWS) {
+    currentWS.close();
+  }
+  
+  // Reset module cache to prevent cross-test contamination
+  vi.resetModules();
+});
