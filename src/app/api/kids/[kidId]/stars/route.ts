@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { wss } from '@/pages/api/ws'
+import prisma from '@/lib/prisma'
+import { broadcastStarsUpdate } from './stream/route'
 
 export async function GET(
   request: Request,
@@ -66,14 +66,14 @@ export async function PATCH(
       );
     }
 
-    // Get current kid data - use 'as any' to bypass TypeScript issues
+    // Get current kid data
     const kid = await prisma.kid.findUnique({
       where: { id: kidId },
       select: { 
         stars: true, 
         starTotal: true 
-      } as any,
-    }) as { stars: number; starTotal: number } | null;
+      },
+    });
 
     if (!kid) {
       return NextResponse.json({ error: 'Kid not found' }, { status: 404 });
@@ -88,19 +88,17 @@ export async function PATCH(
       data: {
         stars: newStars,
         starTotal: newStarTotal,
-      } as any,
+      },
       select: {
         id: true,
         name: true,
         stars: true,
         starTotal: true,
-      } as any,
+      },
     });
 
-    // Broadcast the update via WebSocket
-    wss.clients.forEach((c) =>
-      c.send(JSON.stringify({ type: 'stars', kidId, total: updatedKid.starTotal }))
-    );
+    // Broadcast the update via Server-Sent Events
+    broadcastStarsUpdate(kidId, updatedKid.stars, updatedKid.starTotal);
 
     return NextResponse.json(updatedKid);
   } catch (error) {

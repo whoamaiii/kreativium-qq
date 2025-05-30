@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { makeIlpPdf } from '@/utils/pdf';
 
 export async function GET(request: Request) {

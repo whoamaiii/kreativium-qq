@@ -1,6 +1,6 @@
 'use server'
 
-import { prisma } from '@/lib/prisma'
+import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 
 export interface AwardStarsResult {
@@ -42,7 +42,7 @@ export async function awardStar(goalId: number): Promise<AwardStarsResult> {
 
     // Check if star was already awarded (idempotency)
     // We'll use a transaction to ensure atomicity
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       // Re-fetch within transaction to ensure consistency
       const currentGoal = await tx.goal.findUnique({
         where: { id: goalId },

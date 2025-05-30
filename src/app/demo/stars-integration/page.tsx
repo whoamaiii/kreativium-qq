@@ -1,4 +1,5 @@
 import ILPClientEnhanced from '@/app/ilp/ILPClientEnhanced'
+import { createMockGoal, createMockEntry } from '@/app/ilp/testHelpers';
 
 // Demo page to showcase the star integration
 export default function StarsIntegrationDemo() {
@@ -7,73 +8,52 @@ export default function StarsIntegrationDemo() {
     kidId: 1,
     initialStars: 3,
     goals: [
-      {
+      createMockGoal({
         id: 101,
         kidId: 1,
         title: "Complete Math Homework",
         desc: "Finish all assigned problems from Chapter 5",
         pct: 90,
         pctComplete: 90,
-        targetXp: 100,
-        isCompleted: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        entries: []
-      },
-      {
+      }),
+      createMockGoal({
         id: 102,
         kidId: 1,
         title: "Read 20 Pages",
         desc: "Continue reading 'The Adventure Book'",
         pct: 75,
         pctComplete: 75,
-        targetXp: 100,
-        isCompleted: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        entries: []
-      },
-      {
+      }),
+      createMockGoal({
         id: 103,
         kidId: 1,
         title: "Science Project",
         desc: "Build volcano model for science fair",
         pct: 40,
         pctComplete: 40,
-        targetXp: 100,
-        isCompleted: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        entries: []
-      }
+      })
     ],
     activities: [
-      {
+      createMockEntry({
         id: 201,
         kidId: 1,
         goalId: 101,
         activity: "Practice multiplication tables",
         subject: "Math",
-        status: "IN_PROGRESS" as const,
+        status: "IN_PROGRESS",
         due: new Date("2025-06-01"),
-        notes: null,
         delta: 10,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
+      }),
+      createMockEntry({
         id: 202,
         kidId: 1,
         goalId: 102,
         activity: "Silent reading time",
         subject: "English",
-        status: "COMPLETED" as const,
+        status: "COMPLETED",
         due: new Date("2025-05-30"),
-        notes: null,
         delta: 15,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
+      })
     ]
   }
 

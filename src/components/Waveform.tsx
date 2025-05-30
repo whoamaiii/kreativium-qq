@@ -4,34 +4,75 @@ import { useEffect, useState } from 'react';
 
 interface WaveformProps {
   isActive?: boolean;
+  audioLevel?: number; // Real-time audio level from 0-1
+  audioData?: Float32Array; // Optional: actual audio waveform data
 }
 
-const Waveform: React.FC<WaveformProps> = ({ isActive = false }) => {
+const Waveform: React.FC<WaveformProps> = ({ isActive = false, audioLevel = 0, audioData }) => {
   const [bars, setBars] = useState<number[]>([]);
 
   useEffect(() => {
-    // Generate dummy waveform data
     const generateBars = () => {
       const barCount = 40;
-      const newBars = Array.from({ length: barCount }, () => 
-        isActive 
-          ? Math.random() * 80 + 10 // Active: Random height between 10-90
-          : Math.random() * 20 + 5  // Inactive: Smaller height between 5-25
-      );
-      setBars(newBars);
+      
+      if (audioData && audioData.length > 0) {
+        // Use real audio data if available
+        const samplesPerBar = Math.floor(audioData.length / barCount);
+        const newBars = [];
+        
+        for (let i = 0; i < barCount; i++) {
+          let sum = 0;
+          let count = 0;
+          
+          // Calculate average amplitude for this bar
+          for (let j = 0; j < samplesPerBar; j++) {
+            const sampleIndex = i * samplesPerBar + j;
+            if (sampleIndex < audioData.length) {
+              sum += Math.abs(audioData[sampleIndex]);
+              count++;
+            }
+          }
+          
+          const avgAmplitude = count > 0 ? sum / count : 0;
+          // Scale to 0-90 range for display
+          newBars.push(avgAmplitude * 90);
+        }
+        
+        setBars(newBars);
+      } else if (audioLevel > 0) {
+        // Use audio level to generate reactive bars
+        const newBars = Array.from({ length: barCount }, (_, index) => {
+          // Create a wave pattern based on audio level
+          const wavePosition = (Date.now() / 100 + index) % barCount;
+          const waveFactor = Math.sin((wavePosition / barCount) * Math.PI * 2) * 0.5 + 0.5;
+          const baseHeight = audioLevel * 60;
+          const variation = Math.random() * 20;
+          return baseHeight * waveFactor + variation + 10;
+        });
+        setBars(newBars);
+      } else {
+        // Generate idle animation when no audio
+        const newBars = Array.from({ length: barCount }, (_, index) => {
+          if (isActive) {
+            // Small reactive bars when active but no audio
+            return Math.random() * 15 + 5;
+          } else {
+            // Very small bars when inactive
+            return Math.random() * 10 + 2;
+          }
+        });
+        setBars(newBars);
+      }
     };
 
     generateBars();
     
-    // Animate the waveform only when active
-    if (isActive) {
-      const interval = setInterval(generateBars, 100); // Faster when active
-      return () => clearInterval(interval);
-    } else {
-      const interval = setInterval(generateBars, 500); // Slower when inactive
-      return () => clearInterval(interval);
-    }
-  }, [isActive]);
+    // Update animation based on state
+    const updateInterval = audioData || audioLevel > 0 ? 50 : (isActive ? 100 : 500);
+    const interval = setInterval(generateBars, updateInterval);
+    
+    return () => clearInterval(interval);
+  }, [isActive, audioLevel, audioData]);
 
   return (
     <div className="flex flex-col items-center space-y-4 w-full max-w-2xl">
@@ -65,7 +106,12 @@ const Waveform: React.FC<WaveformProps> = ({ isActive = false }) => {
       </div>
       
       <div className="text-sm text-gray-400">
-        {isActive ? 'Recording audio...' : 'Listening for audio input...'}
+        {isActive 
+          ? audioLevel > 0 
+            ? `Recording audio... (Level: ${Math.round(audioLevel * 100)}%)`
+            : 'Recording audio...'
+          : 'Listening for audio input...'
+        }
       </div>
     </div>
   );

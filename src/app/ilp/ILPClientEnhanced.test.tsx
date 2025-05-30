@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import ILPClientEnhanced from './ILPClientEnhanced'
+import { createMockGoal, type GoalData, type EntryData } from './testHelpers';
 
 // Mock Next.js router
 vi.mock('next/navigation', () => ({
@@ -40,34 +41,22 @@ describe('ILPClientEnhanced - Star Integration', () => {
     kidId: 1,
     initialStars: 2,
     goals: [
-      {
+      createMockGoal({
         id: 1,
-        kidId: 1,
         title: 'Reading Comprehension',
         desc: 'Improve reading skills',
         pct: 90,
         pctComplete: 90,
-        isCompleted: false,
-        targetXp: 100,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        entries: []
-      },
-      {
+      }),
+      createMockGoal({
         id: 2,
-        kidId: 1,
         title: 'Math Problem Solving',
         desc: 'Master basic arithmetic',
         pct: 60,
         pctComplete: 60,
-        isCompleted: false,
-        targetXp: 100,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        entries: []
-      }
+      })
     ],
-    activities: []
+    activities: [] as EntryData[]
   }
 
   beforeEach(() => {
@@ -130,19 +119,13 @@ describe('ILPClientEnhanced - Star Integration', () => {
     const mockGoalData = {
       ...mockKidData,
       goals: [
-        {
+        createMockGoal({
           id: 2,
-          kidId: 1,
           title: 'Math Problem Solving',
           desc: 'Master basic arithmetic',
           pct: 80,
           pctComplete: 80,
-          targetXp: 100,
-          isCompleted: false,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          entries: []
-        }
+        })
       ]
     }
 
@@ -167,19 +150,14 @@ describe('ILPClientEnhanced - Star Integration', () => {
     const completedGoalData = {
       ...mockKidData,
       goals: [
-        {
+        createMockGoal({
           id: 1,
-          kidId: 1,
           title: 'Completed Goal',
           desc: 'Already done',
           pct: 100,
           pctComplete: 100,
           isCompleted: true,
-          targetXp: 100,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          entries: []
-        }
+        })
       ]
     }
 
