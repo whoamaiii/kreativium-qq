@@ -19,21 +19,6 @@ export interface UseGeminiLiveOptions {
   onAudioLevel?: (level: number) => void;
 }
 
-interface LiveSessionMessage {
-  setupComplete?: boolean;
-  serverContent?: {
-    modelTurn?: {
-      parts?: Array<{
-        inlineData?: {
-          data: string;
-          mimeType: string;
-        };
-      }>;
-    };
-    interrupted?: boolean;
-  };
-}
-
 interface WebkitWindow extends Window {
   webkitAudioContext?: typeof AudioContext;
   AudioContext?: typeof AudioContext;
@@ -191,20 +176,22 @@ export function useGeminiLive({
             console.log('[useGeminiLive] Live session opened successfully.');
             updateConnectionState('connected');
           },
-          onmessage: async (message: any) => {
+          onmessage: async (message: unknown) => {
+            // Cast to any due to complex Google AI LiveServerMessage types
+            const msg = message as any;
             console.log('[useGeminiLive] Received message:', JSON.stringify(message, null, 2));
             
             // Check for setup complete
-            if (message.setupComplete) {
+            if (msg.setupComplete) {
               console.log('[useGeminiLive] ✅ Setup complete - ready for audio input');
             }
             
             // Check for model turn (audio response)
-            if (message.serverContent?.modelTurn) {
+            if (msg.serverContent?.modelTurn) {
               console.log('[useGeminiLive] 🎵 Received model turn (audio response)');
             }
             
-            const audio = message.serverContent?.modelTurn?.parts?.[0]?.inlineData;
+            const audio = msg.serverContent?.modelTurn?.parts?.[0]?.inlineData;
             
             if (audio && outputAudioContextRef.current && outputNodeRef.current) {
               try {
@@ -256,7 +243,7 @@ export function useGeminiLive({
               }
             }
 
-            const interrupted = message.serverContent?.interrupted;
+            const interrupted = msg.serverContent?.interrupted;
             if (interrupted) {
               console.log('[useGeminiLive] Received interruption signal.');
               for (const source of sourcesRef.current.values()) {
@@ -281,6 +268,7 @@ export function useGeminiLive({
         }
       });
       
+      // Cast to any due to complex Google AI LiveSession types
       sessionRef.current = session as any;
       console.log('[useGeminiLive] Gemini Live session assigned to ref.');
       
